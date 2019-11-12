@@ -1,7 +1,7 @@
 def selection(l):
-    for i in range(0, len(l)):
+    for i in range(0, len(l)-1):
         temp = i
-        for j in range(i, len(l)):
+        for j in range(i+1, len(l)):
             if l[temp] > l[j]:
                 temp = j
 
