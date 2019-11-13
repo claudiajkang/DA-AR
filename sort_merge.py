@@ -1,3 +1,6 @@
+# 이미 두 개의 배열이 정렬되어 진 경우
+
+
 def divide(olist):
     mid = int(len(olist) / 2)
     if mid >= 1:
