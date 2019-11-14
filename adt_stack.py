@@ -6,19 +6,23 @@ class Stack:
         self.items.append(value)
 
     def pop(self):
-        return self.items.pop()
+        val = self.items.pop()
+        if val is not None:
+            return val
+        else:
+            print("Stack is empty")
 
     def peak(self):
-        return self.items[-1]
+        if self.items:
+            return self.items[-1]
+        else:
+            print("Stack is empty")
 
     def size(self):
         return len(self.items)
 
     def empty(self):
-        if self.size() == 0:
-            return True
-
-        return False
+        return not bool(self.items)
 
 stack = Stack()
 print("Is stack empty? : "+str(stack.empty()))
