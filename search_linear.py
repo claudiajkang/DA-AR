@@ -1,7 +1,7 @@
 def linearsearch(olist, val):
-    if olist.count(val) > 0:
-        return True
-
+    for i in olist:
+        if i == val:
+            return True
     return False
 
 
