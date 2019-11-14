@@ -1,25 +1,28 @@
-def binarysearch(olist, val):
-    start = 0
-    end = len(olist)
-    mid = int(end / 2)
+def binary_search_rec(seq, target, low, high):
+    if low > high:
+        return None
 
-    while True:
-        if start == end and olist[mid] != val:
-            mid = None
-            break
+    mid = (low + high) // 2
+    if target == seq[mid]:
+        return mid
+    elif target < seq[mid]:
+        return binary_search_rec(seq, target, low, mid - 1)
+    else:
+        return binary_search_rec(seq, target, mid + 1, high)
 
-        elif olist[mid] == val:
-            break
 
-        elif olist[mid] < val:
-            start = mid + 1
-            mid = int((start + end) / 2)
+def binary_search_iter(seq, target):
+    high, low = len(seq), 0
+    while low < high:
+        mid = (high + low) // 2
+        if target == seq[mid]:
+            return mid
+        elif target < seq[mid]:
+            high = mid
+        else:
+            low = mid + 1
 
-        elif olist[mid] > val:
-            end = mid - 1
-            mid = int((start + end) / 2)
-
-    return mid
+    return None
 
 
 def resprint(res, val):
@@ -32,5 +35,5 @@ def resprint(res, val):
 
 plist = [1, 2, 5, 6, 7, 10, 12, 14, 15]
 val = 12
-res = binarysearch(plist, 12)
+res = binary_search_iter(plist, 12)
 resprint(res, 12)
