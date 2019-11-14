@@ -1,9 +1,9 @@
 def linearsearch(olist, val):
-    for i in olist:
-        if i == val:
-            return True
+    if olist.count(val) > 0:
+        return True
 
     return False
+
 
 def resprint(res, val):
     ps = str(val) + ": "
@@ -16,11 +16,12 @@ def resprint(res, val):
 
     print(ps)
 
-plist = [1,5,6,8,3]
+
+plist = [1, 5, 6, 8, 3]
 fv = 6
-res = linearsearch(plist,fv)
+res = linearsearch(plist, fv)
 resprint(res, fv)
 print("---")
 fv = 10
-res = linearsearch(plist,fv)
+res = linearsearch(plist, fv)
 resprint(res, fv)
