@@ -3,17 +3,18 @@ class Queue:
         self.items = list()
         
     def enqueue(self, val):
-        self.items.append(val)
+        self.items.insert(0, val)
         
     def dequeue(self):
-        if self.items:
-            return self.items.pop(0)
+        val = self.items.pop()
+        if val is not None:
+            return val
         else:
             print("Queue is empty")
 
     def peak(self):
         if self.items:
-            return self.items[0]
+            return self.items[-1]
         else:
             print("Queue is empty")
 
