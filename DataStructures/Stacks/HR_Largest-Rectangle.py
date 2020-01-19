@@ -6,57 +6,32 @@ import random
 import re
 import sys
 
-
-# Complete the largestRectangle function below.
 def largestRectangle(h):
-    sortedH = sorted(list(set(h)), reverse=True)
-    SORT = dict()
-    tmax = min(h) * len(h)
+    sortedh = sorted(h, reverse=True)
+    k = []
+    tmax = 0
+    th = 0
 
-    for idx, val in enumerate(h):
-        if val not in SORT.keys():
-            SORT[val] = list()
+    for i in sortedh:
+        for j in range(len(h)):
+            if h[j] >= i:
+                if len(k) == 0:
+                    k.append(j)
+                elif (j-k[-1]) == abs(1):
+                    k.append(j)
+            else:
+                res = i * len(k)
+                if res > tmax:
+                    tmax = res
+                k = []
 
-        SORT[val].append(idx)
+        res = i * len(k)
+        if res > tmax:
+            tmax = res
 
-    tlist = []
-    for i in range(len(sortedH)):
-        th = sortedH[i]
-        tlist = tlist + SORT[th]
-        tlist = sorted(tlist)
-
-        if len(tlist) > 1:
-            k = 0
-            ta = 0
-            c = 0
-            for j in range(len(tlist)):
-                if j == 0:
-                    if (tlist[j+1] - tlist[j]) == abs(1):
-                        k = 1
-                        c = 1
-                    continue
-
-                if (tlist[j] - tlist[j-1]) == abs(1):
-                    if c == 0:
-                        c = 1
-                    k += 1
-                else:
-                    ta = k
-                    k = 0
-                    c = 0
-
-            if k <= 1:
-                continue
-
-            if ta > k:
-                k = ta
-
-            res = k * th
-
-            if res > tmax:
-                tmax = res
-
+        k = []
     return tmax
+
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
