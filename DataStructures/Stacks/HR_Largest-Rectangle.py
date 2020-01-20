@@ -7,63 +7,53 @@ import re
 import sys
 
 
-# Complete the largestRectangle function below.
 def largestRectangle(_h):
-    heights = sorted(list(set(_h)), reverse=True)
-    total_idx = len(_h) - 1
-    curr_level = 0
-    max_size = 0
-    rects = dict()
+    _h.insert(0, 0)
+    _h.append(0)
 
-    for idx, val in enumerate(_h):
-        if val not in rects.keys():
-            rects[val] = list()
+    def get_ri(th):
+        hstack = []
+        ri = [0 for t in range(len(th))]
+        for i in range(len(th)):
+            if i > 0:
+                for t in range(len(hstack)):
+                    if hstack[-1]['h'] > h[i]:
+                        v = hstack.pop()
+                        ti = v['i']
+                        ri[ti] = i
 
-        rects[val].append(idx)
+            tv = {'i': i, 'h': h[i]}
+            hstack.append(tv)
+        return ri
 
-    def lookup_idx_exist(idx):
-        upper_level = heights[:curr_level + 1]
-        found = False
+    def get_li(th):
+        hstack = []
+        li = [0 for t in range(len(th))]
+        for i in range(len(th)-1,-1,-1):
+            if i > 0:
+                for t in range(len(hstack)):
+                    if hstack[-1]['h'] > h[i]:
+                        v = hstack.pop()
+                        ti = v['i']
+                        li[ti] = i
 
-        if upper_level:
-            for lookup_h in upper_level:
-                if idx in rects[lookup_h]:
-                    found = True
-                    return found
+            tv = {'i': i, 'h': h[i]}
+            hstack.append(tv)
+        return li
 
-        return found
+    def get_s(ri, li, th):
+        w = [0 for t in range(len(th))]
+        s = [0 for t in range(len(th))]
+        for i in range(len(th)):
+            w[i] = ri[i] - li[i] - 1
+            s[i] = w[i] * h[i]
+        return s
 
-    def lower(i):
-        lower_idx = i - 1
-        if lower_idx >= 0:
-            if lookup_idx_exist(lower_idx):
-                return lower(lower_idx)
-        return i
+    ri = get_ri(_h)
+    li = get_li(_h)
+    s = get_s(ri, li, _h)
 
-    def higher(i):
-        higher_idx = i + 1
-        if higher_idx <= total_idx:
-            if lookup_idx_exist(higher_idx):
-                return higher(higher_idx)
-        return i
-
-
-    # Start indexing from top
-    for h in heights:
-        for i in rects[h]:
-            curr_idx = i
-            lower_idx = lower(curr_idx)
-            higher_idx = higher(curr_idx)
-
-            index_len = (higher_idx - lower_idx + 1)
-            curr_size = index_len * h
-
-            if max_size < curr_size:
-                max_size = curr_size
-
-        curr_level = curr_level + 1
-
-    return max_size
+    return max(s)
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
