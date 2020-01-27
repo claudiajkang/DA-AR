@@ -5,36 +5,9 @@ import sys
 
 
 def twoStacks(x, a, b):
-    ta = []
-    tas = 0
-    tb = []
-    tbs = 0
     s = 0
     res = []
-
-    for tav in a:
-        if tav == 0:
-            ta.append(tav)
-        elif tas >= x:
-            break
-        else:
-            ta.append(tav)
-            tas += tav
-
-    if tas > x:
-        v = ta.pop(0)
-
-    for tbv in b:
-        if tbv == 0:
-            tb.append(tbv)
-        elif tbs >= x:
-            break
-        else:
-            tb.append(tbv)
-            tbs += tbv
-
-    if tbs > x:
-        v = tb.pop(0)
+    v = 0
 
     while s <= x:
         if (len(a) == 0) and (len(b) == 0):
@@ -77,11 +50,9 @@ def twoStacks(x, a, b):
     if s > x:
         s -= res.pop()
 
-    t = [len(ta), len(tb), len(res)]
+    c = len(res)
 
-    t.sort(reverse=True)
-
-    return t[0]
+    return c
 
 
 if __name__ == '__main__':
