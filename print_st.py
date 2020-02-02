@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 
-problem = input("problem name: ")
+problem = input("problem url: ")
 
-tp = problem.split()
+tp = problem.split('/')
 
-filename = '-'.join(tp)
+filename = tp[-2]
 
-prob_url = "https://www.hackerrank.com/challenges/{}/problem".format(filename.lower())
+prob_url = problem
+if '?' in problem:
+    prob_url = problem.split('?')[0]
 
 print("\n======filename")
 print("HR_"+filename+".py")
 print("\n======PR MSG #1")
-print("Init source code from "+problem+" problem")
-print("\nprob : "+prob_url)
+print("git add .")
+print('git commit -m "')
+print("Init source code from "+filename+" problem")
+print("\nprob : "+prob_url+'"')
 print("\n======PR MSG #2")
-print("Update code that solved "+problem+" problem")
-print("\nprob : "+prob_url+"\n")
+print("git add .")
+print('git commit -m "')
+print("Update code that solved "+filename+" problem")
+print("\nprob : "+prob_url+'"'+"\n")
