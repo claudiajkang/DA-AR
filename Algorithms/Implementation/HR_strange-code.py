@@ -32,14 +32,9 @@ def strangeCounter(t):
         elif t >= time[j]:
             si = j
 
-    rvalue = value[si]
-
-    for j in range(time[si], t+1):
-        if j == t:
-            return rvalue
-        rvalue -= 1
-
-    return 1
+    initval = time[si]
+    diff = abs(initval - t)
+    return value[si] - diff
 
 
 if __name__ == '__main__':
