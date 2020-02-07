@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import os 
+
+P = os.environ['P']
 
 problem = input('problem url: ')
 
@@ -15,14 +18,10 @@ if 'acmicpc' in prob_url:
 if 'hacker' in prob_url:
     filename = 'HR-' + tp[-2]
 
-print('\n======filename')
-print(filename+'.py')
+print('======filename')
+print('touch '+P+'/'+filename+'.py')
+print('vim '+P+'/'+filename+'.py')
 print('\n======PR MSG #1')
-print('git add .;git commit -m "Init source code from '+filename+' problem')
-print('\nprob : '+prob_url+'"')
+print('git add .;git commit -m "Add code that solved '+filename+' problem\n\nprob : '+prob_url+'"')
 print('\n======PR MSG #2')
-print('git add .;git commit -m "Update code that solved '+filename+' problem')
-print('\nprob : '+prob_url+'"')
-print('\n======PR MSG #3')
-print('git add .;git commit -m "Add code that solved '+filename+' problem')
-print('\nprob : '+prob_url+'"'+'\n')
+print('git add .;git commit -m "Update code that solved '+filename+' problem\n\nprob : '+prob_url+'"\n')
