@@ -1,7 +1,8 @@
 import sys
-
-while True:
-    res = sum(list(map(int, sys.stdin.readline().split())))
-    if res == 0:
+  
+for i in sys.stdin:
+    a, b = map(int, i.split())
+    if a == 0 and b == 0:
         break
-    print(res)
+    print(a+b)
+
