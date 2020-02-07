@@ -1,12 +1,8 @@
 import sys
+  
+v = sys.stdin.readline().replace('\n','')
 
-N = sys.stdin.readline()
-q = int(len(N)/10)
-idx = 10
+c = int(len(v)/10) + 1
 
-for i in range(q+1):
-    v = N[idx-10:idx]
-    if v == '':
-        break
-    print(v)
-    idx += 10
+for i in range(c):
+    print(v[i*10:i*10+10])
