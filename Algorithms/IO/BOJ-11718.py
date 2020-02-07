@@ -1,4 +1,5 @@
 import sys
 
-for i in sys.stdin:
-    print(i, end = '')
+v = sys.stdin.read()
+
+print(v, end ='')
