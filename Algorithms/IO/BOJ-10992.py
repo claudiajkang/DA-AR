@@ -1,20 +1,25 @@
 import sys
   
 N = int(sys.stdin.readline())
+w = 2*N - 1
+ps = ''
 
-for i in range(N):
-    for j in range(N-i-1):
-        print(' ', end = '')
+if N == 1:
+    ps += '*'
 
-    print('*', end ='')
-    if i != (N-1):
-        c = (i-1)*2 + 1
-        for j in range(c):
-            print(' ', end = '')
-            if j == (c-1):
-                print('*', end ='')
-
-    else:
-        for i in range(i+N-1):
-            print('*', end ='')
-    print('')
+else:
+    for i in range(N):
+        if i == (N-1):
+            for k in range(w):
+                ps += '*'
+        else:
+            for j in range(N-i-1):
+                ps += ' '
+            ps += '*'
+            v = 2 * i -1
+            for j in range(v):
+                ps += ' '
+                if j == (v-1):
+                    ps += '*'
+            ps += '\n'
+print(ps)
