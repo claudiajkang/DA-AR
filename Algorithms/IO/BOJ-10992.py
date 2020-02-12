@@ -1,15 +1,17 @@
+#!/usr/bin/env python3
 import sys
 
-N = int(sys.stdin.readline())
+k = int(sys.stdin.readline())
+w = 2*k-1
 
-for i in range(N):
-    if i == 0:
-        p = ' '*(N-i-1) + '*'
-
-    elif i == (N-1):
-        p = '*'*(2*N-1)
+for i in range(1, k+1):
+    line = ''
+    if i == k:
+        line = w*'*'
 
     else:
-        p = ' '*(N-i-1) + '*' + ' '*(2*i -1) + '*'
+        pad = (k-i)*' '
+        mid = (i == 1) and '*' or '*%s*' % ((2*i-3)*' ')
+        line = pad + mid + pad
 
-    print(p)
+    print(line)
