@@ -1,24 +1,24 @@
+import queue
 from sys import stdin
 
 next(stdin)
-q = list()
+q = queue.Queue()
 
 for line in stdin:
     command = line.split()[0]
     if command == 'push':
-        v = line.split()[1]
-        q.append(v)
+        q.put(line.split()[1])
     elif command == 'pop':
-        if q: print(q.pop(0))
+        if q.qsize(): print(q.get())
         else: print(-1)
     elif command == 'size':
-        print(len(q))
+        print(q.qsize())
     elif command == 'empty':
-        if q: print(0)
+        if q.qsize(): print(0)
         else: print(1)
     elif command == 'front':
-        if q: print(q[0])
+        if q.qsize(): print(q.queue[0])
         else: print(-1)
     elif command == 'back':
-        if q: print(q[-1])
+        if q.qsize(): print(q.queue[-1])
         else: print(-1)
