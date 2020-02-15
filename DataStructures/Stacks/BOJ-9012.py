@@ -1,19 +1,18 @@
 from sys import stdin
 
 next(stdin)
+
 for line in stdin:
-    s = list()
+        line = line.replace('\n','')
+        s = list()
 
-    for j in line:
-        if j == '(':
-            s.append(j)
-        elif j == ')':
-            if len(s) > 0 and s[-1] == '(':
-                v = s.pop()
-            else:
-                s.append(j)
+        for i in line:
+                if s and i == ')' and s[-1] == '(':
+                        v = s.pop()
+                else:
+                        s.append(i)
 
-    if s:
-        print('NO')
-    else:
-        print('YES')
+        if s:
+                print('NO')
+        else:
+                print('YES')
