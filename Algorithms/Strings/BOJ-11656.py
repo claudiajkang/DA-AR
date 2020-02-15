@@ -1,9 +1,9 @@
-import sys
+from sys import stdin
 
-S = sys.stdin.readline().replace('\n', '')
+S = stdin.readline().replace('\n','')
 res = list()
-for i in range(len(S)):
-    res.append(S[i:])
 
-r = sorted(res)
-print('\n'.join(r))
+for i in range(len(S)):
+        res.append(S[i:])
+
+print('\n'.join(sorted(res)))
