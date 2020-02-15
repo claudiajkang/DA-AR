@@ -1,9 +1,7 @@
-import sys
+from sys import stdin
 
-N = int(sys.stdin.readline())
-
-for i in range(N):
-    line = sys.stdin.readline()
+next(stdin)
+for line in stdin:
     s = list()
 
     for j in line:
