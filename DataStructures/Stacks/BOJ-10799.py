@@ -1,21 +1,17 @@
 from sys import stdin
-
-s = stdin.readline().replace('\n','')
-stack = list()
+  
+S = stdin.readline().strip()
+stack = []
 res = 0
 
-for i in range(len(s)):
-    if not stack:
-        stack.append(s[i])
-        continue
-
-    if s[i-1] == '(' and s[i] == ')':
+for i in range(len(S)):
+    if stack and (S[i-1] == '(' and S[i] == ')'):
         v = stack.pop()
         res += len(stack)
-    elif s[i] == ')' and stack[-1] == '(':
+    elif stack and (stack[-1] == '(' and S[i] == ')'):
         v = stack.pop()
         res += 1
     else:
-        stack.append(s[i])
+        stack.append(S[i])
 
 print(res)
