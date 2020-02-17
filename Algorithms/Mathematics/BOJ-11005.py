@@ -1,17 +1,16 @@
 from sys import stdin
-
-N, B = stdin.readline().split()
-N = int(N)
-B = int(B)
-ALPA = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
+  
+N, B = map(int, stdin.readline().split())
+alpa = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+bn = {}
 res = []
-TN = N
 
-while TN != 0:
-    Q = int(TN/B)
-    R = int(TN%B)
-    TN = Q
-    res.append(ALPA[R])
+for i in range(B):
+    bn[i] = alpa[i]
+
+while N != 0:
+    R = int(N % B)
+    N = int(N / B)
+    res.append(alpa[R])
 
 print(''.join(reversed(res)))
