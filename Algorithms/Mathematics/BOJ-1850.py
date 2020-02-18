@@ -1,11 +1,15 @@
 from sys import stdin
-
-def gcd(a,b):
+  
+def gcd(a, b):
     if b:
         return gcd(b, a%b)
     return a
 
-N = stdin.readline().split()
+A, B = map(int, stdin.readline().strip().split())
+m = 11111111
+g = gcd(A,B)
 
-r = '1'*gcd(int(N[0]), int(N[1]))
-print(r)
+if g > m:
+    print(m)
+else:
+    print('1'*g)
