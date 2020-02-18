@@ -1,26 +1,21 @@
 from sys import stdin
 
-
-def get_un():
-    un = [i for i in range(1001)]
-    for i in range(2, 1001):
-        if un:
-            m = int(1000 / i)
-            for j in range(2, m + 1):
-                un[i * j] = 0
-
-    un = sorted(un)
-    idx = un.index(1)
-    return un[idx + 1:]
-
-
-u = get_un()
 N = int(stdin.readline())
-t = list(map(int, stdin.readline().strip().split()))
+TN = list(map(int, stdin.readline().strip().split()))
+UN = [i for i in range(1001)]
+
+for i in range(2, 1001):
+    Q = 1000 // i
+    for j in range(2, Q):
+        UN[i*j] = 0
+
+UN = sorted(UN)
+z = UN.index(1)
+UN = UN[z+1:]
 res = 0
 
-for i in t:
-    if i in u:
+for j in TN:
+    if j in UN:
         res += 1
 
 print(res)
