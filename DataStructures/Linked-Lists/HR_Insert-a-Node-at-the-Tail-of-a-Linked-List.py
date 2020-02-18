@@ -28,36 +28,18 @@ def print_singly_linked_list(node, sep, fptr):
             fptr.write(sep)
 
 
-# Complete the insertNodeAtTail function below.
-
-#
-# For your reference:
-#
-# SinglyLinkedListNode:
-#     int data
-#     SinglyLinkedListNode next
-#
-#
 def insertNodeAtTail(head, data):
-    if head is None:
-        newnode = SinglyLinkedListNode(data)
-        head = newnode
-        return head
-
-    elif head.next is None:
-        newnode = SinglyLinkedListNode(data)
-        head.next = newnode
-        return head
-
-    elif head.next is not None:
-        nextnode = head.next
+    nnode = SinglyLinkedListNode(data)
+    if not head:
+        head = nnode
+    else:
+        t = head
         while True:
-            if nextnode.next is None:
-                newnode = SinglyLinkedListNode(data)
-                nextnode.next = newnode
-                return head
-            else:
-                nextnode = nextnode.next
+            if t.next == None:
+                break
+            t = t.next
+        t.next = nnode
+    return head
 
 
 if __name__ == '__main__':
