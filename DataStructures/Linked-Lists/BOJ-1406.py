@@ -1,18 +1,17 @@
 from sys import stdin
-
-l = list(stdin.readline().strip())
-r = []
+  
+L = list(stdin.readline().strip())
 N = int(stdin.readline())
+R = []
 
-for line in stdin:
+for line in stdin: 
     if line[0] == 'L':
-        if l: r.append(l.pop())
+        if L: R.append(L.pop())
     elif line[0] == 'D':
-        if r: l.append(r.pop())
+        if R: L.append(R.pop())
     elif line[0] == 'B':
-        if l:
-            v = l.pop()
+        if L: L.pop()
     elif line[0] == 'P':
-        l.append(line[2])
+        L.append(line[2])
 
-print(''.join(l)+''.join(reversed(r)))
+print(''.join(L)+''.join(reversed(R)))
