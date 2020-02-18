@@ -1,9 +1,9 @@
 from sys import stdin
+  
+def f(n):
+    if n == 0:
+        return 1
+    return n * f(n-1)
 
 N = int(stdin.readline())
-r = 1
-if N > 1:
-    for i in range(1, N+1):
-        r *= i
-
-print(r)
+print(f(N))
