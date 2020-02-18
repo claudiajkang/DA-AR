@@ -1,15 +1,19 @@
-import sys
-
-N = int(sys.stdin.readline())
-q = N
+from sys import stdin
+  
+N = int(stdin.readline())
 res = []
-idx = 2
+i = 2
 
-while q != 1:
-    if q % idx == 0:
-        res.append(str(idx))
-        q = int(q/idx)
+while N != 1:
+    if N % i > 0:
+        i += 1
+        continue
+
+    R = N % i
+    N = N // i
+    if R:
+        i += 1
     else:
-        idx += 1
+        res.append(str(i))
 
 print('\n'.join(res))
