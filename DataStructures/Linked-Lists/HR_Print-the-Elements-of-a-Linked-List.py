@@ -30,28 +30,19 @@ class SinglyLinkedList:
             self.tail.next = node
 
         self.tail = node
+    
+    def next(self):
+        return self.tail.next
 
-
-# Complete the printLinkedList function below.
-
-#
-# For your reference:
-#
-# SinglyLinkedListNode:
-#     int data
-#     SinglyLinkedListNode next
-#
-#
 def printLinkedList(head):
+    t = head
+    print(t.data)
     while True:
-        if head.next is None:
-            print(head.data)
-            break
-
+        t = t.next
+        if t:
+            print(t.data)
         else:
-            print(head.data)
-            head = head.next
-
+            break
 
 if __name__ == '__main__':
 
