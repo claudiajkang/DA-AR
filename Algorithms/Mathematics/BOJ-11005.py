@@ -1,16 +1,13 @@
 from sys import stdin
-  
-N, B = map(int, stdin.readline().split())
-alpa = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-bn = {}
-res = []
 
-for i in range(B):
-    bn[i] = alpa[i]
+N, B = map(int, stdin.readline().strip().split())
+res = ''
 
-while N != 0:
-    R = int(N % B)
-    N = int(N / B)
-    res.append(alpa[R])
+while N > 0:
+    N, R = divmod(N, B)
+    if R > 9:
+        res = chr(55+R) + res
+        continue
+    res = str(R) + res
 
-print(''.join(reversed(res)))
+print(res)
