@@ -36,31 +36,19 @@ def print_singly_linked_list(node, sep, fptr):
         if node:
             fptr.write(sep)
 
-# Complete the deleteNode function below.
 
-#
-# For your reference:
-#
-# SinglyLinkedListNode:
-#     int data
-#     SinglyLinkedListNode next
-#
-#
 def deleteNode(head, position):
-    parent_node = None
-
-    for i in range(0, position):
-        if i == 0:
-            parent_node = head
-
-        else:
-            parent_node = parent_node.next
-
     if position == 0:
-        return head.next
+        tlist = head.next
+        head = tlist
+    else:
+        p = head
 
-    del_node_next = parent_node.next
-    parent_node.next = del_node_next.next
+        for i in range(position-1):
+            p = p.next
+
+        dnode = p.next
+        p.next = dnode.next
 
     return head
 
