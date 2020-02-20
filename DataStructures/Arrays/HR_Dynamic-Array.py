@@ -1,31 +1,46 @@
-def Query1(x, y, la, N, S):
-    seq = (x ^ la) % N
-    S[seq].append(y)
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
 
 
-def Query2(x, y, la, N, S):
-    seq = (x ^ la) % N
-    tla = y % len(S[seq])
-    return S[seq][tla]
+def dynamicArray(n, queries):
+    # Write your code here
+    seq = [[] for i in range(n)]
+    lastAnswer = 0
+    res = []
+
+    for i in queries:
+        q, x, y = i[0], i[1], i[2]
+
+        v = (x ^ lastAnswer) % n
+        if q == 1:
+            seq[v].append(y)
+
+        elif q == 2:
+            idx = y % len(seq[v])
+            lastAnswer = seq[v][idx]
+            res.append(str(lastAnswer))
+
+    return res
 
 
-t = input().split()
-N, Q = int(t[0]), int(t[1])
-lastAnswer = 0
-S = list()
+if __name__ == '__main__':
+    first_multiple_input = input().rstrip().split()
 
-for i in range(N):
-    templist = list()
-    S.append(templist)
+    n = int(first_multiple_input[0])
 
-for i in range(Q):
-    t = input().split()
-    qn, x, y = int(t[0]), int(t[1]), int(t[2])
+    q = int(first_multiple_input[1])
 
-    if qn == 1:
-        Query1(x, y, lastAnswer, N, S)
+    queries = []
 
+    for _ in range(q):
+        queries.append(list(map(int, input().rstrip().split())))
 
-    elif qn == 2:
-        lastAnswer = Query2(x, y, lastAnswer, N, S)
-        print(lastAnswer)
+    result = dynamicArray(n, queries)
+
+    print('\n'.join(result))
+
