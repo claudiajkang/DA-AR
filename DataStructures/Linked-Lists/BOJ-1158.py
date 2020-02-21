@@ -1,12 +1,12 @@
 from sys import stdin
 
 N, K = map(int, stdin.readline().split())
-c = [i for i in range(1, N+1)]
-d = []
-e = 0
+res = []
+PP = [i for i in range(1, N + 1)]
+idx = 0
 
-while c:
-    e = (e+K-1) % len(c)
-    d.append(str(c.pop(e)))
+while PP:
+    idx = int((idx + K - 1) % len(PP))
+    res.append(str(PP.pop(idx)))
 
-print('<'+', '.join(d)+'>')
+print('<' + ', '.join(res) + '>')
