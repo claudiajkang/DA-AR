@@ -1,4 +1,5 @@
 import sys
+from math import ceil
 
 N = int(sys.stdin.readline())
 if not N:
@@ -7,12 +8,7 @@ if not N:
 res = ''
 
 while N:
-    if N % (-2):
-        res = '1' + res
-        N = N//-2 + 1
-    else:
-        res = '0' + res
-        N //= -2
-        
+    R = int(N % (-2))
+    N = ceil(N / (-2))
+    res = str(abs(R)) + res
 sys.stdout.write(res)
-
