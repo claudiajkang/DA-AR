@@ -1,38 +1,37 @@
-import sys
+from sys import stdin
 
-K = int(sys.stdin.readline())
+K = int(stdin.readline())
 
-for l in range(K):
-    V, E = map(int, sys.stdin.readline().split())
-    g = [[] for i in range(V + 1)]
+for t in range(K):
+    V, E = map(int, stdin.readline().strip().split())
+    g = [[] for l in range(V + 1)]
 
-    for i in range(E):
-        A, B = map(int, sys.stdin.readline().split())
+    for j in range(E):
+        A, B = map(int, stdin.readline().strip().split())
         g[A].append(B)
         g[B].append(A)
 
-    visited = [-1 for i in range(V + 1)]
-    color = 1
     res = 0
+    visited = [None for l in range(V + 1)]
+    color = ['R', 'G']
 
     for i in range(1, V + 1):
-        if visited[i] == -1:
+        if not visited[i]:
             dstack = [i]
-            visited[i] = color
+            visited[i] = color[0]
 
             while dstack:
                 cur = dstack.pop()
-                color2 = int((visited[cur] + 1) % 2)
+                ci = color.index(visited[cur])
+                tc = color[int((ci+1) % 2)]
                 for j in g[cur]:
-                    if visited[j] == -1:
-                        visited[j] = color2
+                    if not visited[j]:
                         dstack.append(j)
-                    elif visited[j] != color2:
+                        visited[j] = tc
+                    elif visited[j] != tc:
                         res = 1
                         break
                 if res:
                     break
-
-                color = color2
 
     print(["YES", "NO"][res])
