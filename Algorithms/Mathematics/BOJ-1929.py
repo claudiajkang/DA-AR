@@ -1,27 +1,27 @@
-from sys import stdin
+import sys
 
-M, N = map(int, stdin.readline().split())
-MAXN = 0
-NUM = [i for i in range(N+1)]
+M, N = map(int, sys.stdin.readline().split())
+PN = [i for i in range(N+1)]
+mpow = 0
 
 for j in range(N+1, -1, -1):
     idx = pow(j, 2)
     if idx <= N:
-        MAXN = idx
+        mpow = idx
         break
 
-for i in range(2, MAXN+1):
-    if NUM[i]:
+for i in range(2, mpow+1):
+    if PN[i]:
         v = N // i
         for j in range(2, v+1):
-            NUM[i*j] = 0
+            PN[i*j] = 0
 
-NUM = sorted(NUM)
-idx = NUM.index(2)
-NUM = NUM[idx:]
+PN = sorted(PN)
+idx = PN.index(2)
+PN = PN[idx:]
 
-for i in NUM:
+for i in PN:
     if M <= i <= N:
         print(i)
-    elif i > N: break
-
+    elif i > N:
+        break
