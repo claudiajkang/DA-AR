@@ -1,18 +1,20 @@
-from sys import stdin
+import sys
 
-A, P = map(int, stdin.readline().split())
-D = [str(A)]
+A, P = sys.stdin.readline().strip().split()
+DP = [A]
+P = int(P)
 idx = 1
+tidx = 0
+
 while True:
-    v = 0
-    for i in D[idx-1]:
-        v += pow(int(i), P)
-
-    if str(v) in D:
-        idx = D.index(str(v))
+    tv = 0
+    for i in DP[idx-1]:
+        tv += pow(int(i), P)
+    try:
+        tidx = DP.index(str(tv))
+    except ValueError:
+        DP.append(str(tv))
+        idx += 1
+    else:
+        print(tidx)
         break
-
-    D.append(str(v))
-    idx += 1
-
-print(len(D[:idx]))
