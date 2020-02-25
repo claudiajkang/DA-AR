@@ -1,62 +1,41 @@
 from sys import stdin
-import queue
-
+from queue import Queue
 
 N, M, V = map(int, stdin.readline().split())
-G = {}
+g = [[] for i in range(N+1)]
 
 for i in range(M):
     A, B = map(int, stdin.readline().split())
+    g[A].append(B)
+    g[B].append(A)
 
-    if A not in G.keys():
-        G[A] = []
+dstack = [V]
+dfs = []
 
-    if B not in G.keys():
-        G[B] = []
+for i in range(1, N+1):
+    g[i] = sorted(g[i])
 
-    G[A].append(B)
-    G[B].append(A)
+while dstack:
+    cur = dstack.pop()
+    if str(cur) not in dfs:
+        dfs.append(str(cur))
 
-if V not in G.keys():
-    print('{}\n{}'.format(str(V), str(V)))
+    for i in reversed(g[cur]):
+        if str(i) not in dfs:
+            dstack.append(i)
 
-else:
-    for i in G.keys():
-        G[i] = sorted(G[i])
+vqueue = Queue()
+vqueue.put(V)
+vfs = []
 
-    dstack = [V]
-    dvisit = []
+while len(vqueue.queue):
+    cur = vqueue.get()
+    if str(cur) not in vfs:
+        vfs.append(str(cur))
 
-    while dstack:
-        cur = dstack.pop()
+    for i in g[cur]:
+        if str(i) not in vfs:
+            vqueue.put(i)
 
-        for i in reversed(G[cur]):
-            if str(i) not in dvisit:
-                dstack.append(i)
-
-        if str(cur) not in dvisit:
-            dvisit.append(str(cur))
-
-    vqueue = queue.Queue()
-    vqueue.put(V)
-    vvisit = []
-
-    while len(vqueue.queue):
-        cur = int(vqueue.get())
-
-        for i in G[cur]:
-            if str(i) not in vvisit:
-                vqueue.put(str(i))
-
-        if str(cur) not in vvisit:
-            vvisit.append(str(cur))
-
-    if len(dvisit) != N or len(vvisit) != N:
-        for i in sorted(G.keys()):
-            if str(i) not in dvisit:
-                dvisit.append(str(i))
-            if str(i) not in vvisit:
-                vvisit.append(str(i))
-
-    print(' '.join(dvisit))
-    print(' '.join(vvisit))
+print(' '.join(dfs))
+print(' '.join(vfs))
