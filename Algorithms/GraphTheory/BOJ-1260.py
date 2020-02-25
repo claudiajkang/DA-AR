@@ -2,40 +2,48 @@ from sys import stdin
 from queue import Queue
 
 N, M, V = map(int, stdin.readline().split())
-g = [[] for i in range(N+1)]
+graph = [[] for _ in range(N + 1)]
+dvisit = [False for _ in range(N + 1)]
+bvisit = [False for _ in range(N + 1)]
 
-for i in range(M):
+for _ in range(M):
     A, B = map(int, stdin.readline().split())
-    g[A].append(B)
-    g[B].append(A)
+    graph[A].append(B)
+    graph[B].append(A)
 
-dstack = [V]
-dfs = []
+for _ in range(N + 1):
+    graph[_].sort()
 
-for i in range(1, N+1):
-    g[i] = sorted(g[i])
+dfs_result = []
 
-while dstack:
-    cur = dstack.pop()
-    if str(cur) not in dfs:
-        dfs.append(str(cur))
 
-    for i in reversed(g[cur]):
-        if str(i) not in dfs:
-            dstack.append(i)
+def dfs(graph, c):
+    dfs_result.append(str(c))
+    dvisit[c] = True
+    for i in graph[c]:
+        if not dvisit[i]:
+            dvisit[i] = True
+            dfs(graph, i)
 
-vqueue = Queue()
-vqueue.put(V)
-vfs = []
 
-while len(vqueue.queue):
-    cur = vqueue.get()
-    if str(cur) not in vfs:
-        vfs.append(str(cur))
+bfs_result = []
 
-    for i in g[cur]:
-        if str(i) not in vfs:
-            vqueue.put(i)
 
-print(' '.join(dfs))
-print(' '.join(vfs))
+def bfs(graph, c):
+    bq = Queue()
+    bq.put(c)
+    bvisit[c] = True
+    while len(bq.queue):
+        cur = bq.get()
+        bfs_result.append(str(cur))
+        for i in graph[cur]:
+            if not bvisit[i]:
+                bvisit[i] = True
+                bq.put(i)
+
+
+dfs(graph, V)
+bfs(graph, V)
+
+print(' '.join(dfs_result))
+print(' '.join(bfs_result))
