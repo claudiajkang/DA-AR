@@ -1,40 +1,28 @@
-import sys
+from sys import stdin
 
-T = int(sys.stdin.readline())
+T = int(stdin.readline())
 
-for l in range(T):
-    N = int(sys.stdin.readline())
-    PI = list(map(int, sys.stdin.readline().strip().split()))
-
-    P = [[] for i in range(N + 1)]
-
-    for i in range(1, N + 1):
-        tv = PI[i - 1]
-        P[i].append(tv)
-        if tv == i:
-            continue
-        P[tv].append(i)
-
-    visited = [False for i in range(N + 1)]
+for _ in range(T):
+    N = int(stdin.readline())
+    graph = [0] + list(map(int, stdin.readline().strip().split()))
+    visited = [False] * (N + 1)
     res = 0
 
     for i in range(1, N + 1):
         if not visited[i]:
             dstack = [i]
-            visited[i] = True
+            cycle = []
 
             while dstack:
                 cur = dstack.pop()
+                visited[cur] = True
+                cycle.append(cur)
+                nexts = graph[cur]
 
-                if len(P[cur]) == 1 and P[cur][0] == cur:
+                if visited[nexts] and nexts in cycle:
                     res += 1
                     break
-
-                for j in P[cur]:
-                    if not visited[j]:
-                        visited[j] = True
-                        dstack.append(j)
-                    elif j in dstack:
-                        res += 1
+                else:
+                    dstack.append(nexts)
 
     print(res)
