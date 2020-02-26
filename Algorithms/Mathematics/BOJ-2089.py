@@ -1,14 +1,16 @@
-import sys
+from sys import stdin
 from math import ceil
 
-N = int(sys.stdin.readline())
-if not N:
-    sys.stdout.write('0')
-    exit()
-res = ''
+N = int(stdin.readline())
+res = []
 
-while N:
-    R = int(N % (-2))
-    N = ceil(N / (-2))
-    res = str(abs(R)) + res
-sys.stdout.write(res)
+if not N:
+    print(0)
+
+else:
+    while N:
+        R = abs(N % (-2))
+        N = ceil(N / (-2))
+        res.insert(0, str(R))
+
+    print(''.join(res))
