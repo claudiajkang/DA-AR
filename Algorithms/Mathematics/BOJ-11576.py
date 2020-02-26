@@ -1,16 +1,16 @@
 from sys import stdin
 
 A, B = map(int, stdin.readline().split())
-M = int(stdin.readline())
-V = list(map(int, stdin.readline().split()))
-digit = 0
-
-for i in range(M):
-    digit += (V[M-i-1] * pow(A, i))
-
+m = int(stdin.readline())
+num = list(map(int, stdin.readline().strip().split()))
+v = 0
 res = []
-while digit:
-    digit, r = divmod(digit, B)
-    res.append(str(r))
 
-print(' '.join(reversed(res)))
+for i in range(m):
+    v += num[m-i-1] * pow(A, i)
+
+while v:
+    v, r = divmod(v, B)
+    res.insert(0, str(r))
+
+print(' '.join(res))
