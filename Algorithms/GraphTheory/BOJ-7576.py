@@ -2,47 +2,45 @@ from sys import stdin
 from collections import deque
 
 M, N = map(int, stdin.readline().split())
-B = [[] for i in range(N + 2)]
-tv = 0
+BOX = [[] for i in range(N+2)]
+BOX[0] = [-1] * (M+2)
+BOX[-1] = [-1] * (M+2)
 day = 0
 tomato = deque()
+Point = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+tsum = 0
 
-B[0] = [-1] * (M + 2)
-B[-1] = [-1] * (M + 2)
+for i in range(1, N+1):
+    val = list(map(int, stdin.readline().split()))
+    tsum += sum(val)
+    BOX[i] = [-1] + val + [-1]
+    if val.count(1) > 0:
+        for j in range(1, M+1):
+            if BOX[i][j] == 1:
+                tomato.append([i, j, 1])
 
-for i in range(1, N + 1):
-    B[i] = list(map(int, stdin.readline().split()))
-    tv += sum(B[i])
-    B[i] = [-1] + B[i] + [-1]
-    if B[i].count(1) > 0:
-        for k in range(M+2):
-            if B[i][k] == 1:
-                tomato.append([i, k, 0])
-
-if tv == (M * N):
+if tsum == (N*M):
     print(0)
 
 else:
-    Point = [[0, 1], [0, -1], [-1, 0], [1, 0]]
-
-    while len(tomato):
+    while tomato:
         ci, cj, d = tomato.popleft()
 
         for ii, jj in Point:
             ti = ci + ii
             tj = cj + jj
-            if B[ti][tj] != 0:
-                continue
-            else:
-                td = d + 1
-                B[ti][tj] = td
-                if td > day:
-                    day = td
-                tomato.append([ti, tj, td])
+            if BOX[ti][tj] == 0:
+                BOX[ti][tj] = d + 1
+                day = max(day, d + 1)
+                tomato.append([ti, tj, d + 1])
 
-    for i in range(1, N + 1):
-        if B[i].count(0) > 0:
+    for i in range(1, N+1):
+        if BOX[i].count(0) >= 1:
             day = -1
             break
 
+    if day > 0:
+        day -= 1
+
     print(day)
+
