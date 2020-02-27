@@ -1,27 +1,17 @@
-import sys
+from sys import stdin
 
-M, N = map(int, sys.stdin.readline().split())
-PN = [i for i in range(N+1)]
-mpow = 0
+M, N = map(int, stdin.readline().split())
+PN = [False, False] + [True for _ in range(2, N + 1)]
 
-for j in range(N+1, -1, -1):
-    idx = pow(j, 2)
-    if idx <= N:
-        mpow = idx
+for i in range(2, N + 1):
+    if pow(i, 2) > N:
         break
 
-for i in range(2, mpow+1):
     if PN[i]:
         v = N // i
-        for j in range(2, v+1):
-            PN[i*j] = 0
+        for j in range(2, v + 1):
+            PN[i * j] = False
 
-PN = sorted(PN)
-idx = PN.index(2)
-PN = PN[idx:]
-
-for i in PN:
-    if M <= i <= N:
+for i in range(M, N + 1):
+    if PN[i]:
         print(i)
-    elif i > N:
-        break
