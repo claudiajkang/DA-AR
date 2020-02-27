@@ -4,27 +4,28 @@ T = int(stdin.readline())
 
 for _ in range(T):
     n = int(stdin.readline())
-    st = [0] + list(map(int, stdin.readline().strip().split()))
-    visited = [False] * (n+1)
+    st = [0] + list(map(int, stdin.readline().split()))
     res = []
+    visited = [False for _ in range(n + 1)]
 
-    for i in range(1, n+1):
+    for i in range(1, n + 1):
         if not visited[i]:
+            visited[i] = True
             dstack = [i]
             cycle = []
 
             while dstack:
                 cur = dstack.pop()
-                visited[cur] = True
-                nexts = st[cur]
                 cycle.append(cur)
 
-                if visited[nexts]:
+                nexts = st[cur]
+                if not visited[nexts]:
+                    dstack.append(nexts)
+                    visited[nexts] = True
+                else:
                     if nexts in cycle:
                         cdx = cycle.index(nexts)
                         res += cycle[cdx:]
-                        break
-                else:
-                    dstack.append(nexts)
 
-    print(n-len(res))
+    print(n - len(res))
+
