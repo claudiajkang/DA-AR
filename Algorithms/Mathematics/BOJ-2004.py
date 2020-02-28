@@ -1,16 +1,13 @@
 from sys import stdin
 
 def count(n, s):
-    if not n:
-        return 0
-    r = n // s
-    i = s * s
+    c = 0
 
-    while i <= n:
-        r += (n // i)
-        i *= s
+    while n > 0:
+        n //= s
+        c += n
 
-    return r
+    return c
 
 n, m = map(int, stdin.readline().split())
 
