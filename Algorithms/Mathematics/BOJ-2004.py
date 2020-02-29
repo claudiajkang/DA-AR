@@ -1,17 +1,17 @@
 from sys import stdin
-
+  
 def count(n, s):
     c = 0
 
     while n > 0:
-        n //= s
+        n = n // s
         c += n
 
     return c
 
-n, m = map(int, stdin.readline().split())
+N, M = map(int, stdin.readline().split())
 
-five = count(n, 5) - (count(m, 5) + count(n-m, 5))
-two = count(n, 2) - (count(m, 2) + count(n-m, 2))
+f = count(N, 5) - (count(M, 5) + count(N-M, 5))
+t = count(N, 2) - (count(M, 2) + count(N-M, 2))
 
-print(min(five, two))
+print(min(f,t))
