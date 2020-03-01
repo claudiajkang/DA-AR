@@ -2,38 +2,35 @@ from sys import stdin
 
 N = int(stdin.readline())
 MAP = [[] for i in range(N+2)]
-visited = [[False for _ in range(N+2)] for k in range(N+1)]
+MAP[0] = [-1] * (N+2)
+MAP[-1] = [-1] * (N+2)
+P = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 res = []
-Point = [[0, -1], [0, 1], [-1, 0], [1, 0]]
-MAP[0] = [0] * (N+2)
-MAP[-1] = [0] * (N+2)
+visited = [[False] * (N+2) for i in range(N+2)]
 
 for i in range(1, N+1):
-    MAP[i] = [0] + list(map(int, list(stdin.readline().strip()))) + [0]
+    MAP[i] = [-1] + list(map(int, list(stdin.readline().strip()))) + [-1]
 
 for i in range(1, N+1):
     for j in range(1, N+1):
-        if MAP[i][j] and not visited[i][j]:
-            dstack = [[i, j]]
+        if MAP[i][j] == 1 and not visited[i][j]:
             dfs = []
+            dstack = [[i, j]]
+            visited[i][j] = True
 
             while dstack:
-                ii, jj = dstack.pop()
-                visited[ii][jj] = True
+                ci, cj = dstack.pop()
+                dfs.append([ci, cj])
 
-                if [ii, jj] not in dfs:
-                    dfs.append([ii, jj])
-
-                for ti, tj in Point:
-                    ci = ti + ii
-                    cj = tj + jj
-                    if MAP[ci][cj] and not visited[ci][cj]:
-                        dstack.append([ci, cj])
-                        visited[ci][cj] = True
+                for ii, jj in P:
+                    ti = ii + ci
+                    tj = jj + cj
+                    if MAP[ti][tj] == 1 and not visited[ti][tj]:
+                        dstack.append([ti, tj])
+                        visited[ti][tj] = True
 
             res.append(len(dfs))
 
 print(len(res))
-
 for i in sorted(res):
     print(i)
