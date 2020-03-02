@@ -1,39 +1,40 @@
-import sys
-sys.setrecursionlimit(10**6)
+from collections import deque
+from sys import stdin
+
+read = lambda: stdin.readline().rstrip()
 
 
-V = int(sys.stdin.readline().rstrip())
-g = [[]for _ in range(V + 1)]
-visited = [False for _ in range(V + 1)]
+def dfs(g, start, visited):
+    q = deque()
+    q.append([start, 0])
+    visited[start] = 0
+    md = 0
 
-# 입력 처리
+    while len(q):
+        ci, cd = q.popleft()
+
+        for i, d in g[ci]:
+            if visited[i] == -1:
+                visited[i] = cd + d
+                md = max(md, cd + d)
+                q.append([i, cd + d])
+
+    return visited.index(md), md
+
+
+V = int(read())
+G = [[] for _ in range(V + 1)]
+visited = [-1] * (V + 1)
+
 for i in range(1, V + 1):
-    e = list(map(int, sys.stdin.readline().rstrip().split()))
-    for j in range(1, len(e)-1, 2):
-        g[e[0]].append((e[j], e[j + 1]))
+    T = list(map(int, read().split()[:-1]))
+    for j in range(1, len(T), 2):
+        G[T[0]].append([T[j], T[j + 1]])
 
+fmidx, fmval = dfs(G, 1, visited)
 
-def dfs(v, dist):
-    ret = (v, dist)
-    visited[v] = True
+visited = [-1] * (V + 1)
 
-    for v_d in g[v]:
-        if visited[v_d[0]]:
-            continue
+tmidx, tmval = dfs(G, fmidx, visited)
 
-        next_search = dfs(v_d[0], dist + v_d[1])
-
-        if ret[1] < next_search[1]:
-            ret = next_search
-
-    return ret
-
-
-first_dfs = dfs(1, 0)
-far_v = first_dfs[0]
-
-visited = [False for _ in range(V + 1)]
-
-second_dfs = dfs(far_v, 0)
-far_v = second_dfs[1]
-print(far_v)
+print(tmval)
