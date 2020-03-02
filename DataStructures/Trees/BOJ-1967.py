@@ -1,34 +1,35 @@
-from collections import deque
 from sys import stdin
+from collections import deque
 read = lambda : stdin.readline().rstrip()
 
 def dfs(g, start):
-    visited = [-1] * (len(g))
+    visited = [0] * len(g)
+    visited[start] = 1
     q = deque()
     q.append([start, 0])
-    md = 0
+    max_val = 0
 
     while len(q):
-        cur, curd = q.popleft()
+        ci, cd = q.popleft()
 
-        for i, d in g[cur]:
-            if visited[i] == -1:
-                visited[i] = curd + d
-                md = max(md, curd + d)
-                q.append([i, curd+d])
+        for ti, td in g[ci]:
+            if not visited[ti]:
+                visited[ti] = cd + td
+                max_val = max(max_val, cd + td)
+                q.append([ti, cd + td])
 
-    return visited.index(md), md
+    return visited.index(max_val), max_val
+
 
 N = int(read())
 G = [[] for _ in range(N+1)]
 
 for i in range(1, N):
-    V, N, D = map(int, read().split())
-    G[V].append([N, D])
-    G[N].append([V, D])
+    V1, V2, D = map(int, read().split())
+    G[V1].append([V2, D])
+    G[V2].append([V1, D])
 
-fmi, fm = dfs(G, 1)
-tmi, tm = dfs(G, fmi)
+first_idx, first_val = dfs(G, 1)
+second_idx, second_val = dfs(G, first_idx)
 
-print(tm)
-
+print(second_val)
