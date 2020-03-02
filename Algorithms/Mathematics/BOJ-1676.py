@@ -1,20 +1,15 @@
 from sys import stdin
+read = lambda : stdin.readline().rstrip()
 
+def count(n, s):
+    c = 0
 
-def f(n):
-    if not n:
-        return 1
-    return n * f(n - 1)
+    while n > 0:
+        n //= s
+        c += n
 
+    return c
 
-N = int(stdin.readline())
-L = list(reversed(str(f(N))))
-c = 0
+N = int(read())
 
-for i in L:
-    if int(i) == 0:
-        c += 1
-    else:
-        break
-
-print(c)
+print(min(count(N,5), count(N,2)))
