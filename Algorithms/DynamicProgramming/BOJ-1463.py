@@ -1,16 +1,20 @@
-import sys
-  
-N = int(sys.stdin.readline())
-m = 1000001
-dp = [0 for i in range(m)]
+from sys import stdin
 
-for i in range(2, N+1):
-    if i == 2 or i == 3:  
-        dp[i] = 1
-    else:
-        d1 = dp[i-1] + 1
-        d2 = [dp[int(i/2)]+1, m][i%2]
-        d3 = [dp[int(i/3)]+1, m, m][i%3]
-        dp[i] = min(d1,d2,d3)
+N = int(stdin.readline())
+DP = [0 for _ in range(10 ** 6 + 1)]
 
-print(dp[N])
+DP[2] = 1
+DP[3] = 1
+
+for i in range(4, N + 1):
+    F = [DP[i - 1] + 1, DP[i - 1] + 1, DP[i - 1] + 1]
+    F[0] = F[0] + 1
+
+    if i % 2 == 0:
+        F[1] = DP[i // 2] + 1
+    if i % 3 == 0:
+        F[2] = DP[i // 3] + 1
+
+    DP[i] = min(F)
+
+print(DP[N])
