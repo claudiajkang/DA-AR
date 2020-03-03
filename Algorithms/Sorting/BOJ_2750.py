@@ -1,11 +1,18 @@
-N = int(input())
-l = list()
+from sys import stdin
+read = lambda : int(stdin.readline())
+
+N = read()
+PN = [False for _ in range(1000001)]
 
 for i in range(N):
-    v = int(input())
-    l.append(v)
+    idx = read()
+    PN[idx] = True
 
-l = sorted(l)
+c = 0
+for i in range(1, 1000001):
+    if PN[i]:
+        print(i)
+        c += 1
+        if c == N:
+            break
 
-for i in range(N):
-    print(l[i])
