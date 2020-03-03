@@ -1,22 +1,14 @@
-import sys
+from sys import stdin
 
-N = int(sys.stdin.readline())
-dp = [[0 for i in range(10)] for j in range(101)]
-v = 1000000000
-
-for j in range(10):
-    dp[1][j] = 1
+N = int(stdin.readline())
+DP = [[0] * 10 for _ in range(N+1)]
+DP[1] = [1] * 10
+DP[1][0] = 0
 
 for i in range(2, N+1):
-    for j in range(10):
-        if j == 0:
-            dp[i][j] = dp[i-1][j+1]
+    DP[i][0] = DP[i - 1][1]
+    for j in range(1, 9):
+        DP[i][j] = DP[i-1][j-1] + DP[i-1][j+1]
+    DP[i][9] = DP[i-1][8]
 
-        elif j == 9:
-            dp[i][j] = dp[i-1][j-1]
-
-        else:
-            dp[i][j] = (dp[i-1][j-1] + dp[i-1][j+1]) % v
-
-
-print((sum(dp[N])-dp[N][0]) % v)
+print(sum(DP[N]) % (10 ** 9))
