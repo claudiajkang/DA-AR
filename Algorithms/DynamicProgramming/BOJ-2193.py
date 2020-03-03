@@ -1,15 +1,10 @@
-import sys
+from sys import stdin
 
-N = int(sys.stdin.readline())
+N = int(stdin.readline())
+DP = [0, 1, 1, 2] + [0 for _ in range(4, 91)]
 
-dp = [0 for i in range(91)]
+if 3 < N <= 90:
+    for i in range(4, N+1):
+        DP[i] = DP[i-2] + DP[i-1]
 
-for i in range(1, 91):
-    if i == 1 or i == 2:
-        dp[i] = 1
-    elif i == 3:
-        dp[i] = 2
-    else:
-        dp[i] = dp[i-1] + dp[i-2]
-
-print(dp[N])
+print(DP[N])
