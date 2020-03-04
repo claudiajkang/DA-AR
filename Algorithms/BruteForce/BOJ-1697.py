@@ -1,29 +1,27 @@
-from collections import deque
 from sys import stdin
+from collections import deque
 read = lambda : stdin.readline().rstrip()
 
+P = [-1 for _ in range(10**6 + 1)]
 N, K = map(int, read().split())
 
+q = deque()
+q.append([N, 0])
+FINISH = False
+
 if N == K:
-    print(0)
+    P[K] = 0
 
 else:
-    LO = [-1 for i in range(1000001)]
+    while len(q) and not FINISH:
+        ci, cd = q.popleft()
 
-    q = deque()
-    q.append([N, 0])
-    LO[N] = 0
-
-    while len(q):
-        cur, cd = q.popleft()
-
-        for i in [cur-1, cur+1, cur*2]:
-            if 0 <= i <= 1000000:
+        for i in [ci-1, ci+1, 2*ci]:
+            if 0 <= i <= 10**6 and P[i] == -1:
+                P[i] = cd + 1
                 if i == K:
-                    LO[i] = min(LO[i], cd + 1)
+                    FINISH = True
+                    break
+                q.append([i, cd + 1])
 
-                if LO[i] == -1:
-                    LO[i] = cd + 1
-                    q.append([i, cd + 1])
-
-    print(LO[K])
+print(P[K])
