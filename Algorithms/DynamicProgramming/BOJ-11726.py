@@ -1,13 +1,10 @@
 from sys import stdin
 
-N = int(stdin.readline())
-DP = [0 for _ in range(1001)]
+n = int(stdin.readline())
+dp = [0, 1, 2] + [0 for _ in range(3, n+1)]
 
-for i in range(1, N+1):
-    if 1 <= i <= 4:
-        DP[i] = [1, 2, 3, 5][i-1]
+if n > 2:
+    for i in range(3, n+1):
+        dp[i] = dp[i-1] + dp[i-2]
 
-    else:
-        DP[i] = DP[i-1] + DP[i-2]
-
-print(DP[N] % 10007)
+print(dp[n] % 10007)
