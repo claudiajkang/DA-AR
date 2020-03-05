@@ -1,20 +1,24 @@
 from sys import stdin
-read = lambda : int(stdin.readline())
 
-N = read()
-step = [0 for _ in range(301)]
-DP = [0 for _ in range(301)]
+read = lambda: int(stdin.readline())
 
-for i in range(1, N+1):
-    step[i] = read()
+n = read()
+s = [0 for _ in range(n + 1)]
+dp = [0 for _ in range(n + 1)]
 
-DP[1] = step[1]
-DP[2] = max(DP[1] + step[2], step[2])
+for i in range(1, n + 1):
+    s[i] = read()
 
-if N >= 3:
-    for i in range(3, N+1):
-        V2 = step[i] + DP[i-2]
-        V3 = step[i] + step[i-1] + DP[i-3]
-        DP[i] = max(V2, V3)
+if 1 <= n <= 300:
+    dp[1] = s[1]
 
-print(DP[N])
+    for i in range(2, n + 1):
+        if i == 2:
+            dp[i] = max(dp[i - 1] + s[i], s[i])
+        else:
+            dp[i] = max(s[i] + s[i - 1] + dp[i - 3], s[i] + dp[i - 2])
+
+    print(dp[n])
+
+else:
+    print(0)
