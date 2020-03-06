@@ -1,17 +1,17 @@
 from sys import stdin
 read = lambda : stdin.readline().rstrip()
 
-n = int(read())
+N = int(read())
 st = []
 
-for i in range(n):
-    name, k, e, m = read().split()
-    st.append((name, int(k), int(e), int(m)))
+for i in range(N):
+    name, ko, en, ma = read().split()
+    st.append([name, int(ko), int(en), int(ma)])
 
-st.sort(key=lambda item: item[0])
-st.sort(key=lambda item: item[3], reverse=True)
-st.sort(key=lambda item: item[2])
-st.sort(key=lambda item: item[1], reverse=True)
+st.sort(key=lambda x : x[0])
+st.sort(key=lambda x : x[3], reverse=True)
+st.sort(key=lambda x : x[2])
+st.sort(key=lambda x : x[1], reverse=True)
 
-for item in st:
-    print(item[0])
+for name, ko, en, ma in st:
+    print(name)
