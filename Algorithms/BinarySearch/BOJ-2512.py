@@ -1,37 +1,32 @@
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
 
 N = int(read())
-LM = list(map(int, read().split()))
+NMONEY = sorted(list(map(int, read().split())))
 M = int(read())
 
-if sum(LM) <= M:
-    print(max(LM))
+lo = 0
+hi = 10 ** 9
+mid = 0
+s = 0
+
+if sum(NMONEY) <= M:
+    print(max(NMONEY))
 
 else:
-    l = 0
-    r = 1000000000
-    mid = 0
-    s = 0
+    while lo <= hi:
+        mid = (lo + hi) // 2
 
-    while l <= r:
-        mid = (l + r) // 2
         s = 0
-        for i in LM:
+        for i in NMONEY:
             if i <= mid:
                 s += i
             else:
                 s += mid
 
         if s <= M:
-            l = mid + 1
+            lo = mid + 1
         else:
-            r = mid - 1
+            hi = mid - 1
 
-    if s > M:
-        print(mid - 1)
-
-    else:
-        print(mid)
-
+    print(hi)
