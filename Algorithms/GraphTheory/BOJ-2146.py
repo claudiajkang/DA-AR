@@ -1,71 +1,67 @@
-from collections import deque
 from sys import stdin
-read = lambda: stdin.readline().rstrip()
+from collections import deque
+read = lambda : stdin.readline().rstrip()
 
 N = int(read())
-MAP = [[-1] * (N+2) for _ in range(N+2)]
-LAND = [[-1] + [0] * N + [-1] for _ in range(N+2)]
-POINT = [[0, -1], [0, 1], [-1, 0], [1, 0]]
-BOUND = deque()
+M = [[-1] * (N+2) for _ in range(N+2)]
+L = [[0] * (N+2) for _ in range(N+2)]
+P = [[0, -1], [0, 1], [-1, 0], [1, 0]]
+B = deque()
 
-for i in range(1, N + 1):
-    MAP[i] = [-1] + list(map(int, read().split())) + [-1]
-
-    for j in range(1, N + 1):
-        if [MAP[i][j], MAP[i][j + 1]] == [1, 0]:
-            BOUND.append([i, j])
-
-        elif [MAP[i][j - 1], MAP[i][j]] == [0, 1]:
-            BOUND.append([i, j])
+for i in range(1, N+1):
+    M[i] = [-1] + list(map(int, read().split())) + [-1]
+    for j in range(1, N+1):
+        if [M[i][j-1], M[i][j]] == [0, 1]:
+            B.append([i, j])
+        elif [M[i][j], M[i][j+1]] == [1, 0]:
+            B.append([i, j])
 
 ln = 0
-for i in range(1, N + 1):
-    for j in range(1, N + 1):
-        if MAP[i][j] == 1 and LAND[i][j] == 0:
+for i in range(1, N+1):
+    for j in range(1, N+1):
+        if M[i][j] == 1 and L[i][j] == 0:
             ln += 1
-            LAND[i][j] = ln
+            L[i][j] = ln
             q = deque()
             q.append([i, j])
 
             while len(q):
                 ci, cj = q.popleft()
 
-                for ii, jj in POINT:
+                for ii, jj in P:
                     ti = ci + ii
                     tj = cj + jj
-                    if MAP[ti][tj] == 1 and LAND[ti][tj] == 0:
-                        LAND[ti][tj] = ln
+                    if M[ti][tj] == 1 and L[ti][tj] == 0:
+                        L[ti][tj] = ln
                         q.append([ti, tj])
 
-BLAND = [[] for _ in range(ln + 1)]
-RES = [10000 for _ in range(ln + 1)]
+LB = [[] for _ in range(ln + 1)]
+R = [10000 for _ in range(ln + 1)]
 
-for ii, jj in BOUND:
-    BLAND[LAND[ii][jj]].append([ii, jj])
+for ii, jj in B:
+    LB[L[ii][jj]].append([ii, jj])
 
-for i in range(1, ln + 1):
+for i in range(1, ln+1):
+    D = [[0] * (N+2) for _ in range(N+2)]
     q = deque()
-    DIS = [[-1] + [0] * N + [-1] for _ in range(N + 2)]
 
-    for ti, tj in BLAND[i]:
+    for ti, tj in LB[i]:
         q.append([ti, tj, 0])
 
     while len(q):
         ci, cj, cd = q.popleft()
 
-        for ii, jj in POINT:
+        for ii, jj in P:
             ti = ci + ii
             tj = cj + jj
-
-            if MAP[ti][tj] == 0 and DIS[ti][tj] == 0:
-                DIS[ti][tj] = cd + 1
+            if M[ti][tj] == 0 and D[ti][tj] == 0:
+                D[ti][tj] = cd + 1
                 q.append([ti, tj, cd + 1])
 
-            elif MAP[ti][tj] == 1 and LAND[ti][tj] != i:
-                RES[i] = cd
-                break
+            elif M[ti][tj] == 1 and L[ti][tj] != i:
+                R[i] = cd
 
-        if RES[i] != 10000:
+        if R[i] != 10000:
             break
 
-print(min(RES))
+print(min(R))
