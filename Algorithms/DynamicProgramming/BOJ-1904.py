@@ -1,11 +1,11 @@
 from sys import stdin
 
 N = int(stdin.readline())
-DP = [0] * (N+2)
+DP = [0] * (N+1)
 
 for i in range(1, N+1):
-    if 1 <= i <= 3:
-        DP[i] = [1, 2, 3][i-1]
+    if i in [1, 2]:
+        DP[i] = i
     else:
         DP[i] = (DP[i-1] + DP[i-2]) % 15746
 
