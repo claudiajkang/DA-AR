@@ -1,21 +1,31 @@
 from sys import stdin
-read = lambda : stdin.readline().rstrip()
+read = lambda: stdin.readline().rstrip()
 
 N, M = map(int, read().split())
-t = sorted(list(map(int, read().split())), reverse=True)
-l, r = 1, max(t)
+T = list(map(int, read().split()))
+T.sort(reverse=True)
 
-while l <= r:
-    mid = (l+r) // 2
+lo = 0
+hi = max(T)
+mid = 0
+
+while lo < hi:
+    mid = (lo + hi) // 2
 
     s = 0
-    for i in t:
-        if i >= mid:
-            s += i - mid
+    for i in T:
+        if i > mid:
+           s += (i-mid)
+        else:
+            break
 
-    if s >= M:
-        l = mid + 1
+    if s < M:
+        hi = mid
+    elif s == M:
+        break
     else:
-        r = mid - 1
-print(r)
+        if lo == mid:
+            break
+        lo = mid
 
+print(mid)
