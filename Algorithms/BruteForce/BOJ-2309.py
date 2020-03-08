@@ -1,21 +1,23 @@
 from sys import stdin
-read = lambda: int(stdin.readline().rstrip())
+read = lambda: int(stdin.readline())
 
-H = [read() for _ in range(9)]
-H.sort()
+h = [read() for _ in range(9)]
+h.sort()
 
-p = []
-
+allsum = sum(h)
+f = 0
 for i in range(9):
     for j in range(9):
-        p.append([i, j])
+        if i == j:
+            continue
+        s = allsum - h[i] - h[j]
+        if s == 100:
+            f = 1
+            for k in range(9):
+                if k not in [i, j]:
+                    print(h[k])
 
-allsum = sum(H)
-for i, j in p:
-    r = allsum - H[i] - H[j]
-    if r == 100:
-        for ii in range(9):
-            if ii not in [i, j]:
-                print(H[ii])
+            break
 
+    if f:
         break
