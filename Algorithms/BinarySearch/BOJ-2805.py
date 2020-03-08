@@ -11,21 +11,17 @@ mid = 0
 
 while lo < hi:
     mid = (lo + hi) // 2
-
     s = 0
     for i in T:
         if i > mid:
-           s += (i-mid)
+            s += (i-mid)
         else:
             break
-
     if s < M:
         hi = mid
-    elif s == M:
+    elif s == M or lo == mid:
         break
     else:
-        if lo == mid:
-            break
         lo = mid
 
 print(mid)
