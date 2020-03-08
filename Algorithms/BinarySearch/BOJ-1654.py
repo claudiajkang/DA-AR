@@ -2,12 +2,8 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 K, N = map(int, read().split())
-L = [0] * K
+L = sorted([int(read()) for _ in range(K)], reverse=True)
 
-for i in range(K):
-    L[i] = int(read())
-
-L = sorted(L)
 lo = 0
 hi = max(L)
 mid = 0
@@ -22,10 +18,9 @@ while lo <= hi:
     for i in L:
         s += (i // mid)
 
-    if s >= N:
-        lo = mid + 1
-
-    else:
+    if s < N:
         hi = mid - 1
+    else:
+        lo = mid + 1
 
 print(hi)
