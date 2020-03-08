@@ -2,11 +2,12 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-nm = sorted(list(map(int, read().split())), reverse=True)
+l = list(map(int, read().split()))
+l.sort()
 m = int(read())
 
-if sum(nm) <= m:
-    print(max(nm))
+if sum(l) <= m:
+    print(max(l))
     exit()
 
 lo = 0
@@ -16,8 +17,9 @@ s = 0
 
 while lo <= hi:
     mid = (lo + hi) // 2
+
     s = 0
-    for i in nm:
+    for i in l:
         if i >= mid:
             s += mid
         else:
@@ -25,6 +27,7 @@ while lo <= hi:
 
     if s > m:
         hi = mid - 1
+
     else:
         lo = mid + 1
 
