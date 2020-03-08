@@ -1,25 +1,24 @@
 from sys import stdin
-read = lambda : stdin.readline().rstrip()
+read = lambda: stdin.readline().rstrip()
 
-N = int(read())
-v = list(map(int, read().split()))
-NC = {}
+n = int(read())
+nc = list(map(int, read().split()))
+c = {}
 
-for i in v:
-    if i not in NC.keys():
-        NC[i] = 0
-    NC[i] += 1
+m = int(read())
+mc = list(map(int, read().split()))
 
-M = int(read())
-MC = list(map(int, read().split()))
+for i in nc:
+    if i not in c.keys():
+        c[i] = 0
 
-res = [0] * M
+    c[i] += 1
 
-for i in range(M):
-    if MC[i] in NC.keys():
-        res[i] += NC[MC[i]]
 
-for i in res:
-    print(i, end = ' ')
+for j in range(m):
+    if mc[j] in c.keys():
+        print(c[mc[j]], end = ' ')
+    else:
+        print(0, end = ' ')
 
 print()
