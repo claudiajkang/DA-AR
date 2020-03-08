@@ -1,33 +1,24 @@
 from sys import stdin
 
-E, S, M = map(int, stdin.readline().split())
+e, s, m = map(int, stdin.readline().rstrip().split())
 
-em = 15
-sm = 28
-mm = 19
+te, ts, tm = 0, 0, 0
+c = 0
 
-year = 0
-es = 0
-ss = 0
-ms = 0
+while True:
+    if e == te and s == ts and m == tm:
+        break
 
-ei = 0
-si = 0
-mi = 0
+    te += 1
+    ts += 1
+    tm += 1
+    c += 1
 
-while [E, S, M] != [ei, si, mi]:
-    ei += 1
-    si += 1
-    mi += 1
-    year += 1
+    if te > 15:
+        te = 1
+    if ts > 28:
+        ts = 1
+    if tm > 19:
+        tm = 1
 
-    if ei > em:
-        ei %= em
-
-    if si > sm:
-        si %= sm
-
-    if mi > mm:
-        mi %= mm
-
-print(year)
+print(c)
