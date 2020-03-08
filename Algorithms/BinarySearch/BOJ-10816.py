@@ -16,9 +16,6 @@ MC = list(map(int, read().split()))
 res = [0] * M
 
 for i in range(M):
-    lo = 0
-    hi = N
-    
     if MC[i] in NC.keys():
         res[i] += NC[MC[i]]
 
