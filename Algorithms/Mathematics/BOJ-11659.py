@@ -2,12 +2,14 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n, m = map(int, read().split())
-an = list(map(int, read().split()))
-dp = [0] * (n+1)
+a = list(map(int, read().split()))
+p = [0] * (n+1)
 
-for i in range(n):
-    dp[i+1] = dp[i] + an[i]
+p[1] = a[0]
+for i in range(1, n):
+    p[i+1] = p[i] + a[i]
 
-for k in range(m):
-    i, j = map(int, read().split())
-    print(dp[j] - dp[i-1])
+print(p)
+for i in range(m):
+    s, e = map(int, read().split())
+    print(p[e]-p[s-1])
