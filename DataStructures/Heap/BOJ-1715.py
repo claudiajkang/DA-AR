@@ -12,7 +12,6 @@ if len(h) == 1:
     print(0)
     exit()
 
-i = 1
 r = 0
 while len(h) > 0:
     a1 = heapq.heappop(h)
