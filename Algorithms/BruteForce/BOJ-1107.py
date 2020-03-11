@@ -3,25 +3,22 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 m = int(read())
-b = list(read().split())
-ch = []
-
-if n == 100:
-    print(0)
-    exit()
+broken = read().split()
+channel = []
 
 for i in range(0, 1000001):
-    f = 0
-    for tb in b:
-        if tb in str(i):
-            f = 1
+    f = True
+    for j in broken:
+        if j in str(i):
+            f = False
             break
-    if not f:
-        ch.append(i)
+    if f:
+        channel.append(i)
 
-res = abs(n - 100)
+res = abs(n-100)
 
-for i in ch:
+for i in channel:
     if abs(i-n) + len(str(i)) < res:
         res = abs(i-n) + len(str(i))
+
 print(res)
