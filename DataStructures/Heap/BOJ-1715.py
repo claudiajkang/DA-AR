@@ -1,17 +1,15 @@
 from sys import stdin
 import heapq
-read = lambda: int(stdin.readline())
+read = lambda: int(stdin.readline().rstrip())
 
-h = []
 n = read()
-
-for i in range(n):
-    heapq.heappush(h, read())
+h = [read() for i in range(n)]
 
 if len(h) == 1:
     print(0)
     exit()
 
+heapq.heapify(h)
 r = 0
 while len(h) > 0:
     a1 = heapq.heappop(h)
