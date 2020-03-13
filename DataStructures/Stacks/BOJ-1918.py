@@ -1,21 +1,25 @@
-import sys
+from sys import stdin
 
-st = sys.stdin.readline().strip()
+ch = '(' + stdin.readline().rstrip() + ')'
 stack = []
-prior = {'*': 2, '/': 2, '+': 1, '-': 1, '(': 0}
+cal = {'(': 0, '+': 1, '-': 1, '*': 2, '/': 2}
+res = ''
 
-for ch in '(' + st + ')':
-    if ch.isupper():
-        print(ch, end='')
-    elif ch == '(':
-        stack.append(ch)
-    elif ch == ')':
-        while True:
-            o = stack.pop()
-            if o == '(':
+for c in ch:
+    if c.isupper():
+        res += c
+    elif c == '(':
+        stack.append(c)
+    elif c == ')':
+        while stack:
+            v = stack.pop()
+            if v == '(':
                 break
-            print(o, end='')
+            res += v
     else:
-        while stack[-1] != '(' and prior[ch] <= prior[stack[-1]]:
-            print(stack.pop(), end='')
-        stack.append(ch)
+        while stack[-1] != '(' and cal[c] <= cal[stack[-1]]:
+            res += stack.pop()
+
+        stack.append(c)
+
+print(res)
