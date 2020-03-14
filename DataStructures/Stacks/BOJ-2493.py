@@ -2,22 +2,17 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-h = [0] + list(map(int, read().split()))
-stack = []
-r = [0] * (n+1)
+t = list(map(int, read().split()))
+res = [0] * n
+stack = [0]
 
-for i in range(1, n+1):
-    while stack:
-        if stack and stack[-1][1] >= h[i]:
-            break
-
-        if stack and stack[-1][1] < h[i]:
-            stack.pop()
+for i in range(1, n):
+    while stack and t[stack[-1]] < t[i]:
+        stack.pop()
 
     if stack:
-        r[i] = stack[-1][0]
+        res[i] = stack[-1] + 1
+    stack.append(i)
 
-    stack.append([i, h[i]])
-
-for i in range(1, n+1):
-    print(r[i], end = ' ')
+for i in res:
+    print(i, end = ' ')
