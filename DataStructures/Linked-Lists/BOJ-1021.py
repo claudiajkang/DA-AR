@@ -1,12 +1,10 @@
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
-
 
 class Node:
     def __init__(self, data):
         self.data = data
-        self.before = None
+        self.prev = None
         self.next = None
 
 
@@ -15,106 +13,82 @@ class LinkedList:
         self.head = None
         self.tail = None
 
+
     def add(self, data):
-        new_node = Node(data)
+        nnode = Node(data)
 
         if not self.head:
-            self.head = new_node
+            self.head = nnode
+            self.tail = nnode
 
         else:
-            new_node.before = self.tail
-            self.tail.next = new_node
+            self.tail.next = nnode
+            nnode.prev = self.tail
 
-        self.tail = new_node
-        self.head.before = self.tail
+        self.tail = nnode
+        self.tail.next = self.head
+        self.head.prev = self.tail
 
-
-    def equal(self, val):
-        if self.head.data == val:
+    def equal(self, data):
+        if self.head.data == data:
             return True
         return False
 
-    def left(self, val):
-        p = self.head
-        c = 0
 
-        while p.data != val:
-            p = p.before
+    def left(self, data):
+        p = self.head.prev
+        c = 1
+
+        while p.data != data:
             c += 1
+            p = p.prev
 
-        return c
+        return p, c
 
-    def right(self, val):
-        p = self.head
-        c = 0
+    def right(self, data):
+        p = self.head.next
+        c = 1
 
-        while p.data != val:
+        while p.data != data:
+            c += 1
             p = p.next
-            c += 1
 
-        return c
+        return p, c
 
-    def set_head(self, val):
-        if self.head.data != val:
-            p = self.head
-            c = self.head.next
+    def delete(self):
+        p = self.head.next
+        self.head = p
+        self.head.prev = self.tail
+        self.tail.next = p
 
-            while c.data != val:
-                p = c
-                c = p.next
+    def find(self, data):
+        if not self.equal(data):
+            lp, cl = self.left(data)
+            rp, cr = self.right(data)
 
-            self.tail.next = self.head
-            self.head = c
-            self.tail = p
-            self.tail.next = None
-
-    def delete(self, val):
-        if self.head.data == val:
-            nnode = self.head.next
-            self.head = nnode
-            self.tail.next = nnode
-            if self.head != None:
-                self.head.before = self.tail
-
+            if cl < cr:
+                self.head = lp
+                self.tail = self.head.prev
+                c = cl
+            else:
+                self.head = rp
+                self.tail = self.head.prev
+                c = cr
         else:
-            p = self.head
-            c = self.head.next
+            c = 0
 
-            while c.data != val:
-                p = c
-                c = p.next
-
-            nnode = c.next
-            p.next = nnode
-            nnode.before = p
-
+        self.delete()
+        return c
 
 n, m = map(int, read().split())
-lo = list(map(int, read().split()))
+q = list(map(int, read().split()))
 ll = LinkedList()
-c = 0
 
 for i in range(1, n+1):
     ll.add(i)
 
-while lo:
-    v = lo.pop(0)
+res = 0
+for i in q:
+    res += ll.find(i)
 
-    if ll.equal(v):
-        ll.delete(v)
-        continue
-
-    l = ll.left(v)
-    r = ll.right(v)
-
-    if l > r:
-        c += r
-
-    else:
-        c += l
-
-    ll.set_head(v)
-    ll.delete(v)
-
-
-print(c)
+print(res)
