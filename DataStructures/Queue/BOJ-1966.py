@@ -5,29 +5,28 @@ read = lambda: stdin.readline().rstrip()
 
 t = int(read())
 
-for i in range(t):
+for _ in range(t):
     n, m = map(int, read().split())
-    doc = list(map(int, read().split()))
-    q = deque()
+
+    docp = list(map(int, read().split()))
+
+    pq = deque()
 
     for i in range(n):
-        q.append([doc[i], i])
+        pq.append([docp[i], i])
 
-    doc.sort(reverse=True)
-    mi = 0
     c = 0
+    docp.sort(reverse=True)
+    mi = 0
     while True:
-        tp, ti = q.popleft()
-        
-        if doc[mi] > tp:
-            q.append([tp, ti])
-            continue
-        
-        else:
+        v, idx = pq.popleft()
+        if v == docp[mi]:
+            c += 1
             mi += 1
+            if idx == m:
+                break
+            continue
+        else:
+            pq.append([v, idx])
 
-        c += 1
-        if ti == m:
-            print(c)
-            break
-
+    print(c)
