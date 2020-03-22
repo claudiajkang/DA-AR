@@ -19,8 +19,13 @@ if 'hacker' in prob_url:
     filename = 'HR-' + tp[-2]
 
 print('======filename')
-print('touch '+P+'/'+filename+'.py')
-print('vim '+P+'/'+filename+'.py')
+if 'SQL' in P:
+    print('touch '+P+'/'+filename+'.sql')
+    print('vim '+P+'/'+filename+'.sql')
+else:
+    print('touch '+P+'/'+filename+'.py')
+    print('vim '+P+'/'+filename+'.py')
+    print('python '+P+'/'+filename+'.py')
 print('\n======PR MSG #1')
 print('git add .;git commit -m "Add code that solved '+filename+' problem\n\nprob : '+prob_url+'"')
 print('\n======PR MSG #2')
