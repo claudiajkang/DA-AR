@@ -1,41 +1,18 @@
 from sys import stdin
-read = lambda: stdin.readline().rstrip()
 
 while True:
-    w = read()
-    if w == "#":
-        break
-
-    stack = []
-
-    w = w.replace(" /", "/")
-    w = w.replace(" ", "|")
-    w = w.replace("<", "|<")
-    w = w.replace(">", ">|")
-    w = w.split("|")
-
-    for i in w:
-        if i == "":
-            continue
-
-        elif i[0:2] == "</":
-            tt = i.replace("<", "")
-            tt = tt.replace(">", "")
-
-            if stack and stack[-1] == tt[1:]:
-                stack.pop()
-            else:
-                stack.append(tt)
-
-        elif i[0] == "<" and i[-2:] == "/>":
-            continue
-
-        elif i[0] == "<":
-            tt = i.replace("<", "")
-            tt = tt.replace(">", "")
-            stack.append(tt)
-
-    if stack:
-        print("illegal")
-    else:
-        print("legal")
+    wd = stdin.readline().rstrip()
+    if wd == "#": break
+    s = []
+    wd = wd.replace(" />", "/>").replace("<", "|<").replace(">", ">|").split("|")
+    for w in wd:
+        if w == "" or w == " ": continue
+        elif w[:2] == "</" and w[-1] == ">":
+            if s and s[-1] == w[2:-1]: s.pop()
+            else: s.append(w[1:])
+        elif w[0] == "<" and w[-2:] == "/>": continue
+        elif w[0] == "<" and w[-1] == ">":
+            w = w.split()
+            if len(w) > 1: s.append(w[0][1:])
+            else: s.append(w[0][1:-1])
+    print("illegal" if s else "legal")
