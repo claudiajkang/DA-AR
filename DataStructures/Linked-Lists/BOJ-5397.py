@@ -2,24 +2,20 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 t = int(read())
+word = [read() for i in range(t)]
 
 for _ in range(t):
-    s = read()
     l = []
     r = []
 
-    for i in range(len(s)):
-        if s[i] == '<':
+    for w in word[_]:
+        if w == "<":
             if l: r.append(l.pop())
-
-        elif s[i] == '>':
+        elif w == ">":
             if r: l.append(r.pop())
-
-        elif s[i] == '-':
+        elif w == '-':
             if l: l.pop()
-
         else:
-            l.append(s[i])
+            l.append(w)
 
     print(''.join(l) + ''.join(reversed(r)))
-
