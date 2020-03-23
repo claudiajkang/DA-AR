@@ -7,7 +7,10 @@ hq = []
 
 for i in range(n):
     t = read()
+
     if t == 0:
-        print(heappop(hq)*(-1) if hq else t)
+        if hq: print(heappop(hq)[1])
+        else: print(t)
+
     else:
-        heappush(hq, t*(-1))
+        heappush(hq, [abs(t), t])
