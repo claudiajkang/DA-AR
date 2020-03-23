@@ -4,26 +4,30 @@ read = lambda: stdin.readline().rstrip()
 n, k = map(int, read().split())
 circle = ['?'] * n
 
+ci = 0
 err = False
-idx = 0
-for _ in range(k):
-    mv, val = read().split()
-    mv = int(mv)
+for i in range(k):
+    c, v = read().split()
+    ci = (ci-int(c)) % n
 
-    idx = (idx+mv) % n
+    if circle[ci] == '?':
+        if v in circle:
+            err = True
+            break
+        else:
+            circle[ci] = v
 
-    if (val in circle) and (val != circle[idx]):
+    elif circle[ci] == v:
+        continue
+
+    elif circle[ci] != '?':
         err = True
-
-    elif circle[idx] != '?' and circle[idx] != val:
-        err = True
-
-    else:
-        circle[idx] = val
+        break
 
 if err:
     print('!')
 
 else:
+    circle = circle[ci:] + circle[:ci]
     for i in range(n):
-        print(circle[idx-i], end="")
+        print(circle[i], end = "")
