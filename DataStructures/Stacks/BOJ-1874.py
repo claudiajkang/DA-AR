@@ -1,22 +1,20 @@
 from sys import stdin
 read = lambda: int(stdin.readline().rstrip())
 
-stack = []
 n = read()
+stack = []
 arr = [read() for i in range(n)]
-r = []
+res = ""
 
-for i in range(1, n+1):
-    stack.append(i)
-    r.append('+')
-
+for i in range(1, n+2):
     while stack and stack[-1] == arr[0]:
         stack.pop()
-        r.append('-')
         arr.pop(0)
+        res += '-\n'
 
-if not stack:
-    print('\n'.join(r))
+    if i == n+1:
+        break
+    stack.append(i)
+    res += '+\n'
 
-else:
-    print('NO')
+print('NO' if stack else res)
