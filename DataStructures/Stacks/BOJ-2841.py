@@ -2,18 +2,18 @@ from sys import stdin
 read = lambda: map(int, stdin.readline().rstrip().split())
 
 n, p = read()
-stack = [[] for i in range(n+1)]
+stack = [[] for i in range(n)]
 res = 0
 
 for i in range(n):
-    m, mp = read()
+    ln, lp = read()
 
-    while stack[m] and stack[m][-1] > mp:
-        stack[m].pop()
+    while stack[ln] and stack[ln][-1] > lp:
+        stack[ln].pop()
         res += 1
 
-    if mp not in stack[m]:
+    if not lp in stack[ln]:
+        stack[ln].append(lp)
         res += 1
-        stack[m].append(mp)
 
 print(res)
