@@ -1,15 +1,17 @@
 from sys import stdin
 from collections import deque
+read = lambda: stdin.readline().rstrip()
 
-n, k = map(int, stdin.readline().rstrip().split())
-q = [deque() for i in range(21)]
+n, k = map(int, read().split())
+name = [deque() for i in range(21)]
 res = 0
 
 for i in range(n):
-    l = len(stdin.readline().rstrip())
-    while q[l] and q[l][0] < (i-k):
-        q[l].popleft()
-    res += len(q[l])
-    q[l].append(i)
+    c = len(read())
+    while name[c] and name[c][0] < (i-k):
+        name[c].popleft()
+
+    res += len(name[c])
+    name[c].append(i)
 
 print(res)
