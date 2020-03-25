@@ -1,18 +1,23 @@
 from sys import stdin
 from heapq import heappush, heappop
-read = lambda: stdin.readline().rstrip()
+read = lambda: int(stdin.readline().rstrip())
 
-n = int(read())
-table = [0] * (2*n)
-
-for i in range(n):
-    for j in map(int, read().split()):
-        heappush(table, j)
-
-    while len(table) > (2*n):
-        heappop(table)
+n = read()
+q = []
+res = 0
 
 for i in range(n):
-    heappop(table)
+    heappush(q, read())
 
-print(heappop(table))
+while len(q) > 1:
+    h1 = heappop(q)
+    h2 = 0
+    if q:
+        h2 = heappop(q)
+
+    res += (h1+h2)
+
+    if q:
+        heappush(q, h1+h2)
+
+print(res)
