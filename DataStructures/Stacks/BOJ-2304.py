@@ -1,31 +1,33 @@
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 h = [0] * 1001
-end_idx = 0
+ei = 0
+highest = 0
 
 for i in range(n):
-    idx, v = map(int, read().split())
-    h[idx] = v
-    end_idx = max(end_idx, idx)
+    x, l = map(int, read().split())
+    h[x] = l
+    highest = max(highest, h[x])
+    ei = max(ei, x)
 
-highest = max(h)
-highest_idx = h.index(highest)
-res = 0
+hi = h.index(highest)
 stack = [0]
-for i in range(highest_idx + 1):
+res = 0
+
+for i in range(hi+1):
     if stack and h[stack[-1]] <= h[i]:
-        idx = stack.pop()
-        res += (i - idx) * h[idx]
+        x = stack.pop()
+        res += (i-x) * h[x]
         stack.append(i)
 
 stack = [0]
-for i in range(end_idx, highest_idx - 1, -1):
+
+for i in range(ei, hi-1, -1):
     if stack and h[stack[-1]] <= h[i]:
-        idx = stack.pop()
-        res += (idx - i) * h[idx]
+        x = stack.pop()
+        res += abs(x-i) * h[x]
         stack.append(i)
 
 while stack:
