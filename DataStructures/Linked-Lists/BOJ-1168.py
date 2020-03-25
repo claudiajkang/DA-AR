@@ -1,14 +1,14 @@
 from sys import stdin
 
 n, k = map(int, stdin.readline().rstrip().split())
-arr = [i for i in range(1, n+1)]
-k -= 1
 
 if n > 0:
-    print("<", end="")
-    ci = k
-    for i in range(n-1):
-        print(arr.pop(ci), end=", ")
-        ci = (ci + k) % len(arr)
+    arr = [i for i in range(1, n+1)]
+    print("<", end = "")
+    k -= 1
+    idx = k
+    for i in range(1, n):
+        print(arr.pop(idx), end = ", ")
+        idx = (idx+k) % len(arr)
 
-    print(arr.pop(), end=">")
+    print(arr.pop(idx), end = ">")
