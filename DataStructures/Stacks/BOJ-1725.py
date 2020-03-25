@@ -11,6 +11,7 @@ for i in range(n+1):
         th = stack.pop()
         wd = i - stack[-1] - 1 if stack else i
         res = max(res, wd * h[th])
+
     stack.append(i)
 
 print(res)
