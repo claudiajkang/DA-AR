@@ -1,16 +1,17 @@
 from sys import stdin
 from heapq import heappush, heappop
 from copy import deepcopy
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
 
-k, n = map(int, read().split())
-arr = list(map(int, read().split()))
+k, n = read()
+arr = list(read())
 hq = deepcopy(arr)
+cur = 0
 
-for i in range(n-1):
-    c = heappop(hq)
+for i in range(n):
+    cur = heappop(hq)
     for j in arr:
-        heappush(hq, c*j)
-        if c % j == 0: break
+        heappush(hq, (cur*j))
+        if cur % j == 0: break
 
-print(heappop(hq))
+print(cur)
