@@ -3,22 +3,21 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 m = int(read())
-broke = read().split()
+broken = read().split()
 
 if n == 100:
     print(0)
     exit()
 
 res = abs(n - 100)
-
 for i in range(1000001):
-    e = True
+    pos = True
     for j in str(i):
-        if j in broke:
-            e = False
+        if j in broken:
+            pos = False
             break
 
-    if e:
+    if pos:
         res = min(res, len(str(i))+abs(i-n))
 
 print(res)
