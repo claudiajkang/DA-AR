@@ -7,10 +7,11 @@ name = [deque() for i in range(21)]
 res = 0
 
 for i in range(n):
-    t = len(read())
-    while name[t] and name[t][0] < (i-k):
-        name[t].popleft()
-    res += len(name[t])
-    name[t].append(i)
+    l = len(read())
+    while name[l] and name[l][0] < (i-k):
+        name[l].popleft()
+
+    res += len(name[l])
+    name[l].append(i)
 
 print(res)
