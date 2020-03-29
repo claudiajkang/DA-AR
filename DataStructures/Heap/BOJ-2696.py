@@ -1,42 +1,54 @@
 from sys import stdin
-from heapq import heappush, heappop
-from collections import deque
+from heapq import heappush, heappop, nlargest
 read = lambda: stdin.readline().rstrip()
 
 t = int(read())
 
-for _ in range(t):
+for tt in range(t):
     m = int(read())
     arr = [0]
 
-    for j in range(m//10 + 1):
+    for i in range(m // 10 + 1):
         arr += list(map(int, read().split()))
 
-    hq = []
+    l = []
+    r = []
+    mid = 0
+    print(len(arr) // 2)
     res = []
-    print(len(arr)//2)
-    for i in range(1, m+1):
-        heappush(hq, arr[i])
 
+    for i in range(1, m+1):
+        val = arr[i]
         if i == 1:
-            res.append(arr[i])
+            mid = val
+            res.append(mid)
             continue
 
         elif i % 2:
-            idx = len(hq) // 2
-            t = deque()
-            for j in range(idx):
-                t.append(heappop(hq))
+            if val <= r[0]:
+                heappush(l, (-1)*val)
+                mid = heappop(l) * (-1)
 
-            res.append(heappop(hq))
-            heappush(hq, res[-1])
+            else:
+                heappush(r, val)
+                mid = heappop(r)
 
-            while t:
-                heappush(hq, t.popleft())
+            res.append(mid)
+
+        else:
+            if val <= mid:
+                heappush(r, mid)
+                mid = val
+                heappush(l, (-1)*mid)
+
+            else:
+                heappush(l, (-1)*mid)
+                mid = val
+                heappush(r, mid)
 
         if len(res) == 10:
             print(' '.join(map(str, res)))
             res = []
 
-    if len(res) > 0:
+    if res:
         print(' '.join(map(str, res)))
