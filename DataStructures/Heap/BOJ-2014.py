@@ -5,12 +5,12 @@ read = lambda: stdin.readline().rstrip()
 
 k, n = map(int, read().split())
 arr = list(map(int, read().split()))
-res = deepcopy(arr)
+hq = deepcopy(arr)
 
-for i in range(1, n):
-    cur = heappop(res)
+for i in range(n-1):
+    cur = heappop(hq)
     for j in arr:
-        heappush(res, cur * j)
+        heappush(hq, cur * j)
         if cur % j == 0: break
 
-print(heappop(res))
+print(heappop(hq))
