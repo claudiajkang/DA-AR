@@ -1,45 +1,43 @@
 from sys import stdin
 from collections import deque
-read = lambda: stdin.readline().rstrip()
 
-n = int(read())
-board = [[-1] + [0]*n + [-1] for i in range(n+2)]
+n = int(stdin.readline().rstrip())
+k = int(stdin.readline().rstrip())
+board = [[-1] + [0] * n + [-1] for i in range(n+2)]
 board[0] = [-1] * (n+2)
 board[-1] = [-1] * (n+2)
-
-k = int(read())
+x, y = 0, 0
 
 for i in range(k):
-    x, y = map(int, read().split())
+    x, y = map(int, stdin.readline().rstrip().split())
     board[x][y] = 1
 
-l = int(read())
-d = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+l = int(stdin.readline().rstrip())
 time = deque()
-time.append(0)
 direction = deque()
-direction.append(d[0])
-tidx = 0
+time.append(0)
+direction.append(0)
 
 for i in range(l):
-    t, td = read().split()
-    if td == 'D':
-        tidx += 1
-        if tidx == 4: tidx = 0
-    elif td == 'L':
-        tidx -= 1
-        if tidx == -1: tidx = 3
+    x, y = stdin.readline().rstrip().split()
+    time.append(int(x))
 
-    time.append(int(t))
-    direction.append(d[tidx])
+    if y == 'D':
+        direction.append(1)
 
+    elif y == 'L':
+        direction.append(-1)
+
+x, y = 1, 0
+dx = [0, 1, 0, -1]
+dy = [1, 0, -1, 0]
+
+d = 0
 snake = deque()
-x, y = 1, 1
-cx, cy = 0, 0
 
 for t in range(10101):
-    x += cx
-    y += cy
+    x += dx[d]
+    y += dy[d]
 
     if board[x][y] == -1:
         print(t)
@@ -50,7 +48,8 @@ for t in range(10101):
         exit()
 
     if board[x][y] != 1:
-        if snake: snake.popleft()
+        if snake:
+            snake.popleft()
 
     if board[x][y] == 1:
         board[x][y] = 0
@@ -59,4 +58,4 @@ for t in range(10101):
 
     if t in time:
         time.popleft()
-        cx, cy = direction.popleft()
+        d = (d+direction.popleft()) % 4
