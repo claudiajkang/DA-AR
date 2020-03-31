@@ -1,49 +1,45 @@
 from sys import stdin
 from heapq import heappush, heappop
+read = lambda: stdin.readline().rstrip()
 
-t = int(stdin.readline().rstrip())
+t = int(read())
 
 for tt in range(t):
-    m = int(stdin.readline().rstrip())
+    m = int(read())
     arr = [0]
 
-    for i in range(m // 10 + 1):
-        arr += list(map(int, stdin.readline().rstrip().split()))
+    for i in range(m//10 + 1):
+        arr += list(map(int, read().split()))
 
-    minhq = []
-    maxhq = []
-    mid = 0
-
-    print(len(arr) // 2)
+    print(len(arr)//2)
     res = []
 
-    for i in range(1, m+1):
-        val = arr[i]
+    l = []
+    r = []
+    mid = 0
 
-        if i == 1:
-            mid = val
-            res.append(mid)
-            continue
-
-        elif i % 2:
-            if val <= minhq[0]:
-                heappush(maxhq, (-1) * val)
-                mid = (-1) * heappop(maxhq)
-
+    for i in range(1, len(arr)):
+        if i % 2:
+            if not r:
+                mid = arr[i]
+                heappush(r, mid)
+            elif arr[i] <= r[0]:
+                heappush(l, arr[i] * (-1))
+                mid = heappop(l) * (-1)
+                heappush(r, mid)
             else:
-                heappush(minhq, val)
-                mid = heappop(minhq)
-
+                heappush(r, arr[i])
+                mid = heappop(r)
+                heappush(r, mid)
             res.append(mid)
 
         else:
-            if val <= mid:
-                heappush(minhq, mid)
-                heappush(maxhq, (-1) * val)
+            if arr[i] <= mid:
+                heappush(l, arr[i] * (-1))
 
             else:
-                heappush(maxhq, (-1) * mid)
-                heappush(minhq, val)
+                heappush(l, heappop(r) * (-1))
+                heappush(r, arr[i])
 
         if len(res) == 10:
             print(' '.join(map(str, res)))
