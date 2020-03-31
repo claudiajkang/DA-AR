@@ -1,27 +1,28 @@
-import sys
+from sys import stdin, setrecursionlimit
+setrecursionlimit(10 ** 6)
 
-sys.setrecursionlimit(10 ** 6)
+read = lambda: stdin.readline().rstrip()
 
+def set_par(n):
+    global parent, tree
 
-def solve(n):
-    global parent
-    for i in l[n]:
+    for i in tree[n]:
         if parent[i] == 0:
             parent[i] = n
-            solve(i)
+            set_par(i)
 
 
-n = int(input())
-l = [[] for _ in range(n + 1)]
-for i in range(n - 1):
-    a, b = map(int, sys.stdin.readline().split())
-    l[a].append(b)
-    l[b].append(a)
-
-parent = [0 for _ in range(n + 1)]
+n = int(read())
+tree = [[] for i in range(n+1)]
+parent = [0 for i in range(n+1)]
 parent[1] = 1
 
-solve(1)
+for i in range(n - 1):
+    a, b = map(int, read().split())
+    tree[a].append(b)
+    tree[b].append(a)
 
-for i in range(2, n + 1):
+set_par(1)
+
+for i in range(2, n+1):
     print(parent[i])
