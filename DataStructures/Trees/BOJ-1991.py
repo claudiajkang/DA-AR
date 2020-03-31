@@ -1,71 +1,69 @@
 from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
-n = int(read())
-tree = {chr(65+i): {'l': None, 'r': None} for i in range(n)}
-
-for i in range(n):
-    data, l, r = read().split()
-
-    if l != '.':
-        tree[data]['l'] = l
-
-    if r != '.':
-        tree[data]['r'] = r
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
 
 
-def preOrder(tree, root):
-    if root is None:
-        return
+class Tree:
+    def __init__(self):
+        self.root = None
 
-    print(root, end = "")
+    def add(self, data, left, right):
+        if not self.root:
+            node = Node(data)
+            self.root = node
 
-    if tree[root]['l'] is None and tree[root]['r'] is None:
-        return
+        else:
+            node = self.traverse(self.root, data)
 
-    if tree[root]['l'] is not None:
-        preOrder(tree, tree[root]['l'])
+        if left != '.':
+            node.left = Node(left)
 
-    if tree[root]['r'] is not None:
-        preOrder(tree, tree[root]['r'])
+        if right != '.':
+            node.right = Node(right)
 
-def inOrder(tree, root):
-    if root is None:
-        return
+    def traverse(self, node, data):
+        if node:
+            if data == node.data: return node
+            else:
+                l = self.traverse(node.left, data)
+                if l: return l
+                return self.traverse(node.right, data)
 
-    if tree[root]['l'] is None and tree[root]['r'] is None:
-        if root is not None:
-            print(root, end = "")
-        return
+        else:
+            return
 
-    if tree[root]['l'] is not None:
-        inOrder(tree, tree[root]['l'])
+    def preOrder(self, node):
+        if node is None: return
+        print(node.data, end = "")
 
-    print(root, end = "")
+        self.preOrder(node.left)
+        self.preOrder(node.right)
 
-    if tree[root]['r'] is not None:
-        inOrder(tree, tree[root]['r'])
+    def inOrder(self, node):
+        if node is None: return
+        self.inOrder(node.left)
+        print(node.data, end = "")
+        self.inOrder(node.right)
 
+    def postOrder(self, node):
+        if node is None: return
+        self.postOrder(node.left)
+        self.postOrder(node.right)
+        print(node.data, end = "")
 
-def postOrder(tree, root):
-    if root is None:
-        return
+N = int(read())
+t = Tree()
+for i in range(N):
+    v, l, r = read().split()
+    t.add(v, l, r)
 
-    if tree[root]['l'] is None and tree[root]['r'] is None:
-        if root is not None:
-            print(root, end = "")
-        return
-
-    if tree[root]['l'] is not None:
-        postOrder(tree, tree[root]['l'])
-
-    if tree[root]['r'] is not None:
-        postOrder(tree, tree[root]['r'])
-
-    print(root, end = "")
-
-preOrder(tree, 'A')
+t.preOrder(t.root)
 print()
-inOrder(tree, 'A')
+t.inOrder(t.root)
 print()
-postOrder(tree, 'A')
+t.postOrder(t.root)
