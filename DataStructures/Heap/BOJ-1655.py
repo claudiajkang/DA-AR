@@ -1,38 +1,37 @@
 from sys import stdin
 from heapq import heappush, heappop
+read = lambda: int(stdin.readline().rstrip())
 
-n = int(stdin.readline().rstrip())
-maxhq = []
-minhq = []
-res = []
+n = read()
+arr = [0] * (n+1)
+l = []
+r = []
 mid = 0
+res = []
 
 for i in range(1, n+1):
-    val = int(stdin.readline().rstrip())
+    arr[i] = read()
 
     if i % 2:
-        if maxhq and val < (maxhq[0] * (-1)):
-            mid = heappop(maxhq) * (-1)
-            heappush(maxhq, val * (-1))
-
-        elif minhq and minhq[0] < val:
-            mid = heappop(minhq)
-            heappush(minhq, val)
-
+        if not r:
+            mid = arr[i]
+            heappush(r, mid)
+        elif arr[i] <= r[0]:
+            heappush(l, arr[i] * (-1))
+            mid = heappop(l) * (-1)
+            heappush(r, mid)
         else:
-            mid = val
-
+            heappush(r, arr[i])
+            mid = heappop(r)
+            heappush(r, mid)
         res.append(mid)
-
     else:
-        if val < mid:
-            heappush(minhq, mid)
-            heappush(maxhq, val*(-1))
-
+        if arr[i] <= mid:
+            heappush(l, arr[i] * (-1))
+            res.append(l[0] * (-1))
         else:
-            heappush(maxhq, (-1) * mid)
-            heappush(minhq, val)
-
-        res.append(maxhq[0] * (-1))
+            heappush(l, heappop(r) * (-1))
+            heappush(r, arr[i])
+            res.append(l[0] * (-1))
 
 print('\n'.join(map(str, res)))
