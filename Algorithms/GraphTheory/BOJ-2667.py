@@ -3,36 +3,37 @@ from collections import deque
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-maps = [[-1] + [0] * n + [-1] for i in range(n+2)]
-maps[0] = [-1] * (n+2)
-maps[-1] = [-1] * (n+2)
+g = [[-1] + [0] * n + [-1] for i in range(n+2)]
 
 for i in range(1, n+1):
-    maps[i] = [-1] + list(map(int, list(read()))) + [-1]
+    g[i] = [-1] + list(map(int, list(read()))) + [-1]
 
 res = []
 p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
 for i in range(1, n+1):
     for j in range(1, n+1):
-        if maps[i][j] == 1:
-            dfs = deque()
+        if g[i][j] == 1:
             q = deque()
+            dfs = deque()
             q.append([i, j])
-            maps[i][j] = 0
+            dfs.append([i, j])
 
             while q:
                 ci, cj = q.popleft()
-                dfs.append([ci, cj])
 
                 for ii, jj in p:
-                    if maps[ci+ii][cj+jj] == 1:
-                        maps[ci+ii][cj+jj] = 0
-                        q.append([ci+ii, cj+jj])
+                    ti = ci + ii
+                    tj = cj + jj
 
-            if dfs:
-                res.append(len(dfs))
+                    if g[ti][tj] == 1:
+                        g[ti][tj] = -1
+                        q.append([ti, tj])
+                        if [ti, tj] not in dfs:
+                            dfs.append([ti, tj])
+
+            res.append(len(dfs))
+
 
 print(len(res))
-for i in sorted(res):
-    print(i)
+print('\n'.join(map(str, sorted(res))))
