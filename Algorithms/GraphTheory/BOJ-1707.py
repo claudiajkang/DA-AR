@@ -2,49 +2,43 @@ from sys import stdin
 from collections import deque
 read = lambda: stdin.readline().rstrip()
 
-t = int(read())
-result = [''] * t
+k = int(read())
 
-for tt in range(t):
+for tt in range(k):
     v, e = map(int, read().split())
-    g = {i : [] for i in range(1, v+1)}
+
+    g = [[] for i in range(v+1)]
 
     for i in range(e):
         a, b = map(int, read().split())
         g[a].append(b)
         g[b].append(a)
 
-    visited = [False for i in range(v+1)]
-
-    color = ['R', 'G']
-    res = False
+    vcolor = [None] * (v+1)
+    color = ['R', 'B']
+    ci = True
+    err = False
 
     for i in range(1, v+1):
-        if not res and not visited[i]:
-            cdx = int(i%2)
-            visited[i] = color[cdx]
+        if vcolor[i] is None:
             q = deque()
-            q.append([cdx, i])
+            vcolor[i] = color[ci]
+            q.append(i)
 
             while q:
-                cdx, cur = q.popleft()
-                tdx = int((cdx+1) % 2)
+                c = q.popleft()
+                ci = color.index(vcolor[c])
 
-                for k in g[cur]:
-                    if not visited[k]:
-                        visited[k] = color[tdx]
-                        q.append([tdx, k])
+                for j in g[c]:
+                    if vcolor[j] is None:
+                        q.append(j)
+                        vcolor[j] = color[not ci]
 
-                    elif visited[k] != color[tdx]:
-                        res = True
+                    elif vcolor[j] != color[not ci]:
+                        err = True
                         break
 
-                if res:
+                if err:
                     break
 
-            if res:
-                break
-
-    result[tt] = ['YES', 'NO'][res]
-
-print('\n'.join(result))
+    print(['YES', 'NO'][err])
