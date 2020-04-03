@@ -1,28 +1,27 @@
 from sys import stdin, setrecursionlimit
+
 setrecursionlimit(10 ** 6)
 
 read = lambda: stdin.readline().rstrip()
 
-def set_par(n):
-    global parent, tree
-
-    for i in tree[n]:
-        if parent[i] == 0:
-            parent[i] = n
-            set_par(i)
-
-
 n = int(read())
-tree = [[] for i in range(n+1)]
-parent = [0 for i in range(n+1)]
-parent[1] = 1
+arr = [[] for i in range(n + 1)]
+parent = [0] * (n + 1)
 
 for i in range(n - 1):
     a, b = map(int, read().split())
-    tree[a].append(b)
-    tree[b].append(a)
+    arr[a].append(b)
+    arr[b].append(a)
 
-set_par(1)
 
-for i in range(2, n+1):
-    print(parent[i])
+def set_parent(node):
+    for i in arr[node]:
+        if parent[i] == 0:
+            parent[i] = node
+            set_parent(i)
+
+
+set_parent(1)
+
+for i in parent[2:]:
+    print(i)
