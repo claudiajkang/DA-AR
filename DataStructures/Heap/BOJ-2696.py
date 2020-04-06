@@ -3,9 +3,9 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
-t = int(read())
+tt = int(read())
 
-for tt in range(t):
+for t in range(tt):
     m = int(read())
     arr = [0]
 
@@ -30,13 +30,14 @@ for tt in range(t):
                 heappush(r, arr[i])
                 mid = heappop(r)
             res.append(mid)
+
         else:
             if arr[i] <= mid:
-                heappush(r, mid)
                 heappush(l, arr[i] * (-1))
+                heappush(r, mid)
             else:
-                heappush(l, mid * (-1))
                 heappush(r, arr[i])
+                heappush(l, mid * (-1))
 
         if len(res) == 10:
             print(' '.join(map(str, res)))
