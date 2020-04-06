@@ -1,22 +1,18 @@
 from sys import stdin
-from collections import deque
+
 read = lambda: stdin.readline().rstrip()
 
-a, p = map(int, read().split())
-q = deque()
-q.append(int(a))
-c = 0
+a, p = read().split()
+p = int(p)
+arr = [a]
 
 while True:
-    t = q.pop()
-    q.append(t)
-    c = 0
-    for i in map(int, list(str(t))):
-        c += (i**p)
-
-    if c in q:
+    r = 0
+    for a in arr[-1]:
+        r += int(a) ** p
+    if str(r) in arr:
+        tidx = arr.index(str(r))
+        print(len(arr[:tidx]))
         break
-
-    q.append(c)
-
-print(q.index(c))
+    else:
+        arr.append(str(r))
