@@ -1,34 +1,29 @@
-from sys import stdin
 from collections import deque
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
 n, m = map(int, read().split())
-g = [[-1] + [0] * m + [-1] for i in range(n+2)]
-g[0] = [-1] * (m+2)
-g[-1] = [-1] * (m+2)
-visited = [[False] * (m+2) for i in range(n+2)]
+g = []
+
+for i in range(n):
+    g.append(list(map(int, list(read()))))
+
 p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
+q = deque()
+q.append([0, 0])
+g[0][0] = 1
 
-for i in range(1, n+1):
-    g[i] = [-1] + list(map(int, list(read()))) + [-1]
+while q:
+    ci, cj = q.popleft()
 
-for i in range(1, n+1):
-    for j in range(1, m+1):
-        if g[i][j] == 1 and not visited[i][j]:
-            q = deque()
-            visited[i][j] = True
-            q.append([1, i, j])
+    for ii, jj in p:
+        ti, tj = ci + ii, cj + jj
+        if (ti < 0 or ti >= n) or (tj < 0 or tj >= m):
+            continue
 
-            while q:
-                c, ci, cj = q.popleft()
+        if g[ti][tj] == 1:
+            q.append([ti, tj])
+            g[ti][tj] = g[ci][cj] + 1
 
-                for ii, jj in p:
-                    ti = ci + ii
-                    tj = cj + jj
-
-                    if not visited[ti][tj] and g[ti][tj] == 1:
-                        visited[ti][tj] = True
-                        g[ti][tj] = c + 1
-                        q.append([c+1, ti, tj])
-
-print(g[n][m])
+print(g[n - 1][m - 1])
