@@ -3,11 +3,11 @@ from sys import stdin
 
 read = lambda: int(stdin.readline().rstrip())
 
-n = read()
+n = int(read())
 arr = [0] + [read() for i in range(n)]
 l = []
 r = []
-mid = 0
+mid = []
 res = []
 
 for i in range(1, n+1):
@@ -20,12 +20,13 @@ for i in range(1, n+1):
         else:
             heappush(r, arr[i])
         mid = r[0]
+
     else:
         if arr[i] <= mid:
             heappush(l, arr[i] * (-1))
         else:
-            heappush(l, heappop(r) * (-1))
             heappush(r, arr[i])
+            heappush(l, (-1) * heappop(r))
         mid = l[0] * (-1)
 
     res.append(mid)
