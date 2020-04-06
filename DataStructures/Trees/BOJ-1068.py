@@ -4,9 +4,9 @@ read = lambda: stdin.readline().rstrip()
 
 
 def preorder(node):
-    global cnt, tree
+    global res, tree
     if node.child == []:
-        cnt += 1
+        res += 1
     for child in node.child:
         preorder(tree[child])
 
@@ -24,7 +24,7 @@ class Node:
 
 n = int(read())
 tree = [Node() for _ in range(n)]
-cnt = 0
+res = 0
 parent = list(map(int, read().split()))
 root = 0
 
@@ -36,11 +36,7 @@ for i in range(n):
 
 if n != 1:
     i = int(read())
-    if parent[i] == -1:
-        cnt = 0
-
-    else:
+    if parent[i] != -1:
         tree[parent[i]].removeChild(i)
         preorder(tree[root])
-
-print(cnt)
+    print(res)
