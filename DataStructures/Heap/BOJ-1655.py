@@ -3,12 +3,11 @@ from sys import stdin
 
 read = lambda: int(stdin.readline().rstrip())
 
-n = int(read())
+n = read()
 arr = [0] + [read() for i in range(n)]
+res = []
 l = []
 r = []
-mid = []
-res = []
 
 for i in range(1, n+1):
     if i % 2:
@@ -16,19 +15,16 @@ for i in range(1, n+1):
             heappush(r, arr[i])
         elif arr[i] <= r[0]:
             heappush(l, arr[i] * (-1))
+        else:
+            heappush(r, arr[i])
+            heappush(l, heappop(r) * (-1))
+        res.append(r[0])
+    else:
+        if arr[i] <= r[0]:
+            heappush(l, arr[i] * (-1))
             heappush(r, heappop(l) * (-1))
         else:
             heappush(r, arr[i])
-        mid = r[0]
-
-    else:
-        if arr[i] <= mid:
-            heappush(l, arr[i] * (-1))
-        else:
-            heappush(r, arr[i])
-            heappush(l, (-1) * heappop(r))
-        mid = l[0] * (-1)
-
-    res.append(mid)
+        res.append(r[0])
 
 print('\n'.join(map(str, res)))
