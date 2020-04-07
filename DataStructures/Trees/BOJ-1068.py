@@ -1,42 +1,46 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
 
+setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
-def preorder(node):
-    global res, tree
-    if node.child == []:
+def preOrder(num):
+    global tree, res
+    if tree[num].child == []:
         res += 1
-    for child in node.child:
-        preorder(tree[child])
-
+    else:
+        for cur in tree[num].child:
+            if tree[cur]:
+                preOrder(cur)
 
 class Node:
     def __init__(self):
         self.child = []
 
-    def setChild(self, node):
-        self.child.append(node)
+    def add(self, child):
+        self.child.append(child)
 
-    def removeChild(self, node):
-        self.child.remove(node)
+    def remove(self, child):
+        self.child.remove(child)
 
 
 n = int(read())
-tree = [Node() for _ in range(n)]
-res = 0
-parent = list(map(int, read().split()))
+tree = [Node() for i in range(n + 1)]
+temp = list(map(int, read().split()))
+deleteNode = int(read())
 root = 0
 
 for i in range(n):
-    if parent[i] != -1:
-        tree[parent[i]].setChild(i)
-    else:
+    if temp[i] == -1:
         root = i
+        continue
+    tree[temp[i]].add(i)
 
-if n != 1:
-    i = int(read())
-    if parent[i] != -1:
-        tree[parent[i]].removeChild(i)
-        preorder(tree[root])
+if temp[deleteNode] == -1:
+    print(0)
+
+else:
+    tree[temp[deleteNode]].remove(deleteNode)
+    res = 0
+    preOrder(root)
     print(res)
