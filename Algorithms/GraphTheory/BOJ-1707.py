@@ -1,44 +1,48 @@
-from sys import stdin
 from collections import deque
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
 k = int(read())
 
-for tt in range(k):
+for t in range(k):
     v, e = map(int, read().split())
-
-    g = [[] for i in range(v+1)]
+    g = [[] for i in range(v + 1)]
 
     for i in range(e):
         a, b = map(int, read().split())
         g[a].append(b)
         g[b].append(a)
 
-    vcolor = [None] * (v+1)
-    color = ['R', 'B']
-    ci = True
+    visited = [''] * (v + 1)
+    color = ['R', 'G']
+    colorIdx = False
     err = False
 
-    for i in range(1, v+1):
-        if vcolor[i] is None:
+    for i in range(1, v + 1):
+        if visited[i] == '':
+            visited[i] = color[not colorIdx]
             q = deque()
-            vcolor[i] = color[ci]
             q.append(i)
 
             while q:
-                c = q.popleft()
-                ci = color.index(vcolor[c])
+                cur = q.popleft()
+                cidx = color.index(visited[cur])
 
-                for j in g[c]:
-                    if vcolor[j] is None:
+                for j in g[cur]:
+                    if visited[j] == '':
+                        visited[j] = color[not cidx]
                         q.append(j)
-                        vcolor[j] = color[not ci]
+                        continue
 
-                    elif vcolor[j] != color[not ci]:
+                    if i != j and visited[j] != color[not cidx]:
                         err = True
                         break
 
                 if err:
                     break
+
+            if err:
+                break
 
     print(['YES', 'NO'][err])
