@@ -4,18 +4,20 @@ setrecursionlimit(10 ** 6)
 
 read = lambda: stdin.readline().rstrip()
 
-def dfs(num):
+
+def dfs(nnum):
     global island
+
     sum = 0
 
-    for i in range(len(island[num].connect)):
-        sum += dfs(island[num].connect[i])
+    for i in range(len(island[nnum].connect)):
+        sum += dfs(island[nnum].connect[i])
 
-    if island[num].type == 'S':
-        return sum + island[num].data
+    if island[nnum].type == 'S':
+        return island[nnum].data + sum
 
     else:
-        return sum - island[num].data if (sum - island[num].data) >= 0 else 0
+        return (sum - island[nnum].data) if (sum - island[nnum].data) >= 0 else 0
 
 
 class Node:
