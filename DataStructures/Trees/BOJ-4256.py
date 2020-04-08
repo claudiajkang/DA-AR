@@ -1,25 +1,26 @@
 from sys import stdin, setrecursionlimit
-
 setrecursionlimit(10 ** 6)
-
 read = lambda: stdin.readline().rstrip()
 
 
-def postOrder(preorder, inorder):
-    N = len(inorder)
-    if len(preorder) == 0: return
-    root = preorder[0]
-    l = inorder.index(root)
-    postOrder(preorder[1:l + 1], inorder[0:l])
-    postOrder(preorder[l + 1:N], inorder[l + 1:N])
-    print(root, end=" ")
+def postOrder(po, io):
+    global res
+    if not io: return
+
+    iroot = io.index(po[0])
+    postOrder(po[1:iroot + 1], io[0:iroot])
+    postOrder(po[iroot + 1:], io[iroot + 1:])
+    res.append(po[0])
 
 
-T = int(read())
-for i in range(T):
-    N = int(read())
-
+result = ""
+tt = int(read())
+for t in range(tt):
+    n = int(read())
+    res = []
     preorder = list(map(int, read().split()))
     inorder = list(map(int, read().split()))
     postOrder(preorder, inorder)
-    print()
+    result += ' '.join(map(str, res)) + '\n'
+
+print(result[:-1], end="")
