@@ -4,52 +4,49 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 m, n, h = map(int, read().split())
-
-box = [[[0] * m for i in range(n)] for _ in range(h)]
-q = deque()
-zero = 0
+box = [[[0] * m for i in range(n)] for k in range(h)]
+tomato = deque()
 minus = 0
+zero = 0
 
 for hh in range(h):
-    for i in range(n):
-        box[hh][i] = list(map(int, read().split()))
+    for nn in range(n):
+        box[hh][nn] = list(map(int, read().split()))
 
-        if box[hh][i].count(1) > 0:
-            for j in range(m):
-                if box[hh][i][j] == 1:
-                    q.append([hh, i, j])
+        if box[hh][nn].count(1) > 0:
+            for mm in range(m):
+                if box[hh][nn][mm] == 1:
+                    tomato.append([hh, nn, mm])
 
-        zero += box[hh][i].count(0)
-        minus += box[hh][i].count(-1)
+        minus += box[hh][nn].count(-1)
+        zero += box[hh][nn].count(0)
 
-if zero == 0 and (len(q) + minus == (h * m * n)):
+if (minus + len(tomato)) == (h * n * m):
     print(0)
     exit()
 
 p = [[1, 0, 0], [-1, 0, 0], [0, 0, -1], [0, 0, 1], [0, -1, 0], [0, 1, 0]]
 res = 0
 
-while q:
-    ch, ci, cj = q.popleft()
+while tomato:
+    ch, cn, cm = tomato.popleft()
 
-    for hh, ii, jj in p:
-        th = hh + ch
-        ti = ii + ci
-        tj = jj + cj
-
-        if (th < 0 or th >= h) or (ti < 0 or ti >= n) or (tj < 0 or tj >= m):
+    for hh, nn, mm in p:
+        th, tn, tm = hh + ch, nn + cn, mm + cm
+        if (th < 0 or th >= h) or (tn < 0 or tn >= n) or (tm < 0 or tm >= m):
             continue
-
-        if box[th][ti][tj] == 0:
-            if (box[ch][ci][cj] + 1) > res:
-                res = box[ch][ci][cj] + 1
-
-            box[th][ti][tj] = box[ch][ci][cj] + 1
-            q.append([th, ti, tj])
+        if box[th][tn][tm] == 0:
+            tomato.append([th, tn, tm])
+            box[th][tn][tm] = box[ch][cn][cm] + 1
+            if box[ch][cn][cm] + 1 > res:
+                res = box[ch][cn][cm] + 1
 
 for hh in range(h):
-    for i in range(n):
-        if box[hh][i].count(0) > 0:
+    for nn in range(n):
+        if box[hh][nn].count(0) > 0:
             res = -1
+            break
+    if res == -1:
+        break
 
 print(res if res == -1 else res - 1)
