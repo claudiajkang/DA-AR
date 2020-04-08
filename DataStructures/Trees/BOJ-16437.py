@@ -1,39 +1,37 @@
 from sys import stdin, setrecursionlimit
+
 setrecursionlimit(10 ** 6)
 
 read = lambda: stdin.readline().rstrip()
 
-
-def dfs(idx):
-    global arr, vt
+def dfs(num):
+    global island
     sum = 0
-    for i in range(len(vt[idx])):
-        sum += dfs(vt[idx][i])
 
-    if arr[idx].type == 'S':
-        return arr[idx].cnt + sum
+    for i in range(len(island[num].connect)):
+        sum += dfs(island[num].connect[i])
+
+    if island[num].type == 'S':
+        return sum + island[num].data
 
     else:
-        return (sum - arr[idx].cnt) if (sum - arr[idx].cnt) >= 0 else 0
+        return sum - island[num].data if (sum - island[num].data) >= 0 else 0
 
 
 class Node:
-    def __init__(self, cnt, t):
-        self.type = t
-        self.cnt = cnt
+    def __init__(self):
+        self.data = 0
+        self.type = 'S'
+        self.connect = []
 
 
 n = int(read())
-arr = []
-vt = [[] for i in range(n + 1)]
+island = [Node() for i in range(n + 1)]
 
-for i in range(n+1):
-    if i in [0, 1]:
-        arr.append(Node(0, 'S'))
-    else:
-        t, a, p = read().split()
-        arr.append(Node(int(a), t))
-        p = int(p)
-        vt[p].append(i)
+for i in range(2, n + 1):
+    t, a, p = read().split()
+    island[i].type = t
+    island[i].data = int(a)
+    island[int(p)].connect.append(i)
 
 print(dfs(1))
