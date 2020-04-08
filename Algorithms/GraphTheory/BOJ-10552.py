@@ -1,20 +1,36 @@
+from collections import deque
 from sys import stdin
 
-n, m, p = map(int, stdin.readline().rstrip().split())
+read = lambda: stdin.readline().rstrip()
+
+n, m, p = map(int, read().split())
+
 channel = [0] * (m + 1)
 
 for i in range(n):
-    l, d = map(int, stdin.readline().rstrip().split())
+    l, d = map(int, read().split())
     if channel[d] == 0:
         channel[d] = l
 
 watched = [False] * (m + 1)
-cur = p
+q = deque()
+q.append(p)
 res = 0
+err = False
+watched[p] = True
 
-while (not watched[cur]) and (channel[cur] != 0):
-    watched[cur] = True
-    res += 1
-    cur = channel[cur]
+while q:
+    cur = q.popleft()
 
-print(-1 if watched[cur] else res)
+    if not watched[channel[cur]]:
+        if channel[cur] > 0:
+            q.append(channel[cur])
+            watched[channel[cur]] = True
+            res += 1
+        else:
+            break
+    else:
+        err = True
+        break
+
+print(-1 if err else res)
