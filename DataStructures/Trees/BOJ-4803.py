@@ -3,7 +3,7 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
-t = 0
+cs = 1
 res = ""
 while True:
     n, m = map(int, read().split())
@@ -12,44 +12,48 @@ while True:
         print(res[:-1])
         break
 
-    t += 1
-    adj = [[] for i in range(n + 1)]
+    tree = [[] for i in range(n + 1)]
 
     for i in range(m):
-        u, v = map(int, read().split())
-        adj[u].append(v)
-        adj[v].append(u)
+        a, b = map(int, read().split())
+        tree[a].append(b)
+        tree[b].append(a)
 
-    visited = [False] * (n + 1)
     prev = [-1] * (n + 1)
-
-    result = 0
+    visited = [False] * (n + 1)
+    results = 0
 
     for i in range(1, n + 1):
         if not visited[i]:
-            flag = True
             q = deque()
-            visited[i] = True
             q.append(i)
+            visited[i] = True
+            flag = True
 
             while q:
-                curr = q.popleft()
-
-                for nxt in adj[curr]:
+                cur = q.popleft()
+                for nxt in tree[cur]:
                     if not visited[nxt]:
                         visited[nxt] = True
-                        prev[nxt] = curr
+                        prev[nxt] = cur
                         q.append(nxt)
+                        continue
 
-                    elif nxt != prev[curr]:
+                    if nxt != prev[cur]:
                         flag = False
 
             if flag:
-                result += 1
+                results += 1
 
-    if result == 0:
-        res += f"Case {t}: No trees.\n"
-    elif result == 1:
-        res += f"Case {t}: There is one tree.\n"
+    res += f"Case {cs}: "
+
+    if results == 0:
+        res += "No trees.\n"
+
+    elif results == 1:
+        res += "There is one tree.\n"
+
     else:
-        res += f"Case {t}: A forest of {result} trees.\n"
+        res += f"A forest of {results} trees.\n"
+
+    cs += 1
