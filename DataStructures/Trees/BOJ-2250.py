@@ -8,28 +8,20 @@ read = lambda: stdin.readline().rstrip()
 def inOrder(num):
     global tree, idx, levels
 
-    if num is None:
-        return
-
-    inOrder(tree[num]['left'])
+    if tree[num]['left']: inOrder(tree[num]['left'])
     idx += 1
     tree[num]['pos'] = idx
     levels[tree[num]['level']].append(idx)
-    inOrder(tree[num]['right'])
+    if tree[num]['right']: inOrder(tree[num]['right'])
 
 
 def preOrder(num, level):
     global tree, maxlevel
 
-    if num is None:
-        return
-
-    if level > maxlevel:
-        maxlevel = level
-
+    if level > maxlevel: maxlevel = level
     tree[num]['level'] = level
-    preOrder(tree[num]['left'], level + 1)
-    preOrder(tree[num]['right'], level + 1)
+    if tree[num]['left']: preOrder(tree[num]['left'], level + 1)
+    if tree[num]['right']: preOrder(tree[num]['right'], level + 1)
 
 
 n = int(read())
@@ -53,20 +45,14 @@ for i in range(1, n + 1):
         break
 
 preOrder(root, 1)
-
 levels = [[] for i in range(maxlevel + 1)]
 inOrder(root)
-
 res = [0, 0]
 
 for i in range(1, maxlevel + 1):
-    if len(levels[i]) == 1:
-        if 1 > res[1]:
-            res[0] = i
-            res[1] = 1
-    else:
-        if (levels[i][-1] - levels[i][0]) + 1 > res[1]:
-            res[0] = i
-            res[1] = levels[i][-1] - levels[i][0] + 1
+    if (len(levels[i]) == 1) and (1 > res[1]):
+        res = [i, 1]
+    elif (len(levels[i]) >= 1) and (levels[i][-1] - levels[i][0]) + 1 > res[1]:
+        res = [i, levels[i][-1] - levels[i][0] + 1]
 
 print(' '.join(map(str, res)))
