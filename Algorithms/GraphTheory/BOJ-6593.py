@@ -3,49 +3,68 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
-result = ""
-p = [[-1, 0, 0], [1, 0, 0], [0, -1, 0], [0, 1, 0], [0, 0, -1], [0, 0, 1]]
-while True:
-    l, r, c = map(int, read().split())
+p = [[1, 0, 0], [-1, 0, 0], [0, -1, 0], [0, 1, 0], [0, 0, -1], [0, 0, 1]]
 
-    if [l, r, c] == [0, 0, 0]:
-        print(result[:-1], end="")
+result = ''
+while True:
+    L, R, C = map(int, read().split())
+
+    if [0, 0, 0] == [L, R, C]:
+        print(result[:-1])
         break
 
-    g = [[['#'] * (c + 2) for i in range(r + 2)] for k in range(l + 1)]
-    cur = [0, 0, 0]
-    end = [0, 0, 0]
+    g = [[['#'] * (C + 2) for i in range(R + 2)] for t in range(L + 2)]
 
-    for ll in range(1, l + 1):
-        for rr in range(1, r + 1):
+    start, end = 0, 0
+
+    for ll in range(1, L + 1):
+        for rr in range(1, R + 1):
             g[ll][rr] = ['#'] + list(read()) + ['#']
-            if g[ll][rr].count('S'):
-                cur = [ll, rr, g[ll][rr].index('S')]
 
-            if g[ll][rr].count('E'):
+            if g[ll][rr].count('S') > 0:
+                start = [ll, rr, g[ll][rr].index('S')]
+
+            if g[ll][rr].count('E') > 0:
                 end = [ll, rr, g[ll][rr].index('E')]
 
-        temp = read()
+        t = read()
 
     q = deque()
-    q.append(cur + [0])
+    q.append(start)
+    g[start[0]][start[1]][start[2]] = 0
     done = False
     res = 0
 
-    while q and not done:
-        ch, ci, cj, ct = q.popleft()
+    while q:
+        curl, curr, curc = q.popleft()
 
-        for hh, ii, jj in p:
-            th, ti, tj = hh + ch, ii + ci, jj + cj
+        for ll, rr, cc in p:
+            tl, tr, tc = curl + ll, curr + rr, curc + cc
 
-            if (1 <= th <= l) and (1 <= ti <= r) and (1 <= tj <= c):
-                if [th, ti, tj] == end:
-                    res = ct + 1
-                    done = True
-                    break
-                if g[th][ti][tj] == '.':
-                    g[th][ti][tj] = ct + 1
-                    q.append([th, ti, tj, ct + 1])
+            if [tl, tr, tc] == end:
+                g[tl][tr][tc] = g[curl][curr][curc] + 1
+                res = g[curl][curr][curc] + 1
+                done = True
+                break
 
-    result += f"Escaped in {res} minute(s)." if res > 0 else "Trapped!"
-    result += "\n"
+            if g[tl][tr][tc] == '.':
+                g[tl][tr][tc] = g[curl][curr][curc] + 1
+                q.append([tl, tr, tc])
+
+        if done:
+            break
+
+    for ll in range(1, L + 1):
+        for rr in range(1, R + 1):
+            if g[ll][rr].count('E'):
+                res = -1
+                break
+
+        if res == -1:
+            break
+
+    if res == -1:
+        result += 'Trapped!\n'
+
+    else:
+        result += f'Escaped in {res} minute(s).\n'
