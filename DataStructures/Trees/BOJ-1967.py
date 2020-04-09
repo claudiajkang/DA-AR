@@ -1,44 +1,44 @@
 from collections import deque
-from sys import stdin
+from sys import stdin, setrecursionlimit
+
+setrecursionlimit(10 ** 6)
 
 read = lambda: stdin.readline().rstrip()
 
+n = int(read())
+g = [[] for i in range(n + 1)]
 
-def dfs(start):
-    global tree
-    visited = [False] * (len(tree) + 1)
-    visited[start] = True
+for i in range(n - 1):
+    a, b, c = map(int, read().split())
+    g[a].append([b, c])
+    g[b].append([a, c])
+
+
+def dfs(nnum):
+    global g
 
     q = deque()
-    q.append([start, 0])
-    max_val = 0
-    mi = start
+    q.append([nnum, 0])
+    d = 0
+    di = 0
+    visited = [False] * (n + 1)
+    visited[nnum] = True
 
     while q:
-        ci, cd = q.popleft()
+        cur, cd = q.popleft()
 
-        if len(tree[ci]) == 0:
-            break
+        for jj, jd in g[cur]:
+            if not visited[jj]:
+                q.append([jj, cd + jd])
+                visited[jj] = True
+                if (cd + jd) > d:
+                    d = cd + jd
+                    di = jj
 
-        for ti, td in tree[ci]:
-            if not visited[ti]:
-                visited[ti] = True
-                q.append([ti, td + cd])
-                if (td + cd) > max_val:
-                    max_val = td + cd
-                    mi = ti
-
-    return mi, max_val
+    return di, d
 
 
-n = int(read())
-tree = [[] for i in range(n + 1)]
-for i in range(n - 1):
-    d, lr, v = map(int, read().split())
-    tree[d].append([lr, v])
-    tree[lr].append([d, v])
+fidx, fv = dfs(1)
+sidx, sv = dfs(fidx)
 
-first_max_idx, res1 = dfs(1)
-second_max_idx, res2 = dfs(first_max_idx)
-
-print(res2)
+print(sv)
