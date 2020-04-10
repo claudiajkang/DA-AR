@@ -2,24 +2,23 @@ from collections import deque
 from sys import stdin
 
 n, k = map(int, stdin.readline().rstrip().split())
+mn = 10 ** 6
+pos = [-1] * (mn + 1)
 
 if n == k:
     print(0)
-    exit()
 
-pos = [-1] * (10 ** 6 + 1)
-q = deque()
-q.append(n)
-pos[n] = 0
+else:
+    q = deque()
+    q.append(n)
+    pos[n] = 0
 
-while q:
-    cur = q.popleft()
-    if cur == k:
-        break
+    while q:
+        cur = q.popleft()
 
-    for ti in [cur - 1, cur + 1, cur * 2]:
-        if (0 <= ti <= 10 ** 6) and pos[ti] == -1:
-            pos[ti] = pos[cur] + 1
-            q.append(ti)
+        for i in [cur - 1, cur + 1, 2 * cur]:
+            if 0 <= i <= mn and pos[i] == -1:
+                q.append(i)
+                pos[i] = pos[cur] + 1
 
-print(pos[k])
+    print(pos[k], end="")
