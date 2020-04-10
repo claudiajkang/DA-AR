@@ -1,58 +1,66 @@
 from sys import stdin, setrecursionlimit
-
 setrecursionlimit(10 ** 6)
-
 read = lambda: stdin.readline().rstrip()
 
-
 def inOrder(num):
-    global tree, idx, levels
+    global tree, level, pos
 
-    if tree[num]['left']: inOrder(tree[num]['left'])
-    idx += 1
-    tree[num]['pos'] = idx
-    levels[tree[num]['level']].append(idx)
-    if tree[num]['right']: inOrder(tree[num]['right'])
+    if tree[num].left: inOrder(tree[num].left)
+    tree[num].position = pos
+    level[tree[num].level].append(pos)
+    pos += 1
+    if tree[num].right: inOrder(tree[num].right)
 
 
-def preOrder(num, level):
+def postOrder(num, level):
     global tree, maxlevel
 
     if level > maxlevel: maxlevel = level
-    tree[num]['level'] = level
-    if tree[num]['left']: preOrder(tree[num]['left'], level + 1)
-    if tree[num]['right']: preOrder(tree[num]['right'], level + 1)
+    tree[num].level = level
+    if tree[num].left: postOrder(tree[num].left, level + 1)
+    if tree[num].right: postOrder(tree[num].right, level + 1)
+
+
+class Node:
+    def __init__(self):
+        self.index = 0
+        self.parent = None
+        self.level = 0
+        self.left = None
+        self.right = None
+        self.position = -1
 
 
 n = int(read())
-tree = {i: {'parent': None, 'level': 0, 'left': None, 'right': None, 'pos': 0} for i in range(1, n + 1)}
-idx = 0
-maxlevel = 0
+tree = [Node() for i in range(n + 1)]
+
+for i in range(1, n + 1):
+    a, b, c = map(int, read().split())
+    if b != -1:
+        tree[a].left = b
+        tree[b].parent = a
+    if c != -1:
+        tree[a].right = c
+        tree[c].parent = a
+
 root = 0
 
 for i in range(1, n + 1):
-    d, l, r = map(int, read().split())
-    if l != -1:
-        tree[d]['left'] = l
-        tree[tree[d]['left']]['parent'] = d
-    if r != -1:
-        tree[d]['right'] = r
-        tree[tree[d]['right']]['parent'] = d
-
-for i in range(1, n + 1):
-    if tree[i]['parent'] is None:
+    if tree[i].parent is None:
         root = i
         break
 
-preOrder(root, 1)
-levels = [[] for i in range(maxlevel + 1)]
+maxlevel = 0
+postOrder(root, 1)
+pos = 1
+level = [[] for i in range(maxlevel + 1)]
 inOrder(root)
 res = [0, 0]
 
 for i in range(1, maxlevel + 1):
-    if (len(levels[i]) == 1) and (1 > res[1]):
-        res = [i, 1]
-    elif (len(levels[i]) >= 1) and (levels[i][-1] - levels[i][0]) + 1 > res[1]:
-        res = [i, levels[i][-1] - levels[i][0] + 1]
+    if len(level[i]) == 1:
+        if 1 > res[1]: res = [i, 1]
+    elif len(level[i]) > 1 and (level[i][-1] - level[i][0] + 1) > res[1]:
+        res = [i, (level[i][-1] - level[i][0] + 1)]
 
 print(' '.join(map(str, res)))
