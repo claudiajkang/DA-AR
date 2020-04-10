@@ -1,26 +1,28 @@
 from sys import stdin, setrecursionlimit
+
 setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
-def postOrder(po, io):
+
+def poso(po, io):
     global res
-    if len(io) == 0 or len(po) == 0:
+    if len(po) == 0 or len(io) == 0:
         return
 
     idx = io.index(po[0])
-    postOrder(po[1:idx + 1], io[:idx])
-    postOrder(po[idx + 1:], io[idx + 1:])
+    poso(po[1:idx + 1], io[:idx])
+    poso(po[idx + 1:], io[idx + 1:])
     res.append(po[0])
 
 
-results = ""
-tt = int(read())
-for t in range(tt):
-    res = []
+t = int(read())
+result = ""
+for tt in range(t):
     n = int(read())
-    po = list(map(int, read().split()))
-    io = list(map(int, read().split()))
-    postOrder(po, io)
-    results += ' '.join(map(str, res)) + '\n'
+    preo = list(map(int, read().split()))
+    ino = list(map(int, read().split()))
+    res = []
+    poso(preo, ino)
+    result += ' '.join(map(str, res)) + '\n'
 
-print(results[:-1], end="")
+print(result[:-1], end="")
