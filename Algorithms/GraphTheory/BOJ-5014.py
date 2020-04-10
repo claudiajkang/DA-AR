@@ -1,34 +1,29 @@
 from collections import deque
 from sys import stdin
 
-F, S, G, U, D = map(int, stdin.readline().rstrip().split())
-D = (-1) * D
-visited = [-1] * (F + 1)
-
-if S == G:
-    print(0)
-    exit()
+f, s, g, u, d = map(int, stdin.readline().rstrip().split())
+d = d * (-1)
+b = [-1] * (10 ** 6 + 1)
 
 q = deque()
-q.append(S)
-bfs = [S]
-visited[S] = 0
+q.append(s)
+b[s] = 0
+done = False
 
 while q:
     cur = q.popleft()
 
-    for i in [U, D]:
-        t = cur + i
-
-        if 1 <= t <= F:
-            if visited[t] == -1:
-                q.append(t)
-                visited[t] = visited[cur] + 1
-                bfs.append(t)
-                if t == G:
-                    break
-
-    if visited[G] != -1:
+    if cur == g:
+        done = True
         break
 
-print(visited[G] if G in bfs else "use the stairs")
+    for i in [u, d]:
+        t = cur + i
+        if (1 <= t <= f) and b[t] == -1:
+            b[t] = b[cur] + 1
+            q.append(t)
+
+if done:
+    print(b[g], end="")
+else:
+    print("use the stairs", end="")
