@@ -1,33 +1,36 @@
 from collections import deque
 from sys import stdin
 
-N, T, G = map(int, stdin.readline().rstrip().split())
+n, t, g = map(int, stdin.readline().rstrip().split())
+btn = [-1] * (10 ** 6)
 
-visited = [-1] * (10 ** 6 + 1)
 q = deque()
-q.append(N)
-visited[N] = 0
+q.append(n)
+btn[n] = 0
 suc = False
 
 while q:
-    ci = q.popleft()
+    cur = q.popleft()
 
-    if visited[ci] > T: break
+    if btn[cur] > t: break
 
-    if ci == G:
+    if cur == g:
         suc = True
-        print(visited[G])
         break
 
-    tp = [ci + 1, ci * 2]
-    for i in range(2):
-        nx = tp[i]
-        if nx > 99999: continue
-        if i and ci:
-            nx -= 10 ** (len(str(nx)) - 1)
-        if visited[nx] == -1:
-            q.append(nx)
-            visited[nx] = visited[ci] + 1
+    tp = [cur + 1, cur * 2]
+    for v in range(2):
+        i = tp[v]
+        if i > 99999 or i < 0: continue
 
-if not suc:
-    print('ANG')
+        if v == 1:
+            i -= 10 ** (len(str(i)) - 1)
+
+        if btn[i] == -1:
+            btn[i] = btn[cur] + 1
+            q.append(i)
+
+if suc:
+    print(btn[g], end="")
+else:
+    print('ANG', end="")
