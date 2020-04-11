@@ -1,50 +1,37 @@
-from collections import deque
-from sys import stdin
-
-read = lambda: stdin.readline().rstrip()
-
-n, m = map(int, read().split())
-maps = [[] for i in range(n)]
-for i in range(n):
-    maps[i] = list(map(int, list(read())))
-
-visited = [[[False] * m for i in range(n)] for ii in range(2)]
-visited[0][0][0] = True
-q = deque()
-q.append([0, 0, 0])
-result = 1
 
 while q:
     qsize = len(q)
-    reach = False
+    time += 1
 
     for i in range(qsize):
-        crash, r, c = q.popleft()
+        crash, ch, cw = q.popleft()
 
-        if r == (n - 1) and c == (m - 1):
-            reach = True
+        if ch == (h - 1) and cw == (w - 1):
+            suc = True
             break
 
-        for rr, cc in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
-            nr, nc = r + rr, c + cc
+        for hh, ww in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
+            th = hh + ch
+            tw = ww + cw
 
-            if nr < 0 or nr >= n or nc < 0 or nc >= m: continue
+            if 0 < th or th >= h or 0 < tw or tw >= w: continue
 
-            if visited[crash][nr][nc]: continue
+            if visited[crash][th][tw]: continue
 
-            if maps[nr][nc] and crash:
+            if g[th][tw] and crash:
                 continue
 
-            elif maps[nr][nc] and not crash:
-                visited[1][nr][nc] = True
-                q.append([1, nr, nc])
+            elif g[th][tw] and not crash:
+                visited[1][th][tw] = True
+                q.append([1, th, tw])
 
             else:
-                visited[crash][nr][nc] = True
-                q.append([crash, nr, nc])
+                visited[crash][th][tw] = True
+                q.append([crash, th, tw])
 
-    if reach: break
+    if suc: break
 
-    result += 1
-
-print(result if visited[0][n - 1][m - 1] or visited[1][n - 1][m - 1] else -1)
+if suc:
+    print(time)
+else:
+    print(-1)
