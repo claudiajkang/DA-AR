@@ -1,5 +1,5 @@
-from sys import stdin
 from collections import deque
+from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
@@ -7,44 +7,43 @@ t = int(read())
 
 for tt in range(t):
     a, b = map(int, read().split())
+    visited = [False] * 10000
 
-    prev = [False for i in range(10000)]
     q = deque()
-    prev[a] = True
     q.append([a, ''])
+    cmd = ''
     suc = False
-    res = 0
 
     while q:
         qsize = len(q)
-        for i in range(qsize):
-            n, cmd = q.popleft()
 
-            if n == b:
+        for i in range(qsize):
+            cur, cmd = q.popleft()
+
+            if cur == b:
                 suc = True
-                res = cmd
                 break
 
-            d = 2 * n if (2 * n) <= 9999 else (2 * n) % 10000
-            if not prev[d]:
-                prev[d] = True
+            d = (cur * 2) if (cur * 2) <= 9999 else (cur * 2) % 10000
+            if not visited[d]:
                 q.append([d, cmd + 'D'])
+                visited[d] = True
 
-            s = 9999 if n == 0 else n - 1
-            if not prev[s]:
-                prev[s] = True
+            s = (cur - 1) if cur > 0 else 9999
+            if not visited[s]:
                 q.append([s, cmd + 'S'])
+                visited[s] = True
 
-            l = (n % 1000) * 10 + (n // 1000)
-            if not prev[l]:
-                prev[l] = True
+            l = (cur * 10) % 10000 + (cur * 10) // 10000
+            if not visited[l]:
                 q.append([l, cmd + 'L'])
+                visited[l] = True
 
-            r = (n % 10) * 1000 + (n // 10)
-            if not prev[r]:
-                prev[r] = True
+            r = (cur // 10) + (cur % 10) * 1000
+            if not visited[r]:
                 q.append([r, cmd + 'R'])
+                visited[r] = True
 
         if suc: break
 
-    print(res)
+    print(cmd)
