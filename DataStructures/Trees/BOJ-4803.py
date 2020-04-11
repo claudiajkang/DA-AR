@@ -1,58 +1,60 @@
 from collections import deque
 from sys import stdin
 
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
+
+
+class Node:
+    def __init__(self):
+        self.data = 0
+        self.con = []
+
 
 case = 1
-result = ""
 while True:
-    n, m = map(int, read().split())
-
-    if n == 0 and m == 0:
-        print(result[:-1], end="")
+    n, m = read()
+    if [n, m] == [0, 0]:
         break
 
-    g = [[] for i in range(n + 1)]
+    tree = [Node() for i in range(n + 1)]
 
     for i in range(m):
-        a, b = map(int, read().split())
-        g[a].append(b)
-        g[b].append(a)
+        a, b = read()
+        tree[a].con.append(b)
+        tree[b].con.append(a)
 
     visited = [False] * (n + 1)
     prev = [-1] * (n + 1)
-    tree = 0
+    result = 0
 
     for i in range(1, n + 1):
         if not visited[i]:
-            q = deque()
             visited[i] = True
+            q = deque()
             q.append(i)
             flag = True
 
             while q:
                 cur = q.popleft()
 
-                for j in g[cur]:
+                for j in tree[cur].con:
                     if not visited[j]:
-                        prev[j] = cur
                         visited[j] = True
                         q.append(j)
+                        prev[j] = cur
 
                     elif j != prev[cur]:
                         flag = False
                         break
 
             if flag:
-                tree += 1
+                result += 1
 
-    if tree == 0:
-        result += f"Case {case}: No trees.\n"
-
-    elif tree == 1:
-        result += f"Case {case}: There is one tree.\n"
-
+    if result == 0:
+        print(f"Case {case}: No trees.")
+    elif result == 1:
+        print(f"Case {case}: There is one tree.")
     else:
-        result += f"Case {case}: A forest of {tree} trees.\n"
+        print(f"Case {case}: A forest of {result} trees.")
 
     case += 1
