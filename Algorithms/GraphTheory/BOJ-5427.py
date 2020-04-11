@@ -1,5 +1,6 @@
-from sys import stdin
 from collections import deque
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
 t = int(read())
@@ -9,7 +10,7 @@ for tt in range(t):
     w, h = map(int, read().split())
 
     visited = [[0] * 1000 for i in range(1000)]
-    maps = [[] for i in range(h)]
+    maps = [[] for i in range(1000)]
     q = deque()
     fq = deque()
 
@@ -34,7 +35,8 @@ for tt in range(t):
         for i in range(qsize):
             r, c = q.popleft()
 
-            if maps[r][c] == '*': continue
+            if maps[r][c] == '*':
+                continue
 
             for ii, jj in p:
                 nr = r + ii
