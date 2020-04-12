@@ -1,47 +1,43 @@
 from collections import deque
 from sys import stdin
 
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
 
 while True:
-    w, h = map(int, read().split())
+    w, h = read()
 
-    if w == 0 and h == 0:
-        break
+    if w == 0 and h == 0: break
 
     g = [[] for i in range(h)]
-
     for i in range(h):
-        g[i] = list(map(int, read().split()))
+        g[i] = list(read())
 
-    if w == 1 and h == 1:
-        print(0 if g[0][0] == 0 else 1)
+    if w == h and h == 1:
+        print(g[0][0])
         continue
 
-    visited = [[False] * w for i in range(h)]
+    l = 0
 
-    res = 0
     for i in range(h):
         for j in range(w):
-            if g[i][j] == 1 and not visited[i][j]:
+            if g[i][j] == 1:
                 q = deque()
-                visited[i][j] = True
                 q.append([i, j])
+                g[i][j] = 0
 
                 while q:
-                    ci, cj = q.popleft()
+                    ch, cw = q.popleft()
 
-                    for ii, jj in [[-1, -1], [-1, 1], [-1, 0], [1, 0], [0, -1], [0, 1], [1, -1], [1, 1]]:
-                        ti = ci + ii
-                        tj = cj + jj
+                    for hh, ww in [[-1, -1], [-1, 1], [-1, 0], [1, 0], [0, -1], [0, 1], [1, -1], [1, 1]]:
+                        th, tw = hh + ch, ww + cw
 
-                        if ti < 0 or ti >= h or tj < 0 or tj >= w:
+                        if th < 0 or th >= h or tw < 0 or tw >= w:
                             continue
 
-                        if g[ti][tj] == 1 and not visited[ti][tj]:
-                            visited[ti][tj] = True
-                            q.append([ti, tj])
+                        if g[th][tw] == 1:
+                            q.append([th, tw])
+                            g[th][tw] = 0
 
-                res += 1
+                l += 1
 
-    print(res)
+    print(l)
