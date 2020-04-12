@@ -22,8 +22,8 @@ for i in range(1, n + 1):
 
 for i in range(1, n + 1):
     if not q:
-        print("0")
-        exit()
+        print('0')
+        break
 
     cur = q.popleft()
     result[i] = cur
