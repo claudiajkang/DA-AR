@@ -4,57 +4,38 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-g = [[] for i in range(n + 1)]
-h = [deque() for i in range(101)]
-mh = 0
+g = [[] for i in range(n)]
+maxh = 0
+minh = 100
 
-for i in range(1, n + 1):
-    g[i] = [0] + list(map(int, read().split()))
-    if max(g[i]) > mh:
-        mh = max(g[i])
+for i in range(n):
+    g[i] = list(map(int, read().split()))
+    if max(g[i]) > maxh: maxh = max(g[i])
+    if min(g[i]) < minh: minh = min(g[i])
 
-    for j in range(1, n + 1):
-        h[g[i][j]].append([i, j])
+level = [1] * minh + [0] * (maxh - minh + 1)
 
-res = [0] * 101
+for l in range(minh, maxh + 1):
+    visited = [[False] * n for i in range(n)]
 
-for hh in range(mh + 1):
-    if len(h[hh]) == 0:
-        if hh <= 1:
-            res[hh] = 1
-        else:
-            res[hh] = res[hh - 1]
-        continue
-
-    while h[hh]:
-        ci, cj = h[hh].popleft()
-        g[ci][cj] = -1
-
-    visited = [[False] * (n + 1) for i in range(n + 1)]
-    for i in range(1, n + 1):
-        for j in range(1, n + 1):
-            if g[i][j] > hh and not visited[i][j]:
+    for i in range(n):
+        for j in range(n):
+            if g[i][j] > l and not visited[i][j]:
                 q = deque()
                 q.append([i, j])
-                area = 1
                 visited[i][j] = True
+                level[l] += 1
 
                 while q:
                     ci, cj = q.popleft()
 
                     for ii, jj in [[-1, 0], [1, 0], [0, -1], [0, 1]]:
-                        ti = ci + ii
-                        tj = cj + jj
-
-                        if ti <= 0 or ti > n or tj <= 0 or tj > n:
+                        ti, tj = ci + ii, cj + jj
+                        if ti < 0 or ti >= n or tj < 0 or tj >= n:
                             continue
 
-                        if (g[ti][tj] > hh) and (not visited[ti][tj]):
-                            visited[ti][tj] = True
+                        if g[ti][tj] > l and not visited[ti][tj]:
                             q.append([ti, tj])
-                            area += 1
+                            visited[ti][tj] = True
 
-                if area:
-                    res[hh] += 1
-
-print(max(res))
+print(max(level))
