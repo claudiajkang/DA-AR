@@ -1,18 +1,20 @@
 from sys import stdin
 
-n = int(stdin.readline().rstrip())
-card = {}
+read = lambda: int(stdin.readline().rstrip())
+
+n = read()
+pn = {}
 
 for i in range(n):
-    a = int(stdin.readline().rstrip())
-    if a not in card.keys():
-        card[a] = 0
+    a = read()
+    if a not in pn.keys():
+        pn[a] = 0
 
-    card[a] += 1
+    pn[a] += 1
 
-maxval = max(card.values())
+mv = max(pn.values())
 
-for i in sorted(card.keys()):
-    if card[i] == maxval:
+for i in sorted(pn.keys()):
+    if pn[i] == mv:
         print(i)
         break
