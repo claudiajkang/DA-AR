@@ -1,19 +1,19 @@
 from sys import stdin, setrecursionlimit
-setrecursionlimit(10**6)
+setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
-def dfs(cur):
-    global s, visited, finished, cnt
+def dfs(num):
+    global student, visited, finished, cnt
 
-    visited[cur] = True
-    nxt = s[cur]
+    visited[num] = True
 
+    nxt = student[num]
     if visited[nxt]:
         if not finished[nxt]:
             temp = nxt
-            while temp != cur:
-                temp = s[temp]
+            while temp != num:
+                temp = student[temp]
                 cnt += 1
 
             cnt += 1
@@ -21,15 +21,14 @@ def dfs(cur):
     else:
         dfs(nxt)
 
-    finished[cur] = True
+    finished[num] = True
 
 
 t = int(read())
 
 for tt in range(t):
     n = int(read())
-    s = [0] + list(map(int, read().split()))
-
+    student = [0] + list(map(int, read().split()))
     visited = [False] * (n + 1)
     finished = [False] * (n + 1)
 
