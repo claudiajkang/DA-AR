@@ -5,37 +5,58 @@ read = lambda: stdin.readline().rstrip()
 
 h, w = map(int, read().split())
 g = [[] for i in range(h)]
-
-dpos = [0, 0]
-spos = deque()
-water = deque()
-
+S = deque()
+WT = deque()
 visited = [[False] * w for i in range(h)]
 
 for i in range(h):
     g[i] = list(read())
 
     for j in range(w):
-        if g[i][j] == 'D':
-            dpos = [i, j]
-
-        elif g[i][j] == 'S':
-            spos.append([i, j])
+        if g[i][j] == 'S':
+            S.append([i, j])
             visited[i][j] = True
-
+            g[i][j] = '.'
         elif g[i][j] == '*':
-            water.append([i, j])
+            WT.append([i, j])
 
-suc = False
 time = 0
+suc = False
 p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
-while spos:
+while S:
     time += 1
+    qlen = len(S)
 
-    qsize = len(water)
-    for i in range(qsize):
-        ch, cw = water.popleft()
+    for i in range(qlen):
+        ch, cw = S.popleft()
+
+        if g[ch][cw] == '*':
+            continue
+
+        for hh, ww in p:
+            th = ch + hh
+            tw = cw + ww
+
+            if th < 0 or th >= h or tw < 0 or tw >= w:
+                continue
+
+            if g[th][tw] == '.' and not visited[th][tw]:
+                S.append([th, tw])
+                visited[th][tw] = True
+
+            if g[th][tw] == 'D':
+                suc = True
+                break
+
+        if suc: break
+
+    if suc: break
+
+    qlen = len(WT)
+
+    for i in range(qlen):
+        ch, cw = WT.popleft()
 
         for hh, ww in p:
             th = ch + hh
@@ -46,31 +67,7 @@ while spos:
 
             if g[th][tw] == '.':
                 g[th][tw] = '*'
-                water.append([th, tw])
-
-    qsize = len(spos)
-
-    for i in range(qsize):
-        ch, cw = spos.popleft()
-
-        for hh, ww in p:
-            th = ch + hh
-            tw = cw + ww
-
-            if [th, tw] == dpos:
-                suc = True
-                break
-
-            if th < 0 or th >= h or tw < 0 or tw >= w:
-                continue
-
-            if g[th][tw] == '.' and not visited[th][tw]:
-                spos.append([th, tw])
-                visited[th][tw] = True
-
-        if suc: break
-
-    if suc: break
+                WT.append([th, tw])
 
 if suc:
     print(time)
