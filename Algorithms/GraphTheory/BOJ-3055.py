@@ -5,69 +5,67 @@ read = lambda: stdin.readline().rstrip()
 
 h, w = map(int, read().split())
 g = [[] for i in range(h)]
-S = deque()
-WT = deque()
 visited = [[False] * w for i in range(h)]
+s = deque()
+wt = deque()
 
 for i in range(h):
     g[i] = list(read())
 
     for j in range(w):
         if g[i][j] == 'S':
-            S.append([i, j])
+            s.append([i, j])
             visited[i][j] = True
             g[i][j] = '.'
+
         elif g[i][j] == '*':
-            WT.append([i, j])
+            wt.append([i, j])
 
 time = 0
 suc = False
 p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
-while S:
+while s:
     time += 1
-    qlen = len(S)
 
+    qlen = len(s)
     for i in range(qlen):
-        ch, cw = S.popleft()
+        ch, cw = s.popleft()
 
         if g[ch][cw] == '*':
             continue
 
         for hh, ww in p:
-            th = ch + hh
-            tw = cw + ww
+            th, tw = ch + hh, cw + ww
 
             if th < 0 or th >= h or tw < 0 or tw >= w:
                 continue
-
-            if g[th][tw] == '.' and not visited[th][tw]:
-                S.append([th, tw])
-                visited[th][tw] = True
 
             if g[th][tw] == 'D':
                 suc = True
                 break
 
+            if g[th][tw] == '.' and not visited[th][tw]:
+                visited[th][tw] = True
+                s.append([th, tw])
+
         if suc: break
 
     if suc: break
 
-    qlen = len(WT)
-
+    qlen = len(wt)
     for i in range(qlen):
-        ch, cw = WT.popleft()
+        ch, cw = wt.popleft()
 
         for hh, ww in p:
-            th = ch + hh
-            tw = cw + ww
+            th, tw = ch + hh, cw + ww
 
             if th < 0 or th >= h or tw < 0 or tw >= w:
                 continue
 
             if g[th][tw] == '.':
                 g[th][tw] = '*'
-                WT.append([th, tw])
+                wt.append([th, tw])
 
 if suc:
     print(time)
