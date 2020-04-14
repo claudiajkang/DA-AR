@@ -1,20 +1,20 @@
 from sys import stdin
 
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
 
-n, l = map(int, read().split())
-h = list(map(int, read().split()))
-h.sort()
+n, l = read()
+broken = list(read())
+broken.sort()
 
-i = 0
-c = 1
-s = h[0]
+idx = 0
+res = 1
+cur = broken[0]
 
-while i < n:
-    if h[i] < (s + l):
-        i += 1
+while idx < n:
+    if broken[idx] < (cur + l):
+        idx += 1
     else:
-        s = h[i]
-        c += 1
+        cur = broken[idx]
+        res += 1
 
-print(c)
+print(res)
