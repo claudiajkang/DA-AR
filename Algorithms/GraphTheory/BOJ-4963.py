@@ -3,45 +3,43 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
-while True:
-    w, h = map(int, read().split())
+n = int(read())
+g = [[] for i in range(n)]
+res = [[-1] * n for i in range(n)]
 
-    if [w, h] == [0, 0]: break
+for i in range(n):
+    l = list(map(int, read().split()))
 
-    g = [[] for i in range(h)]
+    for j in range(n):
+        if l[j] == 1:
+            g[i].append(j)
 
-    for i in range(h):
-        g[i] = list(map(int, read().split()))
+for i in range(n):
+    for j in range(n):
+        if res[i][j] == -1:
+            q = deque()
+            q.append(i)
+            dfs = []
+            init = False if i == j else True
 
-    if w == h and h == 1:
-        print(g[0][0])
-        continue
+            while q:
+                cur = q.popleft()
 
-    res = 0
-    visited = [[False] * w for i in range(h)]
+                if cur == j and init:
+                    res[i][j] = 1
+                    break
 
-    for i in range(h):
-        for j in range(w):
-            if g[i][j] == 1 and not visited[i][j]:
-                q = deque()
-                q.append([i, j])
-                visited[i][j] = True
+                if not init: init = True
 
-                while q:
-                    ch, cw = q.popleft()
+                for k in g[cur]:
+                    if k not in dfs:
+                        q.append(k)
+                        dfs.append(k)
+                        res[cur][k] = 1
+                        res[i][k] = 1
 
-                    for hh, ww in [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]]:
-                        th = ch + hh
-                        tw = cw + ww
+            if res[i][j] == -1:
+                res[i][j] = 0
 
-                        if th < 0 or tw < 0 or th >= h or tw >= w:
-                            continue
-
-                        if g[th][tw] == 1 and not visited[th][tw]:
-                            q.append([th, tw])
-                            visited[th][tw] = True
-                            g[th][tw] = 0
-
-                res += 1
-
-    print(res)
+for i in range(n):
+    print(' '.join(map(str, res[i])))
