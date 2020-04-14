@@ -7,7 +7,7 @@ case = 1
 while True:
     n, m = read()
 
-    if n == 0 and m == 0: break
+    if [n, m] == [0, 0]: break
 
     g = [[] for i in range(n + 1)]
 
@@ -17,14 +17,14 @@ while True:
         g[b].append(a)
 
     visited = [False] * (n + 1)
+    res = 0
     prev = [-1] * (n + 1)
-    result = 0
 
     for i in range(1, n + 1):
         if not visited[i]:
+            visited[i] = True
             q = deque()
             q.append(i)
-            visited[i] = True
             flag = True
 
             while q:
@@ -38,18 +38,16 @@ while True:
 
                     elif j != prev[cur]:
                         flag = False
-                        break
 
                 if not flag: break
 
-            if flag:
-                result += 1
+            if flag: res += 1
 
-    if result == 0:
+    if res == 0:
         print(f"Case {case}: No trees.")
-    elif result == 1:
+    elif res == 1:
         print(f"Case {case}: There is one tree.")
     else:
-        print(f"Case {case}: A forest of {result} trees.")
+        print(f"Case {case}: A forest of {res} trees.")
 
     case += 1
