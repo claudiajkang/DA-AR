@@ -7,62 +7,65 @@ t = int(read())
 
 for tt in range(t):
     w, h = map(int, read().split())
-
-    b = [[] for i in range(h)]
+    g = [[] for i in range(h)]
     visited = [[False] * w for i in range(h)]
-    fire = deque()
-    pos = deque()
+
+    f = deque()
+    s = deque()
 
     for i in range(h):
-        b[i] = list(read())
+        g[i] = list(read())
 
         for j in range(w):
-            if b[i][j] == '*':
-                fire.append([i, j])
-            elif b[i][j] == '@':
-                pos.append([i, j])
+            if g[i][j] == '@':
                 visited[i][j] = True
+                s.append([i, j])
+            elif g[i][j] == '*':
+                f.append([i, j])
 
-    p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
     time = 0
     suc = False
-
-    while pos:
+    p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
+    while s:
         time += 1
-
-        qsize = len(pos)
+        qsize = len(s)
 
         for i in range(qsize):
-            ch, cw = pos.popleft()
+            ch, cw = s.popleft()
 
-            if b[ch][cw] == '*': continue
+            if g[ch][cw] == '*': continue
 
             for hh, ww in p:
-                th, tw = ch + hh, cw + ww
-                if th < 0 or th >= h or tw < 0 or tw >= w:
+                th = hh + ch
+                tw = ww + cw
+
+                if th < 0 or tw < 0 or th >= h or tw >= w:
                     suc = True
                     break
 
-                if b[th][tw] == '.' and not visited[th][tw]:
+                if g[th][tw] == '.' and not visited[th][tw]:
                     visited[th][tw] = True
-                    pos.append([th, tw])
+                    s.append([th, tw])
 
             if suc: break
 
         if suc: break
 
-        qsize = len(fire)
+        qsize = len(f)
+
         for i in range(qsize):
-            ch, cw = fire.popleft()
+            ch, cw = f.popleft()
 
             for hh, ww in p:
-                th, tw = ch + hh, cw + ww
-                if th < 0 or th >= h or tw < 0 or tw >= w:
+                th = hh + ch
+                tw = ww + cw
+
+                if th < 0 or tw < 0 or th >= h or tw >= w:
                     continue
 
-                if b[th][tw] == '.':
-                    fire.append([th, tw])
-                    b[th][tw] = '*'
+                if g[th][tw] == '.':
+                    f.append([th, tw])
+                    g[th][tw] = '*'
 
     if suc:
         print(time)
