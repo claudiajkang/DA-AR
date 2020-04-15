@@ -1,28 +1,27 @@
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-lm = list(map(int, read().split()))
+l = list(map(int, read().split()))
 m = int(read())
 
-if sum(lm) <= m:
-    print(max(lm))
-    exit()
-
 lo = 0
-hi = m
+hi = sum(l)
 
-while (lo + 1) < hi:
-    mid = (lo + hi) // 2
+if hi <= m:
+    print(max(l))
 
-    s = 0
-    for i in lm:
-        s += min(i, mid)
+else:
+    while (lo + 1) < hi:
+        mid = (lo + hi) // 2
 
-    if s <= m:
-        lo = mid
-    else:
-        hi = mid
+        s = 0
+        for ll in l:
+            s += min(ll, mid)
 
-print(lo)
+        if s <= m:
+            lo = mid
+        else:
+            hi = mid
+
+    print(lo)
