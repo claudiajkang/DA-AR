@@ -1,16 +1,20 @@
 from sys import stdin
 
-arr = [[] for i in range(11)]
-sum = 0
+read = lambda: list(map(int, stdin.readline().rstrip().split()))
+
+g = [[] for i in range(11)]
 
 for i in range(11):
-    arr[i] = list(map(int, stdin.readline().rstrip().split()))
+    g[i] = read()
 
-arr.sort(key=lambda x: x[0])
+g.sort(key=lambda x: x[1])
+g.sort(key=lambda x: x[0])
+
+s = 0
 time = 0
 
-for idx in range(11):
-    time += arr[idx][0]
-    sum += (time + 20 * arr[idx][1])
+for i in range(11):
+    time += g[i][0]
+    s += (time + 20 * g[i][1])
 
-print(sum)
+print(s)
