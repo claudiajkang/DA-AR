@@ -13,9 +13,8 @@ time.sort(key=lambda x: x[1])
 time.sort(key=lambda x: x[0])
 
 q = []
-heappush(q, time[0][1])
 
-for i in range(1, n):
+for i in range(n):
     if q and q[0] <= time[i][0]:
         heappop(q)
     heappush(q, time[i][1])
