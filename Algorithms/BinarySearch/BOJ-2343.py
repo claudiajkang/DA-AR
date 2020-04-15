@@ -1,39 +1,35 @@
-from sys import stdin, setrecursionlimit
+from sys import stdin
 
-setrecursionlimit(10 ** 6)
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
 
-
-def possible(maxTime):
-    global m, n, time
-    s = 0
-    limit = m
-
-    for i in range(n):
-        if time[i] > maxTime:
-            return False
-        s += time[i]
-
-        if maxTime < s:
-            if limit == 1:
-                return False
-
-            limit -= 1
-            s = time[i]
-
-    return True
-
-
-n, m = map(int, read().split())
-time = list(map(int, read().split()))
+n, m = read()
+time = list(read())
 
 lo = 0
 hi = sum(time)
+maxTime = max(time)
 
 while (lo + 1) < hi:
     mid = (lo + hi) // 2
 
-    if possible(mid):
+    flag = False
+
+    if maxTime <= mid:
+        flag = True
+        s = 0
+        limit = m
+
+        for i in range(n):
+            s += time[i]
+            if mid < s:
+                if limit == 1:
+                    flag = False
+                    break
+
+                limit -= 1
+                s = time[i]
+
+    if flag:
         hi = mid
     else:
         lo = mid
