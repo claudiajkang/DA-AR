@@ -2,21 +2,25 @@ from sys import stdin, setrecursionlimit
 setrecursionlimit(10**6)
 read = lambda: stdin.readline().rstrip()
 
-
 def dfs(num):
-    global visited, student, cnt, finished
+    global student, visited, finished, cnt
 
     visited[num] = True
-    if visited[student[num]]:
-        if not finished[student[num]]:
-            temp = student[num]
+    nxt = student[num]
+
+    if visited[nxt]:
+        if not finished[nxt]:
+            temp = nxt
+
             while temp != num:
                 temp = student[temp]
                 cnt += 1
 
             cnt += 1
 
-    else: dfs(student[num])
+    else:
+        dfs(nxt)
+
     finished[num] = True
 
 
