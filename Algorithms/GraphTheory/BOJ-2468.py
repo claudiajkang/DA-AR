@@ -5,40 +5,41 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 g = [[] for i in range(n)]
-minh = 1000
+minh = 100000
 maxh = 0
 
 for i in range(n):
     g[i] = list(map(int, read().split()))
+    minh = min(minh, min(g[i]))
+    maxh = max(maxh, max(g[i]))
 
-    if min(g[i]) < minh: minh = min(g[i])
-    if max(g[i]) > maxh: maxh = max(g[i])
+level = [1] * minh + [0] * (maxh - minh + 1)
+p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
-level = [1] * (minh) + [0] * (maxh - minh + 1)
+for h in range(minh, maxh + 1):
+    visited = [[False] * n for j in range(n)]
 
-for hh in range(minh, maxh + 1):
-    visited = [[False] * n for i in range(n)]
     for i in range(n):
         for j in range(n):
-            if g[i][j] > hh and not visited[i][j]:
+            if g[i][j] > h and not visited[i][j]:
+                visited[i][j] = True
                 q = deque()
                 q.append([i, j])
-                visited[i][j] = True
 
                 while q:
                     ci, cj = q.popleft()
 
-                    for ii, jj in [[0, -1], [0, 1], [-1, 0], [1, 0]]:
+                    for ii, jj in p:
                         ti = ci + ii
                         tj = cj + jj
 
-                        if ti < 0 or tj < 0 or tj >= n or ti >= n:
+                        if ti < 0 or tj < 0 or ti >= n or tj >= n:
                             continue
 
-                        if g[ti][tj] > hh and not visited[ti][tj]:
+                        if g[ti][tj] > h and not visited[ti][tj]:
                             visited[ti][tj] = True
                             q.append([ti, tj])
 
-                level[hh] += 1
+                level[h] += 1
 
 print(max(level))
