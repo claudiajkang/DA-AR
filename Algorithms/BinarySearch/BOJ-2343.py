@@ -2,36 +2,31 @@ from sys import stdin
 
 read = lambda: map(int, stdin.readline().rstrip().split())
 
-n, m = read()
-time = list(read())
+l, m = read()
+lesson = list(read())
 
-lo = 0
-hi = sum(time)
-maxTime = max(time)
+lo = max(lesson)
+hi = sum(lesson)
 
-while (lo + 1) < hi:
+while lo < hi:
     mid = (lo + hi) // 2
 
-    flag = False
+    s = 0
+    c = 0
 
-    if maxTime <= mid:
-        flag = True
-        s = 0
-        limit = m
+    for l in lesson:
+        if (s + l) <= mid:
+            s += l
+        else:
+            s = l
+            c += 1
 
-        for i in range(n):
-            s += time[i]
-            if mid < s:
-                if limit == 1:
-                    flag = False
-                    break
+    if s > 0:
+        c += 1
 
-                limit -= 1
-                s = time[i]
-
-    if flag:
-        hi = mid
+    if c > m:
+        lo = mid + 1
     else:
-        lo = mid
+        hi = mid
 
-print(hi)
+print(lo)
