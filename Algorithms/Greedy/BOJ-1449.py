@@ -3,18 +3,15 @@ from sys import stdin
 read = lambda: map(int, stdin.readline().rstrip().split())
 
 n, l = read()
-broken = list(read())
-broken.sort()
+b = list(read())
+b.sort()
 
-idx = 0
 res = 1
-cur = broken[0]
+cur = b[0]
 
-while idx < n:
-    if broken[idx] < (cur + l):
-        idx += 1
-    else:
-        cur = broken[idx]
-        res += 1
+for i in range(n):
+    if b[i] < (cur + l): continue
+    cur = b[i]
+    res += 1
 
 print(res)
