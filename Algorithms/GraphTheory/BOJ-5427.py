@@ -4,36 +4,35 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 t = int(read())
-
 for tt in range(t):
     w, h = map(int, read().split())
     g = [[] for i in range(h)]
     visited = [[False] * w for i in range(h)]
-
-    f = deque()
     s = deque()
+    f = deque()
 
     for i in range(h):
         g[i] = list(read())
-
         for j in range(w):
-            if g[i][j] == '@':
-                visited[i][j] = True
-                s.append([i, j])
-            elif g[i][j] == '*':
+            if g[i][j] == '*':
                 f.append([i, j])
 
+            if g[i][j] == '@':
+                s.append([i, j])
+                visited[i][j] = True
+
+    p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
     time = 0
     suc = False
-    p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
     while s:
         time += 1
-        qsize = len(s)
+        qlen = len(s)
 
-        for i in range(qsize):
+        for k in range(qlen):
             ch, cw = s.popleft()
 
-            if g[ch][cw] == '*': continue
+            if g[ch][cw] == '*':
+                continue
 
             for hh, ww in p:
                 th = hh + ch
@@ -48,12 +47,11 @@ for tt in range(t):
                     s.append([th, tw])
 
             if suc: break
-
         if suc: break
 
-        qsize = len(f)
+        qlen = len(f)
 
-        for i in range(qsize):
+        for k in range(qlen):
             ch, cw = f.popleft()
 
             for hh, ww in p:
@@ -64,10 +62,11 @@ for tt in range(t):
                     continue
 
                 if g[th][tw] == '.':
-                    f.append([th, tw])
                     g[th][tw] = '*'
+                    f.append([th, tw])
 
     if suc:
         print(time)
+
     else:
         print("IMPOSSIBLE")
