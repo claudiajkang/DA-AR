@@ -1,6 +1,4 @@
-from collections import deque
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
@@ -12,12 +10,12 @@ for i in range(n):
 time.sort(key=lambda x: x[0])
 time.sort(key=lambda x: x[1])
 
-before = 0
-q = deque()
+temp = time[0][1]
+res = 1
 
-for i in range(n):
-    if time[i][0] >= before:
-        before = time[i][1]
-        q.append(time[i])
+for i in range(1, n):
+    if temp <= time[i][0]:
+        res += 1
+        temp = time[i][1]
 
-print(len(q))
+print(res)
