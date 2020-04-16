@@ -1,10 +1,10 @@
-from heapq import heappush, heappop
+from collections import deque
 from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-g = [[] for i in range(n + 1)]
+building = [[] for i in range(n + 1)]
 time = [0] * (n + 1)
 con = [0] * (n + 1)
 
@@ -14,26 +14,24 @@ for i in range(1, n + 1):
 
     for j in l[1:]:
         if j == -1: break
-        g[j].append(i)
+        building[j].append(i)
         con[i] += 1
 
-q = []
+q = deque()
 res = [0] * (n + 1)
-
 for i in range(1, n + 1):
     if con[i] == 0:
-        heappush(q, i)
         res[i] = time[i]
+        q.append(i)
 
 for i in range(1, n + 1):
-    if not q: break
+    cur = q.popleft()
 
-    cur = heappop(q)
-
-    for j in g[cur]:
+    for j in building[cur]:
         con[j] -= 1
         res[j] = max(res[j], res[cur] + time[j])
+
         if con[j] == 0:
-            heappush(q, j)
+            q.append(j)
 
 print('\n'.join(map(str, res[1:])))
