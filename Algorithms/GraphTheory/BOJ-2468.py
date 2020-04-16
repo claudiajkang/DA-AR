@@ -5,19 +5,18 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 g = [[] for i in range(n)]
-minh = 100000
 maxh = 0
+minh = 1000
 
 for i in range(n):
     g[i] = list(map(int, read().split()))
-    minh = min(minh, min(g[i]))
     maxh = max(maxh, max(g[i]))
+    minh = min(minh, min(g[i]))
 
-level = [1] * minh + [0] * (maxh - minh + 1)
+res = [0] * (maxh + 1)
 p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
-
-for h in range(minh, maxh + 1):
-    visited = [[False] * n for j in range(n)]
+for h in range(maxh + 1):
+    visited = [[False] * n for k in range(n)]
 
     for i in range(n):
         for j in range(n):
@@ -25,6 +24,7 @@ for h in range(minh, maxh + 1):
                 visited[i][j] = True
                 q = deque()
                 q.append([i, j])
+                res[h] += 1
 
                 while q:
                     ci, cj = q.popleft()
@@ -40,6 +40,4 @@ for h in range(minh, maxh + 1):
                             visited[ti][tj] = True
                             q.append([ti, tj])
 
-                level[h] += 1
-
-print(max(level))
+print(max(res))
