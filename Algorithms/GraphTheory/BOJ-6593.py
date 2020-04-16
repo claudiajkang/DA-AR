@@ -6,22 +6,25 @@ read = lambda: stdin.readline().rstrip()
 while True:
     l, h, w = map(int, read().split())
 
-    if [l, h, w] == [0, 0, 0]: break
+    if [l, h, w] == [0, 0, 0]:
+        break
 
-    g = [[[] for i in range(h)] for k in range(l)]
+    g = [[[] for i in range(h)] for j in range(l)]
     q = deque()
 
-    for i in range(l):
-        for j in range(h):
-            g[i][j] = list(read())
-            if 'S' in g[i][j]: q.append([i, j, g[i][j].index('S')])
+    for ll in range(l):
+        for hh in range(h):
+            g[ll][hh] = list(read())
+            if 'S' in g[ll][hh]:
+                t = g[ll][hh].index('S')
+                q.append([ll, hh, t])
+                g[ll][hh][t] = 0
 
-        t = read()
+        tp = read()
 
-    p = [[-1, 0, 0], [1, 0, 0], [0, 0, -1], [0, 0, 1], [0, -1, 0], [0, 1, 0]]
+    p = [[0, 0, -1], [0, 0, 1], [0, -1, 0], [0, 1, 0], [-1, 0, 0], [1, 0, 0]]
+    res = 0
     suc = False
-    g[q[0][0]][q[0][1]][q[0][2]] = 0
-    time = 0
 
     while q:
         cl, ch, cw = q.popleft()
@@ -31,17 +34,21 @@ while True:
             th = hh + ch
             tw = ww + cw
 
-            if (0 <= tl < l) and (0 <= th < h) and (0 <= tw < w):
-                if g[tl][th][tw] == 'E':
-                    suc = True
-                    time = g[cl][ch][cw] + 1
-                    break
+            if tl < 0 or tl >= l or th < 0 or th >= h or tw < 0 or tw >= w:
+                continue
 
-                if g[tl][th][tw] == '.':
-                    g[tl][th][tw] = g[cl][ch][cw] + 1
-                    q.append([tl, th, tw])
+            if g[tl][th][tw] == 'E':
+                suc = True
+                res = g[cl][ch][cw] + 1
+                break
+
+            if g[tl][th][tw] == '.':
+                g[tl][th][tw] = g[cl][ch][cw] + 1
+                q.append([tl, th, tw])
+
+        if suc: break
 
     if suc:
-        print(f'Escaped in {time} minute(s).')
+        print(f"Escaped in {res} minute(s).")
     else:
-        print("Trapped!")
+        print('Trapped!')
