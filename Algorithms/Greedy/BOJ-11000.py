@@ -4,19 +4,21 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-time = [[] for i in range(n)]
+s = []
 
 for i in range(n):
-    time[i] = list(map(int, read().split()))
+    s.append(list(map(int, read().split())))
 
-time.sort(key=lambda x: x[1])
-time.sort(key=lambda x: x[0])
+s.sort(key=lambda x: x[1])
+s.sort(key=lambda x: x[0])
 
 q = []
+heappush(q, s[0][1])
 
-for i in range(n):
-    if q and q[0] <= time[i][0]:
-        heappop(q)
-    heappush(q, time[i][1])
+for i in range(1, n):
+    if q[0] <= s[i][0]:
+        r = heappop(q)
+
+    heappush(q, s[i][1])
 
 print(len(q))
