@@ -15,14 +15,13 @@ for i in range(m):
         con[l[j + 1]] += 1
 
 q = deque()
+result = [0] * (n + 1)
 
 for i in range(1, n + 1):
     if con[i] == 0:
         q.append(i)
 
-result = [0] * (n + 1)
 err = False
-
 for i in range(1, n + 1):
     if not q:
         err = True
@@ -33,6 +32,7 @@ for i in range(1, n + 1):
 
     for j in g[cur]:
         con[j] -= 1
+
         if con[j] == 0:
             q.append(j)
 
