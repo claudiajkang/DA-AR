@@ -1,39 +1,42 @@
 from sys import stdin
 
-read = lambda: map(int, stdin.readline().rstrip().split())
+read = lambda: stdin.readline().rstrip()
 
-n, k = read()
-ed = list(read())
-ec = {i: [] for i in set(ed)}
+n, k = map(int, read().split())
+order = list(map(int, read().split()))
+elec = {i: [] for i in set(order)}
 
 for i in range(k):
-    ec[ed[i]].append(i)
+    elec[order[i]].append(i)
 
 q = []
+
 res = 0
 
 for i in range(k):
-    o = ed[i]
+    o = order[i]
 
     if o in q:
-        if ec[o]: ec[o].pop(0)
+        if elec[o]: t = elec[o].pop(0)
         continue
 
-    if len(q) >= n:
-        temp = []
-        for j in q:
-            if len(ec[j]) == 0:
-                temp.append([101, j])
+    if len(q) == n:
+        t = []
+
+        for i in q:
+            if len(elec[i]) == 0:
+                t.append([101, i])
                 break
             else:
-                temp.append([ec[j][0], j])
+                t.append([elec[i][0], i])
 
-        temp.sort(reverse=True, key=lambda x: x[0])
-        q.pop(q.index(temp[0][1]))
+        t.sort(reverse=True, key=lambda x: x[0])
+        idx = t[0][1]
+
+        q.pop(q.index(idx))
         res += 1
 
     q.append(o)
-    if ec[o]:
-        ec[o].pop(0)
+    if elec[o]: elec[o].pop(0)
 
 print(res)
