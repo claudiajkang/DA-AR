@@ -1,9 +1,9 @@
 from sys import stdin
 
-read = lambda: map(int, stdin.readline().rstrip().split())
+read = lambda: stdin.readline().rstrip()
 
-l, m = read()
-lesson = list(read())
+n, m = map(int, read().split())
+lesson = list(map(int, read().split()))
 
 lo = max(lesson)
 hi = sum(lesson)
@@ -11,8 +11,8 @@ hi = sum(lesson)
 while lo < hi:
     mid = (lo + hi) // 2
 
-    s = 0
     c = 0
+    s = 0
 
     for l in lesson:
         if (s + l) <= mid:
@@ -24,8 +24,9 @@ while lo < hi:
     if s > 0:
         c += 1
 
-    if c > m:
+    if c >= m:
         lo = mid + 1
+
     else:
         hi = mid
 
