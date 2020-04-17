@@ -1,34 +1,35 @@
-from heapq import heappush, heappop
 from sys import stdin
-
+from heapq import heappush, heappop
 read = lambda: stdin.readline().rstrip()
 
 t = int(read())
+
 for tt in range(t):
     k, m, p = map(int, read().split())
-    g = [[] for i in range(m + 1)]
-    con = [0] * (m + 1)
+
+    river = [[] for i in range(m+1)]
+    con = [0] * (m+1)
 
     for i in range(p):
         a, b = map(int, read().split())
-        g[a].append(b)
+        river[a].append(b)
         con[b] += 1
 
-    res = [0] * (m + 1)
-    rcon = [0] * (m + 1)
     q = []
+    res = [0] * (m+1)
+    rcon = [0] * (m+1)
 
-    for i in range(1, m + 1):
+    for i in range(1, m+1):
         if con[i] == 0:
             res[i] = 1
             heappush(q, [res[i], i])
 
-    for i in range(1, m + 1):
-        if not q: break
+    for i in range(1, m+1):
+        if not q : break
 
-        co, cur = heappop(q)
+        cr, cur = heappop(q)
 
-        for j in g[cur]:
+        for j in river[cur]:
             con[j] -= 1
 
             if res[cur] > res[j]:
