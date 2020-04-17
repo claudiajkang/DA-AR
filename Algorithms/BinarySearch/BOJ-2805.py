@@ -1,33 +1,23 @@
-from sys import stdin, setrecursionlimit
+from sys import stdin
 
-setrecursionlimit(10 * 6)
-read = lambda: map(int, stdin.readline().rstrip().split())
+read = lambda: stdin.readline().rstrip()
 
+n, m = map(int, read().split())
+h = list(map(int, read().split()))
 
-def search(lo, hi):
-    global tree
+lo = 0
+hi = max(h)
 
+while (lo + 1) < hi:
     mid = (lo + hi) // 2
 
     s = 0
-    for t in tree:
-        if t <= mid: break
-        s += (t - mid)
+    for th in h:
+        s += (th - mid) if th > mid else 0
 
-    if s < m:
-        return lo, mid - 1
+    if s >= m:
+        lo = mid
     else:
-        return mid + 1, hi
+        hi = mid
 
-
-n, m = read()
-tree = list(read())
-tree.sort(reverse=True)
-
-lo = 0
-hi = max(tree)
-
-while lo <= hi:
-    lo, hi = search(lo, hi)
-
-print(lo - 1)
+print(lo)
