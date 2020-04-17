@@ -1,27 +1,25 @@
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
 
 n, c = map(int, read().split())
-h = [0] * n
+p = [0] * n
 
 for i in range(n):
-    h[i] = int(read())
+    p[i] = int(read())
 
-h.sort()
-
+p.sort()
 lo = 1
-hi = h[-1] + 1
+hi = max(p) + 1
 
 while (lo + 1) < hi:
     mid = (lo + hi) // 2
 
-    cur = h[0]
     count = 1
+    cur = p[0]
 
     for i in range(1, n):
-        if (cur + mid) <= h[i]:
-            cur = h[i]
+        if (cur + mid) <= p[i]:
+            cur = p[i]
             count += 1
 
     if count >= c:
@@ -30,3 +28,4 @@ while (lo + 1) < hi:
         hi = mid
 
 print(lo)
+
