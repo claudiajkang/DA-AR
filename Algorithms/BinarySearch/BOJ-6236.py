@@ -2,38 +2,39 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
-n, m = list(map(int, read().split()))
-dayMoney = [0 for i in range(n)]
+n, m = map(int, read().split())
+money = [0] * n
 
 for i in range(n):
-    dayMoney[i] = int(read())
+    money[i] = int(read())
 
 if m == 1:
-    print(sum(dayMoney))
-    exit()
+    print(sum(money))
 
-lo = max(dayMoney)
-hi = sum(dayMoney)
+else:
+    lo = max(money)
+    hi = sum(money)
 
-while lo < hi:
-    mid = (lo + hi) // 2
+    while lo < hi:
+        mid = (lo + hi) // 2
 
-    s = 0
-    c = 0
+        s = 0
+        c = 0
 
-    for l in dayMoney:
-        if (s + l) <= mid:
-            s += l
-        else:
-            s = l
+        for mm in money:
+            if (s + mm) <= mid:
+                s += mm
+            else:
+                s = mm
+                c += 1
+
+        if s > 0:
             c += 1
 
-    if s > 0:
-        c += 1
+        if c > m:
+            lo = mid + 1
 
-    if c > m:
-        lo = mid + 1
-    else:
-        hi = mid
+        else:
+            hi = mid
 
-print(lo)
+    print(lo)
