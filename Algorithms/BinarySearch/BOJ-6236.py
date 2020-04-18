@@ -3,40 +3,37 @@ setrecursionlimit(10 ** 6)
 
 read = lambda: stdin.readline().rstrip()
 
-
 def bs(lo, hi):
-    global money, m, res
+    global m, money
 
     mid = (lo + hi) // 2
-
-    s = 0
     c = 0
+    s = 0
+
     for mm in money:
-        if (s + mm) <= mid:
-            s += mm
-        else:
+        if mm > mid:
+            return mid, hi
+
+        s += mm
+        if s > mid:
             s = mm
             c += 1
 
     if s > 0:
         c += 1
 
-    if c <= m:
-        res = mid
-        return lo, mid - 1
-
+    if c > m:
+        return mid, hi
     else:
-        return mid + 1, hi
+        return lo, mid
 
 
 n, m = map(int, read().split())
 money = [int(read()) for i in range(n)]
-
-lo = max(money)
+lo = 1
 hi = sum(money)
-res = 0
 
-while lo <= hi:
+while (lo + 1) < hi:
     lo, hi = bs(lo, hi)
 
-print(res)
+print(hi)
