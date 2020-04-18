@@ -1,39 +1,40 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
 
+setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
-class rules:
-    def __init__(self):
-        self.start = 0
-        self.end = 0
-        self.diff = 0
+class Dotori:
+    def __init__(self, l):
+        self.start = l[0]
+        self.end = l[1]
+        self.diff = l[2]
+
+
+def search(lo, hi):
+    global k, d, box
+
+    mid = (lo + hi) // 2
+
+    c = 0
+    for b in box:
+        if b.start <= mid:
+            c += (((min(b.end, mid) - b.start) // b.diff) + 1)
+
+    if c >= d:
+        return lo, mid
+
+    else:
+        return mid, hi
 
 
 n, k, d = map(int, read().split())
-r = [rules() for i in range(k)]
-
-for i in range(k):
-    temp = list(map(int, read().split()))
-    r[i].start = temp[0]
-    r[i].end = temp[1]
-    r[i].diff = temp[2]
+box = [Dotori(list(map(int, read().split()))) for i in range(k)]
 
 lo = 1
 hi = n
 
 while (lo + 1) < hi:
-    mid = (lo + hi) // 2
-
-    s = 0
-    for i in range(k):
-        if r[i].start <= mid:
-            s += ((min(r[i].end, mid) - r[i].start) // r[i].diff + 1)
-
-    if s >= d:
-        hi = mid
-
-    else:
-        lo = mid
+    lo, hi = search(lo, hi)
 
 print(hi)
