@@ -1,52 +1,54 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
 
+setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
 class Node:
-    def __init__(self):
-        self.t = 0
-        self.a = 0
-        self.h = 0
+    def __init__(self, l):
+        self.t = l[0]
+        self.a = l[1]
+        self.h = l[2]
 
 
-N, Atk = map(int, read().split())
-room = [Node() for i in range(N + 1)]
+def search(lo, hi):
+    global Hatk, room, n
 
-for i in range(1, N + 1):
-    t, a, h = map(int, read().split())
-    room[i].t = t
-    room[i].a = a
-    room[i].h = h
+    mid = (lo + hi) // 2
+
+    atk = Hatk
+    curhp = mid
+
+    for r in room:
+        if r.t == 1:
+            if r.h % atk == 0:
+                curhp -= (r.a * ((r.h // atk) - 1))
+
+            else:
+                curhp -= (r.a * (r.h // atk))
+
+        elif r.t == 2:
+            atk += r.a
+            curhp += r.h
+            if curhp > mid:
+                curhp = mid
+
+        if curhp <= 0:
+            break
+
+    if curhp <= 0:
+        return mid + 1, hi
+    else:
+        return lo, mid - 1
+
+
+n, Hatk = map(int, read().split())
+room = [Node(list(map(int, read().split()))) for i in range(n)]
 
 lo = 1
 hi = (10 ** 12) * (10 ** 6) + 1
 
 while lo <= hi:
-    Hmaxhp = (lo + hi) // 2
-
-    Hcurhp = Hmaxhp
-    Hatk = Atk
-
-    for i in range(1, N + 1):
-        if room[i].t == 1:
-            if room[i].h % Hatk == 0:
-                Hcurhp -= (room[i].a * ((room[i].h // Hatk) - 1))
-
-            else:
-                Hcurhp -= (room[i].a * (room[i].h // Hatk))
-
-        elif room[i].t == 2:
-            Hatk += room[i].a
-            Hcurhp += room[i].h
-            if Hcurhp > Hmaxhp: Hcurhp = Hmaxhp
-
-        if Hcurhp <= 0:
-            break
-
-    if Hcurhp > 0:
-        hi = Hmaxhp - 1
-    else:
-        lo = Hmaxhp + 1
+    lo, hi = search(lo, hi)
 
 print(lo)
