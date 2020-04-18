@@ -1,25 +1,30 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
+setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
-k, n = map(int, read().split())
-lan = [0] * k
 
-for i in range(k):
-    lan[i] = int(read())
+def bs(lo, hi):
+    global lan, n
 
-lo = 1
-hi = sum(lan) + 1
-
-while (lo + 1) < hi:
     mid = (lo + hi) // 2
 
     c = 0
-    for i in lan:
-        c += (i // mid)
+    for l in lan:
+        c += (l // mid)
 
-    if c >= n:
-        lo = mid
+    if c < n:
+        return lo, mid - 1
     else:
-        hi = mid
+        return mid + 1, hi
 
-print(lo)
+
+k, n = map(int, read().split())
+lan = [int(read()) for i in range(k)]
+
+lo = 1
+hi = max(lan) + 1
+
+while lo <= hi:
+    lo, hi = bs(lo, hi)
+
+print(hi)
