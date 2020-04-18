@@ -13,31 +13,28 @@ def bs(lo, hi):
     c = 0
 
     for l in lesson:
-        if (s + l) <= mid:
-            s += l
-        else:
+        if l > mid:
+            return mid, hi
+
+        s += l
+        if mid < s:
             s = l
             c += 1
 
-    if s > 0:
-        c += 1
-
-    if c <= m:
-        res = mid
-        return lo, mid - 1
-
+    if c >= m:
+        return mid, hi
     else:
-        return mid + 1, hi
+        return lo, mid
 
 
 n, m = map(int, read().split())
 lesson = list(map(int, read().split()))
 
-lo = max(lesson)
+lo = 0
 hi = sum(lesson)
 res = 0
 
-while lo <= hi:
+while (lo + 1) < hi:
     lo, hi = bs(lo, hi)
 
-print(res)
+print(hi)
