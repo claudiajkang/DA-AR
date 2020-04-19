@@ -1,35 +1,28 @@
-from sys import stdin, setrecursionlimit
+from sys import stdin
 
-setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
-
-
-def bs(lo, hi):
-    global m, time, res
-
-    mid = (lo + hi) // 2
-
-    c = 0
-
-    for t in time:
-        c += (mid // t)
-
-    if c >= m:
-        res = mid
-        return lo, mid - 1
-    else:
-        return mid + 1, hi
-
 
 n, m = map(int, read().split())
 time = [int(read()) for i in range(n)]
-time.sort()
 
-lo = time[0]
-hi = time[-1] * m
-res = 0
+if m == 1:
+    print(min(time))
+    exit()
 
-while lo <= hi:
-    lo, hi = bs(lo, hi)
+lo = 1
+hi = min(time) * m + 1
 
-print(res)
+while (lo + 1) < hi:
+    mid = (lo + hi) // 2
+
+    count = 0
+    for t in time:
+        count += (mid // t)
+
+    if count < m:
+        lo = mid
+
+    else:
+        hi = mid
+
+print(hi)
