@@ -1,17 +1,23 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
 
-a, b, v = map(int, stdin.readline().rstrip().split())
+setrecursionlimit(10 ** 6)
+read = lambda: stdin.readline().rstrip()
 
-lo = 0
-hi = (v // (a - b)) + 1
-res = 0
+a, b, v = map(int, read().split())
+
+if a == v:
+    print(1)
+    exit()
+
+lo = 1
+hi = 10 ** 9 + 1
 
 while (lo + 1) < hi:
     mid = (lo + hi) // 2
 
-    temp = (a - b) * mid + b
+    tv = mid * (a - b) + b
 
-    if temp >= v:
+    if tv >= v:
         hi = mid
     else:
         lo = mid
