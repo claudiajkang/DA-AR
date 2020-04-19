@@ -27,28 +27,23 @@ def search(lo, hi):
             else:
                 curhp -= (r.a * (r.h // atk))
 
+            if curhp <= 0:
+                return mid, hi
+
         elif r.t == 2:
             atk += r.a
-            curhp += r.h
-            if curhp > mid:
-                curhp = mid
+            curhp = min(curhp + r.h, mid)
 
-        if curhp <= 0:
-            break
-
-    if curhp <= 0:
-        return mid + 1, hi
-    else:
-        return lo, mid - 1
+    return lo, mid
 
 
 n, Hatk = map(int, read().split())
 room = [Node(list(map(int, read().split()))) for i in range(n)]
 
-lo = 1
-hi = (10 ** 12) * (10 ** 6) + 1
+lo = 0
+hi = (10 ** 12) * (10 ** 6)
 
-while lo <= hi:
+while (lo + 1) < hi:
     lo, hi = search(lo, hi)
 
-print(lo)
+print(hi)
