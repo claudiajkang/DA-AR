@@ -4,21 +4,12 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 k = int(read())
-sensor = list(map(int, read().split()))
-sensor.sort()
+arr = list(map(int, read().split()))
+arr.sort()
 
-if k >= n:
-    print(0)
-    exit()
-
-dist = [0] * (n - 1)
-
+diff = [0] * n
 for i in range(n - 1):
-    dist[i] = sensor[i + 1] - sensor[i]
+    diff[i] = arr[i + 1] - arr[i]
 
-dist.sort(reverse=True)
-
-for i in range(k - 1):
-    dist[i] = 0
-
-print(sum(dist))
+diff.sort(reverse=True)
+print(sum(diff[k - 1:]))
