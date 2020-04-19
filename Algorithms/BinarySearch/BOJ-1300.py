@@ -4,17 +4,16 @@ setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
-def search(lo, hi):
-    global n, k
-
+def bs(lo, hi):
     mid = (lo + hi) // 2
 
     c = 0
     for i in range(1, n + 1):
-        c += min(mid // i, n)
+        c += (min(i * n, mid) // i)
 
     if c >= k:
         return lo, mid
+
     else:
         return mid, hi
 
@@ -22,10 +21,10 @@ def search(lo, hi):
 n = int(read())
 k = int(read())
 
-lo = 1
-hi = k
+lo = 0
+hi = n ** 2
 
 while (lo + 1) < hi:
-    lo, hi = search(lo, hi)
+    lo, hi = bs(lo, hi)
 
 print(hi)
