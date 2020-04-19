@@ -1,26 +1,26 @@
 from collections import deque
 from sys import stdin
 
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
 
-n, m = map(int, read().split())
-s = [[] for i in range(n + 1)]
+n, m = read()
 con = [0] * (n + 1)
+singer = [[] for i in range(n + 1)]
 
 for i in range(m):
-    l = list(map(int, read().split()))
+    l = list(read())
 
     for j in range(1, l[0]):
-        s[l[j]].append(l[j + 1])
+        singer[l[j]].append(l[j + 1])
         con[l[j + 1]] += 1
 
 q = deque()
+res = [0] * (n + 1)
 
 for i in range(1, n + 1):
     if con[i] == 0:
         q.append(i)
 
-result = [0] * (n + 1)
 err = False
 for i in range(1, n + 1):
     if not q:
@@ -28,9 +28,9 @@ for i in range(1, n + 1):
         break
 
     cur = q.popleft()
-    result[i] = cur
+    res[i] = cur
 
-    for j in s[cur]:
+    for j in singer[cur]:
         con[j] -= 1
 
         if con[j] == 0:
@@ -39,4 +39,4 @@ for i in range(1, n + 1):
 if err:
     print(0)
 else:
-    print('\n'.join(map(str, result[1:])))
+    print('\n'.join(map(str, res[1:])))
