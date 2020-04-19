@@ -3,17 +3,26 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-hw = [list(map(int, read().split())) for i in range(n)]
+hw = []
+day = 0
 
-hw.sort(key=lambda x: x[0])
-hw.sort(reverse=True, key=lambda x: x[1])
+for i in range(n):
+    d, w = map(int, read().split())
 
-day = [0] * 1001
+    day = max(d, day)
+    hw.append([d, w])
 
-for d, s in hw:
-    for j in range(d, 0, -1):
-        if day[j] == 0:
-            day[j] = s
-            break
+hw.sort(key=lambda x: x[1], reverse=True)
 
-print(sum(day))
+res = [0] * (day + 1)
+
+for d, w in hw:
+    if res[d] == 0:
+        res[d] = w
+    else:
+        for j in range(d - 1, 0, -1):
+            if res[j] == 0:
+                res[j] = w
+                break
+
+print(sum(res))
