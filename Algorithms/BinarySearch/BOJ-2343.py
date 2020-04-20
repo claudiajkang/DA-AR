@@ -1,27 +1,29 @@
 from sys import stdin, setrecursionlimit
-
 setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
-
 def bs(lo, hi):
-    global m, lesson, res
+    global lesson, m
 
     mid = (lo + hi) // 2
 
-    s = 0
     c = 0
+    s = 0
 
     for l in lesson:
         if l > mid:
             return mid, hi
 
-        s += l
-        if mid < s:
+        if (s + l) <= mid:
+            s += l
+        else:
             s = l
             c += 1
 
-    if c >= m:
+    if s > 0:
+        c += 1
+
+    if c > m:
         return mid, hi
     else:
         return lo, mid
@@ -32,7 +34,6 @@ lesson = list(map(int, read().split()))
 
 lo = 0
 hi = sum(lesson)
-res = 0
 
 while (lo + 1) < hi:
     lo, hi = bs(lo, hi)
