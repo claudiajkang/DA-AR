@@ -1,44 +1,40 @@
-from heapq import heappush, heappop
+from collections import deque
 from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 m = int(read())
-
-arr = [[] for i in range(n + 1)]
+base = [[] for i in range(n + 1)]
 con = [0] * (n + 1)
 
 for i in range(m):
-    x, y, k = map(int, read().split())
+    a, b, c = map(int, read().split())
+    base[b].append([a, c])
+    con[a] += 1
 
-    arr[y].append([x, k])
-    con[x] += 1
+res = [[0] * n for i in range(n + 1)]
 
-q = []
-res = [[0] * (n + 1) for i in range(n + 1)]
 must = []
-
+q = deque()
 for i in range(1, n + 1):
     if con[i] == 0:
-        must.append(i)
         res[i][i] = 1
-        heappush(q, i)
+        must.append(i)
+        q.append(i)
 
 while q:
-    cur = heappop(q)
+    cur = q.popleft()
 
-    for j in arr[cur]:
-        mid = j[0]
-        count = j[1]
+    for mid, count in base[cur]:
+        con[mid] -= 1
 
         for i in must:
             res[mid][i] += res[cur][i] * count
 
-        con[mid] -= 1
-
         if con[mid] == 0:
-            heappush(q, mid)
+            q.append(mid)
 
+must.sort()
 for i in must:
     print(f"{i} {res[n][i]}")
