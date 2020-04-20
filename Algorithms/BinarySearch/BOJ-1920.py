@@ -1,35 +1,34 @@
 from sys import stdin, setrecursionlimit
-
 setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
-def bs(lo, hi, i):
-    global nn, mm
+def bs(lo, hi, v):
+    global a
+
     mid = (lo + hi) // 2
 
-    if nn[mid] > mm[i]:
-        return lo, mid
-
-    elif nn[mid] == mm[i]:
-        return mid, mid
-
-    else:
+    if a[mid] <= v:
         return mid, hi
+    else:
+        return lo, mid
 
 
 n = int(read())
-nn = list(map(int, read().split()))
-nn.sort()
+a = list(map(int, read().split()))
+a.sort()
 
 m = int(read())
-mm = list(map(int, read().split()))
+b = list(map(int, read().split()))
 
 for i in range(m):
     lo = 0
     hi = n
 
     while (lo + 1) < hi:
-        lo, hi = bs(lo, hi, i)
+        lo, hi = bs(lo, hi, b[i])
 
-    print(1 if nn[lo] == mm[i] else 0)
+    if a[lo] == b[i]:
+        print(1)
+    else:
+        print(0)
