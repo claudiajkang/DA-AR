@@ -1,5 +1,5 @@
 from sys import stdin, setrecursionlimit
-setrecursionlimit(10 ** 6)
+setrecursionlimit(10 ** 9)
 read = lambda: stdin.readline().rstrip()
 
 def bs(lo, hi):
@@ -8,9 +8,8 @@ def bs(lo, hi):
     mid = (lo + hi) // 2
 
     c = 0
-
-    for l in lan:
-        c += (l // mid)
+    for i in lan:
+        c += (i // mid)
 
     if c >= n:
         return mid, hi
