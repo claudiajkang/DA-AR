@@ -1,49 +1,46 @@
 from sys import stdin, setrecursionlimit
-
 setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
-
 class Node:
     def __init__(self, l):
-        self.t = l[0]
-        self.a = l[1]
-        self.h = l[2]
+        self.type = l[0]
+        self.atk = l[1]
+        self.hp = l[2]
 
 
-def search(lo, hi):
-    global Hatk, room, n
+def bs(lo, hi):
+    global room, Hatk
 
-    mid = (lo + hi) // 2
-
-    atk = Hatk
-    curhp = mid
+    maxhp = (lo + hi) // 2
+    curhp = maxhp
+    curatk = Hatk
 
     for r in room:
-        if r.t == 1:
-            if r.h % atk == 0:
-                curhp -= (r.a * ((r.h // atk) - 1))
+        if r.type == 1:
+            if r.hp % curatk:
+                curhp -= (r.hp // curatk) * r.atk
 
             else:
-                curhp -= (r.a * (r.h // atk))
+                curhp -= ((r.hp // curatk) - 1) * r.atk
 
             if curhp <= 0:
-                return mid, hi
+                return maxhp, hi
 
-        elif r.t == 2:
-            atk += r.a
-            curhp = min(curhp + r.h, mid)
+        else:
+            curatk += r.atk
+            curhp = min(curhp + r.hp, maxhp)
 
-    return lo, mid
+    return lo, maxhp
 
 
 n, Hatk = map(int, read().split())
 room = [Node(list(map(int, read().split()))) for i in range(n)]
 
 lo = 0
-hi = (10 ** 12) * (10 ** 6)
+hi = 10 ** 18
 
 while (lo + 1) < hi:
-    lo, hi = search(lo, hi)
+    lo, hi = bs(lo, hi)
 
 print(hi)
