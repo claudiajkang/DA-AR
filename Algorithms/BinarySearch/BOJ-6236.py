@@ -1,22 +1,24 @@
 from sys import stdin, setrecursionlimit
 setrecursionlimit(10 ** 6)
-
 read = lambda: stdin.readline().rstrip()
 
+
 def bs(lo, hi):
-    global m, money
+    global money, m
 
     mid = (lo + hi) // 2
-    c = 0
-    s = 0
 
-    for mm in money:
-        if mm > mid:
+    s = 0
+    c = 0
+
+    for t in money:
+        if t > mid:
             return mid, hi
 
-        s += mm
-        if s > mid:
-            s = mm
+        if (s + t) <= mid:
+            s += t
+        else:
+            s = t
             c += 1
 
     if s > 0:
@@ -30,7 +32,8 @@ def bs(lo, hi):
 
 n, m = map(int, read().split())
 money = [int(read()) for i in range(n)]
-lo = 1
+
+lo = 0
 hi = sum(money)
 
 while (lo + 1) < hi:
