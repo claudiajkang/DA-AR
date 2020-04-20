@@ -1,8 +1,6 @@
 from sys import stdin, setrecursionlimit
-
 setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
-
 
 class Node:
     def __init__(self, l):
@@ -12,26 +10,25 @@ class Node:
 
 
 def bs(lo, hi):
-    global d, dotori
+    global box, d
 
     mid = (lo + hi) // 2
-    count = 0
 
-    for t in dotori:
-        if t.start > mid:
-            continue
-        else:
-            count += ((min(mid, t.end) - t.start) // t.diff + 1)
+    c = 0
 
-    if count < d:
-        return mid, hi
+    for b in box:
+        if b.start > mid: continue
 
-    else:
+        c += ((min(b.end, mid) - b.start) // b.diff) + 1
+
+    if c >= d:
         return lo, mid
+    else:
+        return mid, hi
 
 
 n, k, d = map(int, read().split())
-dotori = [Node(list(map(int, read().split()))) for i in range(k)]
+box = [Node(list(map(int, read().split()))) for i in range(k)]
 
 lo = 0
 hi = n
