@@ -1,36 +1,37 @@
-from sys import stdin
 from heapq import heappush, heappop
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 m = int(read())
 
-g = [[] for i in range(n+1)]
-visited = [False] * (n+1)
-dist = [-1] * (n+1)
+g = [[] for i in range(n + 1)]
 
 for i in range(m):
-    u, v, w = map(int, read().split())
-    g[u].append([v, w])
+    a, b, c = map(int, read().split())
+    g[a].append([b, c])
 
 start, end = map(int, read().split())
 
-q = []
+visited = [False] * (n + 1)
+dist = [1e9] * (n + 1)
+
 dist[start] = 0
-heappush(q, [0, start])
+q = []
+heappush(q, [dist[start], start])
 
 while q:
-    cur = heappop(q)[1]
+    cost, cur = heappop(q)
 
-    if visited[cur]: continue
+    if visited[cur]:
+        continue
+
     visited[cur] = True
 
-    for i in g[cur]:
-        nxt = i[0]
-        d = i[1]
-
-        if dist[nxt] == -1 or dist[nxt] > dist[cur] + d:
-            dist[nxt] = dist[cur] + d
+    for nxt, d in g[cur]:
+        if dist[nxt] > cost + d:
+            dist[nxt] = cost + d
             heappush(q, [dist[nxt], nxt])
 
 print(dist[end])
