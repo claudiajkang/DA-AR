@@ -1,7 +1,9 @@
 from sys import stdin
 
-n = int(stdin.readline())
-dp = [0, 1, 2] + [0] * (n + 1)
+read = lambda: stdin.readline().rstrip()
+
+n = int(read())
+dp = [0, 1, 2] + [0] * n
 
 if n > 2:
     for i in range(3, n + 1):
