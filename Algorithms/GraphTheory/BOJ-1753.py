@@ -1,40 +1,34 @@
-from sys import stdin
 from heapq import heappush, heappop
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
+INF = 1e9
 v, e = map(int, read().split())
 k = int(read())
-
-g = [[] for i in range(v+1)]
+g = [[] for i in range(v + 1)]
 
 for i in range(e):
-    tu, tv, tw = map(int, read().split())
-    g[tu].append([tv, tw])
+    a, b, c = map(int, read().split())
+    g[a].append([b, c])
 
-dist = [-1] * (v+1)
-visited = [False] * (v+1)
+visited = [False] * (v + 1)
+dist = [INF] * (v + 1)
 
 q = []
-
 dist[k] = 0
-heappush(q, [0, k])
+heappush(q, [dist[k], k])
 
 while q:
-    cur = heappop(q)[1]
+    cost, cur = heappop(q)
 
     if visited[cur]: continue
     visited[cur] = True
 
-    for i in g[cur]:
-        n = i[0]
-        d = i[1]
+    for nexts, d in g[cur]:
+        if dist[nexts] > (cost + d):
+            dist[nexts] = cost + d
+            heappush(q, [dist[nexts], nexts])
 
-        if dist[n] == -1 or dist[n] > dist[cur] + d:
-            dist[n] = dist[cur] + d
-            heappush(q, [dist[n], n])
-
-for i in range(1, v+1):
-    if dist[i] == -1:
-        print("INF")
-    else:
-        print(dist[i])
+for i in range(1, v + 1):
+    print("INF" if dist[i] == INF else dist[i])
