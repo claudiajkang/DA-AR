@@ -1,16 +1,18 @@
-from sys import stdin
 from itertools import permutations
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
 h = [int(read()) for i in range(9)]
+h.sort()
 
-res = []
+tlist = list(permutations(h, 7))
 
-l = permutations(h, 7)
+for tt in tlist:
+    s = 0
+    for j in range(7):
+        s += tt[j]
 
-for i in list(l):
-    if sum(i) == 100:
-        res = i
+    if s == 100:
+        print('\n'.join(map(str, tt)))
         break
-
-print('\n'.join(map(str, sorted(res))))
