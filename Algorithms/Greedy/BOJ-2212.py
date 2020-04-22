@@ -4,13 +4,14 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 k = int(read())
-l = list(map(int, read().split()))
-l.sort()
+pos = list(map(int, read().split()))
+pos.sort()
 
-d = []
+diff = [0] * (n - 1)
 
 for i in range(n - 1):
-    d.append(l[i + 1] - l[i])
-d.sort(reverse=True)
+    diff[i] = (pos[i + 1] - pos[i])
 
-print(sum(d[k - 1:]))
+diff.sort(reverse=True)
+
+print(sum(diff[k - 1:]))
