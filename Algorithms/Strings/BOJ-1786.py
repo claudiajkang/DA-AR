@@ -3,6 +3,7 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
+
 s = read()
 p = read()
 slen = len(s)
