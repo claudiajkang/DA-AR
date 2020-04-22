@@ -1,44 +1,41 @@
-from sys import stdin, setrecursionlimit
-setrecursionlimit(10**6)
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
-
-def solve(num):
-    global t, sb, n, res
-
-    flag = [False] * n
-
-    for i in range(n):
-        cmp_num = tn[i]
-        temp = [0, 0]
-        for j in range(3):
-            if cmp_num[j] == num[j]:
-                temp[0] += 1
-                continue
-
-            if cmp_num[j] in num:
-                temp[1] += 1
-
-        if temp == sb[i]:
-            flag[i] = True
-
-    res += 0 if flag.count(False) else 1
-
-
 n = int(read())
-tn = [[] for i in range(n)]
-sb = [[] for k in range(n)]
+t = ['0'] * n
+sb = [[] for i in range(n)]
 
 for i in range(n):
     a, b, c = map(int, read().split())
-    tn[i] = list(str(a))
+    t[i] = str(a)
     sb[i] = [b, c]
 
 res = 0
 
-for ii in range(101, 1001):
-    t = str(ii)
-    if '0' not in t and len(set(t)) == 3:
-        solve(list(t))
+for i in range(101, 999):
+    temp = str(i)
+    if len(set(temp)) != 3: continue
+    if '0' in temp: continue
+
+    count = 0
+
+    for tt in range(n):
+        test = t[tt]
+        tc = [0, 0]
+
+        for j in range(3):
+            if temp[j] == test[j]:
+                tc[0] += 1
+                continue
+
+            if temp[j] in test:
+                tc[1] += 1
+
+        if tc == sb[tt]:
+            count += 1
+
+    if count == n:
+        res += 1
 
 print(res)
