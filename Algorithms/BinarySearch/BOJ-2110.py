@@ -1,35 +1,28 @@
-from sys import stdin, setrecursionlimit
-setrecursionlimit(10 ** 6)
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
-def bs(lo, hi):
-    global wifi, c, n
+n, c = map(int, read().split())
+pos = [int(read()) for i in range(n)]
+pos.sort()
 
+lo = 1
+hi = pos[-1] + 1
+
+while (lo + 1) < hi:
     mid = (lo + hi) // 2
 
     count = 1
-    before = wifi[0]
-
+    before = pos[0]
     for i in range(1, n):
-        if (wifi[i] - before) >= mid:
-            before = wifi[i]
+        if (pos[i] - before) >= mid:
+            before = pos[i]
             count += 1
 
     if count >= c:
-        return mid, hi
+        lo = mid
 
     else:
-        return lo, mid
-
-
-n, c = map(int, read().split())
-wifi = [int(read()) for i in range(n)]
-wifi.sort()
-
-lo = 1
-hi = wifi[-1] + 1
-
-while (lo + 1) < hi:
-    lo, hi = bs(lo, hi)
+        hi = mid
 
 print(lo)
