@@ -1,34 +1,32 @@
-from sys import stdin, setrecursionlimit
-setrecursionlimit(10 ** 6)
+from sys import stdin
 
-def set_fail(pattern, n):
-    fail = [0] * n
+read = lambda: stdin.readline().rstrip()
+
+while True:
+    p = read()
+
+    if p == '.':
+        break
+
+    l = len(p)
+
+    fail = [0] * l
 
     j = 0
-    for i in range(1, n):
-        while j > 0 and pattern[i] != pattern[j]:
+
+    for i in range(1, l):
+        if (j > 0) and p[i] != p[j]:
             j = fail[j - 1]
 
-        if pattern[i] == pattern[j]:
+        if p[i] == p[j]:
             j += 1
             fail[i] = j
 
-    return fail
-
-
-for pattern in stdin:
-    pattern = pattern[:-1]
-    if pattern == '.':
-        break
-
-    n = len(pattern)
-
-    fail = set_fail(pattern, n)
-
-    q = fail[n-1]
-    r = n - q
+    q = fail[l - 1]
+    r = l - q
 
     if q == 0 or (q % r != 0):
         print(1)
+
     else:
         print(q // r + 1)
