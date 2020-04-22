@@ -6,14 +6,15 @@ read = lambda: stdin.readline().rstrip()
 n = int(read())
 a = list(map(int, read().split()))
 a.sort()
-l = list(permutations(a))
+
+tlist = list(permutations(a))
 
 res = 0
-
-for i in l:
-    ts = 0
+for tt in tlist:
+    s = 0
     for j in range(n - 1):
-        ts += abs(i[j] - i[j + 1])
-    res = max(res, ts)
+        s += (abs(tt[j] - tt[j + 1]))
+
+    res = max(res, s)
 
 print(res)
