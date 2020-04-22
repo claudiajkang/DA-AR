@@ -1,8 +1,8 @@
 from sys import stdin
 
 s = stdin.readline().rstrip()
-res = 0
 stack = []
+res = 0
 
 for i in range(len(s)):
     if stack and s[i-1] == '(' and s[i] == ')':
