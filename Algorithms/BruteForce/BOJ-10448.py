@@ -1,27 +1,25 @@
-from sys import stdin, setrecursionlimit
-setrecursionlimit(10**6)
+from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
-def trinum(v):
-    global pn
-    for i in pn:
-        for j in pn:
-            for k in pn:
-                if (i+j+k) == v:
-                    return 1
-
-    return 0
-
 t = int(read())
-test = [int(read()) for i in range(t)]
-MAX = 45
+k = [int(read()) for i in range(t)]
+pn = [0] * 46
 
-pn = [1] * MAX
-
-for i in range(2, MAX):
-    pn[i] = (i * (i+1)) // 2
+for i in range(1, 46):
+    pn[i] = (i * (i + 1)) // 2
 
 pn = pn[1:]
 
-for i in test:
-    print(trinum(i))
+for kk in k:
+    flag = False
+    for i in pn:
+        for j in pn:
+            for w in pn:
+                if (i + j + w) == kk:
+                    flag = True
+                    break
+            if flag: break
+        if flag: break
+
+    print(1 if flag else 0)
