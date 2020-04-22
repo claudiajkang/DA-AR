@@ -1,18 +1,24 @@
 from sys import stdin
 
-s = stdin.readline().rstrip()
-res = ''
+s = stdin.readline()[:-1]
+res = []
 
 for i in s:
-    if i.isupper():
-        idx = ord(i) + 13 if (ord(i) + 13) <= 90 else ord(i) + 13 - 26
-        res += chr(idx)
+    if 65 <= ord(i) <= 90:
+        v = ord(i) + 13
+        if v > 90:
+            v -= 26
 
-    elif i.islower():
-        idx = ord(i) + 13 if (ord(i) + 13) <= 122 else ord(i) + 13 - 26
-        res += chr(idx)
+        res.append(chr(v))
+
+    elif 97 <= ord(i) <= 122:
+        v = ord(i) + 13
+        if v > 122:
+            v -= 26
+
+        res.append(chr(v))
 
     else:
-        res += i
+        res.append(i)
 
-print(res)
+print(''.join(res))
