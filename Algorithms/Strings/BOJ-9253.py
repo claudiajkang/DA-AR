@@ -1,46 +1,47 @@
 from sys import stdin
-read = lambda: stdin.readline().rstrip()
 
-def get_fail(pattern):
-    fail = [0] * len(pattern)
+a = stdin.readline().rstrip()
+b = stdin.readline().rstrip()
+p = stdin.readline().rstrip()
 
-    j = 0
-    for i in range(1, len(pattern)):
-        if j > 0 and pattern[i] != pattern[j]:
-            j = fail[j - 1]
+plen = len(p)
 
-        if pattern[i] == pattern[j]:
+fail = [0] * plen
+
+j = 0
+for i in range(1, plen):
+    if j > 0 and p[i] != p[j]:
+        j = fail[j - 1]
+
+    if p[i] == p[j]:
+        j += 1
+        fail[i] = j
+
+ares = False
+bres = False
+
+j = 0
+for i in range(len(a)):
+    if j > 0 and p[j] != a[i]:
+        j = fail[j - 1]
+
+    if p[j] == a[i]:
+        if j == (plen - 1):
+            ares = True
+            break
+        else:
             j += 1
-            fail[i] = j
 
-    return fail
+j = 0
+for i in range(len(b)):
+    if j > 0 and p[j] != b[i]:
+        j = fail[j - 1]
 
+    if p[j] == b[i]:
+        if j == (plen - 1):
+            bres = True
+            break
+        else:
+            j += 1
 
-def kmp(strings, pattern, fail):
-    j = 0
-    for i in range(len(strings)):
-        if j > 0 and strings[i] != pattern[j]:
-            j = fail[j - 1]
-
-        if strings[i] == pattern[j]:
-            if j == len(pattern) - 1:
-                return True
-
-            else:
-                j += 1
-
-    return False
-
-
-a = read()
-b = read()
-p = read()
-
-fail = get_fail(p)
-ra = kmp(a, p, fail)
-rb = kmp(b, p, fail)
-
-if ra and rb:
-    print('YES')
-else:
-    print('NO')
+print("YES" if ares and bres else "NO")
