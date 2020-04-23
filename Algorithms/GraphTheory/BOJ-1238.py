@@ -1,18 +1,17 @@
 from heapq import heappush, heappop
-from sys import stdin, setrecursionlimit
+from sys import stdin
 
-setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
 
-def search(start, end):
-    global n, INF, g
+def distance(start, end):
+    global n, g, INF
 
     dist = [INF] * (n + 1)
     visited = [False] * (n + 1)
-    dist[start] = 0
-
     q = []
+
+    dist[start] = 0
     heappush(q, [dist[start], start])
 
     while q:
@@ -30,18 +29,17 @@ def search(start, end):
 
 
 n, m, x = map(int, read().split())
-INF = 1e9
 g = [[] for i in range(n + 1)]
 
 for i in range(m):
     a, b, c = map(int, read().split())
     g[a].append([b, c])
 
-res = 0
+INF = 1e9
+
+res = [0] * (n + 1)
 
 for i in range(1, n + 1):
-    t = search(i, x) + search(x, i)
-    if t >= INF: continue
-    res = max(res, t)
+    res[i] = distance(i, x) + distance(x, i)
 
-print(res)
+print(max(res))
