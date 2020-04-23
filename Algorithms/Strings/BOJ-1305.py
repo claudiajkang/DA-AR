@@ -1,19 +1,20 @@
 from sys import stdin
+
 read = lambda: stdin.readline().rstrip()
 
 l = int(read())
-s = read()
+p = read()
 
-slen = len(s)
-fail = [0] * slen
+fail = [0] * l
 
 j = 0
-for i in range(1, slen):
-    if (j > 0) and s[i] != s[j]:
+
+for i in range(1, l):
+    if j > 0 and p[i] != p[j]:
         j = fail[j - 1]
 
-    if s[i] == s[j]:
+    if p[i] == p[j]:
         j += 1
         fail[i] = j
 
-print(l - fail[l - 1])
+print(l - fail[-1])
