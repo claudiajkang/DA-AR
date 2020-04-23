@@ -3,11 +3,8 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n, k = map(int, read().split())
-coin = []
-dp = [0 for i in range(k + 1)]
-
-for i in range(n):
-    coin.append(int(read()))
+coin = [int(read()) for i in range(n)]
+dp = [0] * (k + 1)
 
 for i in range(1, k + 1):
     a = []
