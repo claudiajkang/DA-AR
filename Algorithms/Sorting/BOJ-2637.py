@@ -1,4 +1,4 @@
-from collections import deque
+from heapq import heappush, heappop
 from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
@@ -14,27 +14,27 @@ for i in range(m):
     g[b].append([a, c])
     con[a] += 1
 
+q = []
 res = [[0] * (n + 1) for i in range(n + 1)]
-q = deque()
-must = deque()
+must = []
 
 for i in range(1, n + 1):
     if con[i] == 0:
         res[i][i] = 1
-        q.append(i)
+        heappush(q, i)
         must.append(i)
 
 while q:
-    cur = q.popleft()
+    cur = heappop(q)
 
-    for nxt, d in g[cur]:
-        con[nxt] -= 1
+    for j, d in g[cur]:
+        con[j] -= 1
 
-        for j in must:
-            res[nxt][j] += res[cur][j] * d
+        for i in must:
+            res[j][i] += res[cur][i] * d
 
-        if con[nxt] == 0:
-            q.append(nxt)
+        if con[j] == 0:
+            heappush(q, j)
 
 for i in must:
     print(f"{i} {res[n][i]}")
