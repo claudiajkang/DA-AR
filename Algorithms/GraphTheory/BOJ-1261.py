@@ -1,4 +1,4 @@
-from heapq import heappop, heappush
+from heapq import heappush, heappop
 from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
@@ -9,20 +9,22 @@ g = [[] for i in range(h)]
 for i in range(h):
     g[i] = list(map(int, list(read())))
 
-p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
-
 INF = 1e9
 dist = [[INF] * w for i in range(h)]
 visited = [[False] * w for i in range(h)]
 
-dist[0][0] = 0
+dist[0][0] = g[0][0]
 q = []
 heappush(q, [dist[0][0], 0, 0])
+
+p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
 while q:
     cost, ch, cw = heappop(q)
 
-    if visited[ch][cw]: continue
+    if visited[ch][cw]:
+        continue
+
     visited[ch][cw] = True
 
     for hh, ww in p:
