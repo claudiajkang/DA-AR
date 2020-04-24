@@ -10,18 +10,17 @@ for i in range(m):
 
 INF = 1e9
 dist = [INF] * (n + 1)
-
 dist[1] = 0
 
 for i in range(1, n + 1):
     for j in range(1, n + 1):
-        for nxt, d in g[j]:
-            if (dist[j] != INF) and (dist[nxt] > dist[j] + d):
+        for cur, d in g[j]:
+            if (dist[j] != INF) and (dist[cur] > dist[j] + d):
                 if i == n:
                     print(-1)
                     exit()
 
-                dist[nxt] = dist[j] + d
+                dist[cur] = dist[j] + d
 
 for i in range(2, n + 1):
     print(dist[i] if dist[i] < INF else -1)
