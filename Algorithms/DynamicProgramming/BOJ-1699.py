@@ -1,15 +1,13 @@
 from sys import stdin
 
-read = lambda: stdin.readline().rstrip()
-
-n = int(read())
-dp = [0] * (n + 1)
+n = int(stdin.readline().rstrip())
 pn = []
+dp = [0] * (n + 1)
 
-for i in range(1, n):
-    if i ** 2 > n: break
-    pn.append(i ** 2)
-    dp[i ** 2] = 1
+for i in range(1, n + 1):
+    if i * i > n: break
+    dp[i * i] = 1
+    pn.append(i * i)
 
 for i in range(1, n + 1):
     if dp[i] == 1: continue
@@ -20,10 +18,6 @@ for i in range(1, n + 1):
         if j <= i and dp[i - j] != -1:
             a.append(dp[i - j])
 
-    if not a:
-        dp[i] = -1
-
-    else:
-        dp[i] = min(a) + 1
+    dp[i] = min(a) + 1 if a else -1
 
 print(dp[n])
