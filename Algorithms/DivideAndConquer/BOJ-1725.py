@@ -3,28 +3,31 @@ from sys import stdin, setrecursionlimit
 setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
+def histogram(lo, hi):
+    global height
 
-def histogram(s, e):
-    global hh
+    if lo == hi:
+        return 0
 
-    if s == e: return 0
-    if s + 1 == e: return hh[s]
+    if lo + 1 == hi:
+        return height[lo]
 
-    mid = (s + e) // 2
-    result = max(histogram(s, mid), histogram(mid, e))
+    mid = (lo + hi) // 2
+    result = max(histogram(lo, mid), histogram(mid, hi))
 
     w = 1
-    h = hh[mid]
+    h = height[mid]
     l = mid
     r = mid
 
-    while (r - l + 1) < (e - s):
-        p = min(h, hh[l - 1]) if l > s else -1
-        q = min(h, hh[r + 1]) if r < e - 1 else -1
+    while (r - l + 1) < (hi - lo):
+        p = min(h, height[l - 1]) if l > lo else -1
+        q = min(h, height[r + 1]) if r < hi - 1 else -1
 
         if p >= q:
             h = p
             l -= 1
+
         else:
             h = q
             r += 1
@@ -36,6 +39,6 @@ def histogram(s, e):
 
 
 n = int(read())
-hh = [int(read()) for i in range(n)]
+height = [int(read()) for i in range(n)]
 
 print(histogram(0, n))
