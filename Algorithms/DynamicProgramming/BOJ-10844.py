@@ -1,6 +1,7 @@
 from sys import stdin
 
 n = int(stdin.readline().rstrip())
+
 dp = [[1] * 10 for i in range(n + 1)]
 
 dp[1][0] = 0
