@@ -1,5 +1,4 @@
 from sys import stdin
-
 read = lambda: stdin.readline().rstrip()
 
 n, c = map(int, read().split())
@@ -14,10 +13,11 @@ while (lo + 1) < hi:
 
     count = 1
     before = pos[0]
+
     for i in range(1, n):
         if (pos[i] - before) >= mid:
-            before = pos[i]
             count += 1
+            before = pos[i]
 
     if count >= c:
         lo = mid
