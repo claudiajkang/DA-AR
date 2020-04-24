@@ -3,36 +3,38 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n, k = map(int, read().split())
-device = list(map(int, read().split()))
-elec = {i: [] for i in set(device)}
+temp = list(map(int, read().split()))
+elec = {i: [] for i in set(temp)}
 
 for i in range(k):
-    elec[device[i]].append(i)
+    o = temp[i]
+    elec[o].append(i)
 
 q = []
-res = 0
-
+count = 0
 for i in range(k):
-    e = device[i]
+    o = temp[i]
 
-    if e in q:
-        elec[e].pop(0)
+    if o in q:
+        elec[o].pop(0)
         continue
 
     if len(q) == n:
         tq = []
 
-        for tt in q:
-            if len(elec[tt]) == 0:
-                tq.append([k + 1, tt])
+        for t in q:
+            if len(elec[t]) == 0:
+                tq.append([k + 1, t])
                 break
-            tq.append([elec[tt][0], tt])
+            else:
+                tq.append([elec[t][0], t])
 
         tq.sort(reverse=True, key=lambda x: x[0])
+
         q.remove(tq[0][1])
-        res += 1
+        count += 1
 
-    q.append(e)
-    elec[e].pop(0)
+    q.append(o)
+    elec[o].pop(0)
 
-print(res)
+print(count)
