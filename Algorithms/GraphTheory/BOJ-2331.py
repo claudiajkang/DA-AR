@@ -1,20 +1,18 @@
-import sys
+from sys import stdin
 
-A, P = sys.stdin.readline().strip().split()
-DP = [A]
-P = int(P)
-idx = 1
-tidx = 0
+read = lambda: stdin.readline().rstrip()
+
+a, p = read().split()
+p = int(p)
+arr = [a]
 
 while True:
-    tv = 0
-    for i in DP[idx-1]:
-        tv += pow(int(i), P)
-    try:
-        tidx = DP.index(str(tv))
-    except ValueError:
-        DP.append(str(tv))
-        idx += 1
-    else:
-        print(tidx)
+    r = 0
+    for a in arr[-1]:
+        r += int(a) ** p
+    if str(r) in arr:
+        tidx = arr.index(str(r))
+        print(len(arr[:tidx]))
         break
+    else:
+        arr.append(str(r))

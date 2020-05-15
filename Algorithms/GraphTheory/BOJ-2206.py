@@ -1,44 +1,56 @@
-from sys import stdin
 from collections import deque
-read = lambda : stdin.readline().rstrip()
+from sys import stdin
 
-N, M = map(int, read().split())
-G = [[-1] * (M+2) for _ in range(N+2)]
-W = []
-POINT = [[0, -1], [0, 1], [1, 0], [-1, 0]]
+read = lambda: stdin.readline().rstrip()
 
-for i in range(1, N+1):
-    G[i] = [-1] + list(map(int, list(read()))) + [-1]
-    
-    for j in range(1, M+1):
-        if G[i][j] == 1:
-            W.append([i, j])
+h, w = map(int, read().split())
+g = [[] for i in range(h)]
 
-res = []
-for i in range(1, N+2):
-    for j in range(1, M+2):
-        if G[i][j] == 1:
-            G[i][j] = 0
-            DIS = [[0] * (M+2) for _ in range(N+2)]
-            q = deque()
-            q.append([1, 1, 1])
+for i in range(h):
+    g[i] = list(map(int, list(read())))
 
-            while len(q):
-                ci, cj, cd = q.popleft()
+q = deque()
+q.append([0, 0, 0])
+visited = [[[False] * w for i in range(h)] for j in range(2)]
 
-                for ii, jj in POINT:
-                    ti = ci + ii
-                    tj = cj + jj
+time = 0
+suc = False
+p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
-                    if G[ti][tj] == 0 and DIS[ti][tj] == 0:
-                        DIS[ti][tj] = cd + 1
-                        q.append([ti, tj, cd + 1])
+while q:
+    time += 1
 
-            G[i][j] = 1
-            if DIS[N][M] != 0:
-                res.append(DIS[N][M])
+    qlen = len(q)
+    for i in range(qlen):
+        crash, ch, cw = q.popleft()
 
-if len(res) == 0:
-    print(-1)
+        if ch == (h - 1) and cw == (w - 1):
+            suc = True
+            break
+
+        for hh, ww in p:
+            th = hh + ch
+            tw = ww + cw
+
+            if th < 0 or tw < 0 or th >= h or tw >= w:
+                continue
+
+            if g[th][tw] == 1:
+                if crash:
+                    continue
+                else:
+                    if not visited[1][th][tw]:
+                        visited[1][th][tw] = True
+                        q.append([1, th, tw])
+
+            if g[th][tw] == 0:
+                if not visited[crash][th][tw]:
+                    visited[crash][th][tw] = True
+                    q.append([crash, th, tw])
+
+    if suc: break
+
+if suc:
+    print(time)
 else:
-    print(min(res))
+    print(-1)

@@ -1,64 +1,69 @@
 from sys import stdin
-
+read = lambda: stdin.readline().rstrip()
 
 class Node:
-    def __init__(self, data, left, right):
+    def __init__(self, data):
         self.data = data
-        self.left = left
-        self.right = right
+        self.left = None
+        self.right = None
 
 
 class Tree:
     def __init__(self):
         self.root = None
 
-    def preorder(self, node):
-        print(node, end='')
-        if not node.left == None: self.preorder(node.left)
-        if not node.right == None: self.preorder(node.right)
-
-    def inorder(self, node):
-        if not node.left == None: self.inorder(node.left)
-        print(node, end='')
-        if not node.right == None: self.inorder(node.right)
-
-    def postorder(self, node):
-        if not node.left == None: self.postorder(node.left)
-        if not node.right == None: self.postorder(node.right)
-        print(node, end='')
-
-    def traverse(self, node, v, lst):
-        if node:
-            if v != node.data:
-                self.traverse(node.left, v, lst)
-                self.traverse(node.right, v, lst)
-            else:
-                lst.append(node)
-
-    def add(self, val, left_node, right_node):
-        if self.root is None:
-            node = Node(val)
+    def add(self, ll):
+        data, left, right = ll[0], ll[1], ll[2]
+        if not self.root:
+            node = Node(data)
             self.root = node
+
         else:
-            lst = []
-            self.traverse(self.root, val, lst)
-            node = lst[0]
+            node = self.traverse(self.root, data)
 
-        if left_node != '.':
-            node.left = Node(left_node)
+        if left != '.': node.left = Node(left)
+        if right != '.': node.right = Node(right)
 
-        if right_node != '.':
-            node.right = Node(right_node)
+    def traverse(self, node, data):
+        if not node: return
+        else:
+            if node.data == data: return node
+            else:
+                r = self.traverse(node.left, data)
+                if r is not None: return r
+                return self.traverse(node.right, data)
+
+    def preOrder(self, node, r):
+        if not node: return
+        else:
+            r.append(node.data)
+            t = self.preOrder(node.left, r)
+            t = self.preOrder(node.right, r)
+            return r
+
+    def inOrder(self, node, r):
+        if not node: return
+        else:
+            t = self.inOrder(node.left, r)
+            r.append(node.data)
+            t = self.inOrder(node.right, r)
+            return r
+
+    def postOrder(self, node, r):
+        if not node: return
+        else:
+            t = self.postOrder(node.left, r)
+            t = self.postOrder(node.right, r)
+            r.append(node.data)
+            return r
 
 
-N = int(input())
+n = int(read())
 t = Tree()
-for i in range(N):
-    v, l, r = input().split()
-    t.add(v, l, r)
 
-t.preorder(t.root)
-print()
-t.inorder(t.root)
-print()
-t.postorder(t.root)
+for i in range(n):
+    t.add(read().split())
+
+print(''.join(t.preOrder(t.root, [])))
+print(''.join(t.inOrder(t.root, [])))
+print(''.join(t.postOrder(t.root, [])))

@@ -1,44 +1,46 @@
-from sys import stdin
 from collections import deque
+from sys import stdin
 
-read = lambda: stdin.readline().rstrip()
+read = lambda: map(int, stdin.readline().rstrip().split())
 
-M, N = map(int, read().split())
-TOMA = [[-1] * (M + 2) for _ in range(N + 2)]
+n, m = read()
+g = [[0] * n for i in range(m)]
 q = deque()
-ALLTOMA = 0
-POINT = [[0, -1], [0, 1], [1, 0], [-1, 0]]
+zero = 0
+minus = 0
 
-for i in range(1, N + 1):
-    T = list(map(int, read().split()))
-    TOMA[i] = [-1] + T + [-1]
-    if T.count(1) > 0:
-        ALLTOMA += T.count(1)
-        for j in range(1, M + 1):
-            if TOMA[i][j] == 1:
-                q.append([i, j, 0])
+for i in range(m):
+    g[i] = list(read())
 
-if ALLTOMA == (M * N):
+    if 1 in g[i]:
+        for j in range(n):
+            if g[i][j] == 1:
+                q.append([i, j])
+
+    zero += g[i].count(0)
+    minus += g[i].count(-1)
+
+if len(q) + minus == (n * m):
     print(0)
 
 else:
-    days = 0
+    res = 0
 
-    while len(q):
-        ci, cj, cd = q.popleft()
+    while q:
+        ci, cj = q.popleft()
 
-        for ii, jj in POINT:
-            ti = ii + ci
-            tj = jj + cj
-            if TOMA[ti][tj] == 0:
-                TOMA[ti][tj] = cd + 1
-                q.append([ti, tj, cd + 1])
-                days = max(days, cd + 1)
+        for ii, jj in [[1, 0], [-1, 0], [0, 1], [0, -1]]:
+            ti, tj = ii + ci, jj + cj
+            if (0 <= ti < m) and (0 <= tj < n):
+                if g[ti][tj] == 0:
+                    g[ti][tj] = g[ci][cj] + 1
+                    q.append([ti, tj])
+                    if g[ti][tj] > res:
+                        res = g[ti][tj] - 1
 
-    for i in range(1, N + 1):
-        if TOMA[i].count(0) > 0:
-            days = -1
+    for i in range(m):
+        if 0 in g[i]:
+            res = -1
             break
 
-    print(days)
-
+    print(res, end="")

@@ -1,17 +1,21 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
+
+setrecursionlimit(10 ** 6)
 
 
-def cal(a, b, c):
-    if 0 <= b <= 1:
+def multiple(a, b):
+    global c
+
+    if b == 1:
         return a % c
-    if b % 2 == 0:
-        r = cal(a, b // 2, c)
-        return (r * r) % c
 
     else:
-        r = cal(a, b // 2, c)
-        return (((r * r) % c) * a) % c
+        t = multiple(a, b // 2)
+        if b % 2:
+            return (((t * t) % c) * a) % c
+        else:
+            return (t * t) % c
 
 
-A, B, C = map(int, stdin.readline().rstrip().split())
-print(cal(A, B, C))
+a, b, c = map(int, stdin.readline().rstrip().split())
+print(multiple(a, b) % c)

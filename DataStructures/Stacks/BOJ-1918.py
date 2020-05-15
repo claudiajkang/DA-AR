@@ -1,28 +1,23 @@
 from sys import stdin
 
-arr = '(' + stdin.readline().rstrip() + ')'
-cal = {'(': 0, '+': 1, '-': 1, '/': 2, '*': 2}
+exp = '(' + stdin.readline().rstrip() + ')'
 stack = []
-res = ''
+cal = {'(': 0, '+': 1, '-': 1, '*': 2, '/': 2}
 
-for i in arr:
+for i in exp:
     if i.isupper():
-        res += i
+        print(i, end = "")
 
-    elif i == '(':
+    elif i == "(":
         stack.append(i)
 
-    elif i == ')':
-        while stack:
-            v = stack.pop()
-            if v == '(':
-                break
-            res += v
+    elif i == ")":
+        while stack[-1] != "(":
+            print(stack.pop(), end="")
+        stack.pop()
 
-    else:
-        while stack[-1] != '(' and cal[i] <= cal[stack[-1]]:
-            res += stack.pop()
+    elif i in cal.keys():
+        while stack[-1] != "(" and cal[i] <= cal[stack[-1]]:
+            print(stack.pop(), end = "")
 
         stack.append(i)
-
-print(res)

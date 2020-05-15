@@ -1,23 +1,78 @@
 from sys import stdin
+read = lambda: stdin.readline().rstrip()
 
-next(stdin)
-q = list()
+class Queue:
+    def __init__(self):
+        self.l = []
+        self.f = None
+        self.b = None
+        self.s = 0
 
-for line in stdin:
-        c = line.split()[0]
-        if c == 'push':
-                q.append(line.split()[1])
-        elif c == 'pop':
-                if q: print(q.pop(0))
-                else: print(-1)
-        elif c == 'size':
-                print(len(q))
-        elif c == 'empty':
-                if q: print(0)
-                else: print(1)
-        elif c == 'front':
-                if q: print(q[0])
-                else: print(-1)
-        elif c == 'back':
-                if q: print(q[-1])
-                else: print(-1)
+
+    def push(self, data):
+        self.l.append(data)
+        self.f = self.l[0]
+        self.b = self.l[-1]
+        self.s += 1
+
+    def pop(self):
+        if self.s:
+            v = self.l.pop(0)
+            self.s -= 1
+            if self.s:
+                self.f = self.l[0]
+                self.b = self.l[-1]
+
+            else:
+                self.f = None
+                self.b = None
+
+            print(v)
+        else:
+            print(-1)
+
+    def size(self):
+        print(self.s)
+
+    def empty(self):
+        if self.s:
+            print(0)
+        else:
+            print(1)
+
+    def front(self):
+        if self.s:
+            print(self.f)
+        else:
+            print(-1)
+
+    def back(self):
+        if self.s:
+            print(self.b)
+        else:
+            print(-1)
+
+
+n = int(read())
+q = Queue()
+
+for i in range(n):
+    cmd = read().split()
+
+    if cmd[0] == 'push':
+        q.push(cmd[1])
+
+    elif cmd[0] == 'pop':
+        q.pop()
+
+    elif cmd[0] == 'size':
+        q.size()
+
+    elif cmd[0] == 'empty':
+        q.empty()
+
+    elif cmd[0] == 'front':
+        q.front()
+
+    elif cmd[0] == 'back':
+        q.back()

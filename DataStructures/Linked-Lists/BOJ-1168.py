@@ -1,13 +1,14 @@
 from sys import stdin
 
-N, K = map(int, stdin.readline().split())
-res = []
-PP = [i for i in range(1, N+1)]
-idx = 0
+n, k = map(int, stdin.readline().rstrip().split())
 
-while PP:
-    idx = int((idx + K - 1) % len(PP))
-    if idx >= len(PP): continue
-    res.append(str(PP.pop(idx)))
+if n > 0:
+    arr = [i for i in range(1, n+1)]
+    print("<", end = "")
+    k -= 1
+    idx = k
+    for i in range(1, n):
+        print(arr.pop(idx), end = ", ")
+        idx = (idx+k) % len(arr)
 
-print('<'+', '.join(res)+'>')
+    print(arr.pop(idx), end = ">")

@@ -1,26 +1,17 @@
-import sys
+from sys import stdin
 
-a = 'abcdefghijklmnopqrstuvwxyz'
-B = a.upper()
-v = ['lo', 'up', 'di', 'bl']
+for s in stdin:
+    s = s[:-1]
+    res = [0, 0, 0, 0]
 
-for line in sys.stdin:
-    res = dict()
-
-    for k in v:
-        res[k] = 0
-
-    for i in line:
-        if i in a:
-            res['lo'] += 1
-        elif i in B:
-            res['up'] += 1
-        elif i == ' ':
-            res['bl'] += 1
-        elif i == '\n':
-            continue
+    for i in s:
+        if i.isupper():
+            res[1] += 1
+        elif i.islower():
+            res[0] += 1
+        elif i.isdigit():
+            res[2] += 1
         else:
-            res['di'] += 1
+            res[3] += 1
 
-    for k in v:
-        print(res[k], end = ' ')
+    print(' '.join(map(str, res)))

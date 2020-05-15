@@ -1,15 +1,15 @@
 from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
-N = int(read())
-A = list(map(int, read().split()))
-DP = [0] * N
+n = int(read())
+a = list(map(int, read().split()))
+dp = [0] * n
 
-for i in range(N):
+for i in range(n):
     for j in range(0, i):
-        if A[j] < A[i]:
-            DP[i] = max(DP[j], DP[i])
+        if a[j] < a[i]:
+            dp[i] = max(dp[j], dp[i])
 
-    DP[i] += A[i]
+    dp[i] += a[i]
 
-print(max(DP))
+print(max(dp))

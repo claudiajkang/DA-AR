@@ -1,24 +1,22 @@
 from sys import stdin
-read = lambda: stdin.readline().rstrip()
 
-n = int(read())
-m = int(read())
-broken = read().split()
-channel = []
+e, s, m = map(int, stdin.readline().rstrip().split())
+te, ts, tm = 0, 0, 0
+y = 0
 
-for i in range(0, 1000001):
-    f = True
-    for j in broken:
-        if j in str(i):
-            f = False
-            break
-    if f:
-        channel.append(i)
+while not (e == te and s == ts and m == tm):
+    te += 1
+    ts += 1
+    tm += 1
+    y += 1
 
-res = abs(n-100)
+    if te == 16:
+        te = 1
 
-for i in channel:
-    if abs(i-n) + len(str(i)) < res:
-        res = abs(i-n) + len(str(i))
+    if ts == 29:
+        ts = 1
 
-print(res)
+    if tm == 20:
+        tm = 1
+
+print(y)

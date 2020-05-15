@@ -1,67 +1,86 @@
-from sys import stdin
 from collections import deque
-read = lambda : stdin.readline().rstrip()
+from sys import stdin, setrecursionlimit
 
-N = int(read())
-M = [[-1] * (N+2) for _ in range(N+2)]
-L = [[0] * (N+2) for _ in range(N+2)]
-P = [[0, -1], [0, 1], [-1, 0], [1, 0]]
-B = deque()
+setrecursionlimit(10 ** 6)
+read = lambda: stdin.readline().rstrip()
 
-for i in range(1, N+1):
-    M[i] = [-1] + list(map(int, read().split())) + [-1]
-    for j in range(1, N+1):
-        if [M[i][j-1], M[i][j]] == [0, 1]:
-            B.append([i, j])
-        elif [M[i][j], M[i][j+1]] == [1, 0]:
-            B.append([i, j])
 
-ln = 0
-for i in range(1, N+1):
-    for j in range(1, N+1):
-        if M[i][j] == 1 and L[i][j] == 0:
-            ln += 1
-            L[i][j] = ln
-            q = deque()
-            q.append([i, j])
+def dfs(h, w):
+    global g, visited, A, cnt, q, p, n
 
-            while len(q):
-                ci, cj = q.popleft()
+    visited[h][w] = True
+    A[h][w] = cnt
+    q.append([h, w])
 
-                for ii, jj in P:
-                    ti = ci + ii
-                    tj = cj + jj
-                    if M[ti][tj] == 1 and L[ti][tj] == 0:
-                        L[ti][tj] = ln
-                        q.append([ti, tj])
+    for hh, ww in p:
+        th = h + hh
+        tw = w + ww
 
-LB = [[] for _ in range(ln + 1)]
-R = [10000 for _ in range(ln + 1)]
+        if th < 0 or tw < 0 or th >= n or tw >= n:
+            continue
 
-for ii, jj in B:
-    LB[L[ii][jj]].append([ii, jj])
+        if not visited[th][tw] and g[th][tw]:
+            dfs(th, tw)
 
-for i in range(1, ln+1):
-    D = [[0] * (N+2) for _ in range(N+2)]
-    q = deque()
 
-    for ti, tj in LB[i]:
-        q.append([ti, tj, 0])
+n = int(read())
+g = [[0] * n for i in range(n)]
+A = [[0] * n for i in range(n)]
 
-    while len(q):
-        ci, cj, cd = q.popleft()
+for i in range(n):
+    g[i] = list(map(int, read().split()))
 
-        for ii, jj in P:
-            ti = ci + ii
-            tj = cj + jj
-            if M[ti][tj] == 0 and D[ti][tj] == 0:
-                D[ti][tj] = cd + 1
-                q.append([ti, tj, cd + 1])
+cnt = 0
+q = deque()
+visited = [[False] * n for i in range(n)]
+p = [[0, -1], [0, 1], [-1, 0], [1, 0]]
 
-            elif M[ti][tj] == 1 and L[ti][tj] != i:
-                R[i] = cd
+for i in range(n):
+    for j in range(n):
+        if not visited[i][j] and g[i][j]:
+            cnt += 1
+            dfs(i, j)
 
-        if R[i] != 10000:
-            break
+res = 1
 
-print(min(R))
+while True:
+    qlen = len(q)
+
+    for i in range(qlen):
+        h, w = q.popleft()
+
+        for hh, ww in p:
+            th = h + hh
+            tw = w + ww
+
+            if th < 0 or tw < 0 or th >= n or tw >= n:
+                continue
+
+            if not visited[th][tw]:
+                visited[th][tw] = True
+                A[th][tw] = A[h][w]
+                q.append([th, tw])
+
+            elif A[th][tw] != A[h][w]:
+                print(res)
+                exit()
+
+    res += 1
+
+    con = False
+
+    for i in range(n):
+        for j in range(n):
+            if A[i][j] != 0:
+                for ii, jj in p:
+                    ti = ii + i
+                    tj = jj + j
+
+                    if ti < 0 or tj < 0 or ti >= n or tj >= n:
+                        continue
+
+                    if A[ti][tj] != 0 and A[ti][tj] != A[i][j]:
+                        print(res)
+                        exit()
+
+    res += 1

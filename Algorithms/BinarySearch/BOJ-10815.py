@@ -1,33 +1,29 @@
 from sys import stdin
-read = lambda : stdin.readline().rstrip()
+read = lambda: stdin.readline().rstrip()
 
-N = int(read())
-SC = list(map(int, read().split()))
+n = int(read())
+a = list(map(int, read().split()))
+a.sort()
 
-M = int(read())
-TC = list(map(int, read().split()))
+m = int(read())
+b = list(map(int, read().split()))
 
-R = [str(0)] * M
-
-SC = sorted(SC)
-
-for i in range(M):
-    v = TC[i]
-    
+res = []
+for i in range(m):
+    if b[i] == a[n - 1]:
+        res.append(1)
+        continue
     lo = 0
-    hi = N - 1
-    mid = 0
+    hi = n - 1
 
-    while lo < hi:
-        mid = (lo+hi) // 2
+    while (lo + 1) < hi:
+        mid = (lo + hi) // 2
 
-        if SC[mid] < v:
-            lo = mid + 1
-
-        else:
+        if a[mid] > b[i]:
             hi = mid
+        else:
+            lo = mid
 
-    if SC[hi] == v:
-        R[i] = str(1)
+    res.append(1 if a[lo] == b[i] else 0)
 
-print(' '.join(R))
+print(' '.join(map(str, res)))

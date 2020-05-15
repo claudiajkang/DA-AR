@@ -1,28 +1,33 @@
+from collections import deque
 from sys import stdin
 
-N, M = map(int, stdin.readline().split())
-g = [[] for i in range(N+1)]
+read = lambda: map(int, stdin.readline().rstrip().split())
 
-for i in range(M):
-    A, B = map(int, stdin.readline().split())
-    g[A].append(B)
-    g[B].append(A)
+n, m = read()
+g = [[] for i in range(n + 1)]
 
+for i in range(m):
+    a, b = read()
+    g[a].append(b)
+    g[b].append(a)
+
+visited = [False] * (n + 1)
 res = 0
-visited = [False for i in range(N+1)]
 
-for i in range(1, N+1):
+for i in range(1, n+1):
     if not visited[i]:
-        res += 1
         visited[i] = True
+        q = deque()
+        q.append(i)
 
-        dstack = [i]
+        while q:
+            cur = q.popleft()
 
-        while dstack:
-            cur = dstack.pop()
             for j in g[cur]:
                 if not visited[j]:
+                    q.append(j)
                     visited[j] = True
-                    dstack.append(j)
+
+        res += 1
 
 print(res)

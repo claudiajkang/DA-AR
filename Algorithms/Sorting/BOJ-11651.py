@@ -1,14 +1,14 @@
 from sys import stdin
-read = lambda : stdin.readline().rstrip()
+read = lambda: stdin.readline().rstrip()
 
-N = int(read())
-P = []
+n = int(read())
+p = [[] for i in range(n)]
 
-for i in range(1, N+1):
-    x, y = map(int, read().split())
+for i in range(n):
+    p[i] = list(map(int, read().split()))
 
-    P.append([y, x])
+p.sort(key=lambda x: x[0])
+p.sort(key=lambda x: x[1])
 
-
-for y, x in sorted(P):
-    print("%d %d" % (x, y))
+for i, j in p:
+    print(f"{i} {j}")

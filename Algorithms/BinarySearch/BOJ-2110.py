@@ -2,36 +2,28 @@ from sys import stdin
 
 read = lambda: stdin.readline().rstrip()
 
-
-def count(d):
-    global h, n
-
-    cur = h[0]
-    c = 1
-    for i in range(1, n):
-        if cur + d <= h[i]:
-            cur = h[i]
-            c += 1
-
-    return c
-
-
 n, c = map(int, read().split())
-h = [int(read()) for _ in range(n)]
-h.sort()
+pos = [int(read()) for i in range(n)]
+pos.sort()
 
-start = 0
-end = h[-1]
-res = 0
+lo = 1
+hi = pos[-1] + 1
 
-while start <= end:
-    dis = (start + end) // 2
-    r = count(dis)
+while (lo + 1) < hi:
+    mid = (lo + hi) // 2
 
-    if r >= c:
-        res = dis
-        start = dis + 1
+    count = 1
+    before = pos[0]
+
+    for i in range(1, n):
+        if (pos[i] - before) >= mid:
+            count += 1
+            before = pos[i]
+
+    if count >= c:
+        lo = mid
+
     else:
-        end = dis - 1
+        hi = mid
 
-print(res)
+print(lo)

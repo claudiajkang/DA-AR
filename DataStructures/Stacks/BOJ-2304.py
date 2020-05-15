@@ -1,26 +1,34 @@
 from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
-n = int(input())
+n = int(read())
 h = [0] * 1001
+endindex = 0
 
-for _ in range(n):
-    x, y = map(int, read().split())
-    h[x] = y
+for i in range(n):
+    l, lh = map(int, read().split())
+    h[l] = lh
+    endindex = max(endindex, l)
 
-highest_index = h.index(max(h))
-now_max = 0
-c = 0
-s = 0
-for i in range(0, highest_index):
-    if now_max < h[i]:
-        now_max = h[i]
-    s += now_max
+highest = h.index(max(h))
+stack = [0]
+res = 0
 
-now_max = 0
-for i in range(1000, highest_index, -1):
-    if now_max < h[i]:
-        now_max = h[i]
-    s += now_max
+for i in range(highest+1):
+    if h[stack[-1]] < h[i]:
+        lh = stack.pop()
+        res += (i-lh) * h[lh]
+        stack.append(i)
 
-print(s+max(h))
+stack = [0]
+
+for i in range(endindex, highest-1, -1):
+    if h[stack[-1]] <= h[i]:
+        lh = stack.pop()
+        res += abs(lh-i) * h[lh]
+        stack.append(i)
+
+while stack:
+    res += h[stack.pop()]
+
+print(res)

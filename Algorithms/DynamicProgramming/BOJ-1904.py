@@ -1,12 +1,17 @@
 from sys import stdin
 
-N = int(stdin.readline())
-DP = [0] * (N+1)
+read = lambda: stdin.readline().rstrip()
 
-for i in range(1, N+1):
-    if i in [1, 2]:
-        DP[i] = i
+n = int(read())
+
+dp = [0] * (n + 1)
+
+for i in range(1, n + 1):
+    if i == 1:
+        dp[i] = 1
+    elif i == 2:
+        dp[i] = 2
     else:
-        DP[i] = (DP[i-1] + DP[i-2]) % 15746
+        dp[i] = (dp[i - 1] + dp[i - 2]) % 15746
 
-print(DP[N])
+print(dp[n] % 15746)

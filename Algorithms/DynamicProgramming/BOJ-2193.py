@@ -1,11 +1,15 @@
 from sys import stdin
-read = lambda : int(stdin.readline())
 
-N = read()
-DP = [0, 1, 1] + [0 for _ in range(3, N+1)]
+n = int(stdin.readline().rstrip())
+dp = [0, 1, 1]
 
-if 3 <= N <= 90:
-    for i in range(3, N+1):
-        DP[i] = DP[i-1] + DP[i-2]
+if n <= 2:
+    print(dp[n])
+    exit()
 
-print(DP[N])
+dp = dp + [0] * n
+
+for i in range(3, n+1):
+    dp[i] = dp[i-1] + dp[i-2]
+
+print(dp[n])

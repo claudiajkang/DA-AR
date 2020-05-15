@@ -1,23 +1,16 @@
-import sys
-import heapq
-import copy
-input = sys.stdin.readline
+from sys import stdin
+from copy import deepcopy
+from heapq import heappush, heappop
+read = lambda: stdin.readline().rstrip()
 
-K, N = map(int, input().split())
-A = sorted(list(map(int, input().split())))
-B = copy.deepcopy(A)
-count = 0
+k, n = map(int, read().split())
+arr = list(map(int, read().split()))
+hq = deepcopy(arr)
 
-while count < N-1:
-    cur = heapq.heappop(B)
+for i in range(n-1):
+    cur = heappop(hq)
+    for j in arr:
+        heappush(hq, cur * j)
+        if cur % j == 0: break
 
-    for i in A:
-        temp = cur * i
-        heapq.heappush(B, temp)
-
-        if cur % i == 0:
-            break
-
-    count += 1
-
-print(heapq.heappop(B))
+print(heappop(hq))

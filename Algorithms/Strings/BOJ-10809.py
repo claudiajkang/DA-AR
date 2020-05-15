@@ -1,17 +1,10 @@
-import sys
+from sys import stdin
 
-w = sys.stdin.readline().replace('\n', '')
+s = stdin.readline().rstrip()
+a = {chr(97+i) : -1 for i in range(26)}
 
-alpa = 'abcdefghijklmnopqrstuvwxyz'
-r = dict()
+for i in range(len(s)):
+    if a[s[i]] == -1:
+        a[s[i]] = i
 
-for i in alpa:
-    r[i] = -1
-
-for j in range(len(w)):
-    k = w[j]
-    if r[k] == -1:
-        r[k] = j
-
-for i in alpa:
-    print(r[i], end = ' ')
+print(' '.join(map(str, a.values())), end = '')

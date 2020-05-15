@@ -1,34 +1,37 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
+
+setrecursionlimit(10 ** 6)
 read = lambda: stdin.readline().rstrip()
 
-n = int(read())
-l = list(map(int, read().split()))
-l.sort()
-m = int(read())
 
-if sum(l) <= m:
-    print(max(l))
-    exit()
+def search(lo, hi):
+    global lm, m
 
-lo = 0
-hi = 10 ** 9
-mid = 0
-s = 0
-
-while lo <= hi:
     mid = (lo + hi) // 2
 
     s = 0
-    for i in l:
-        if i >= mid:
-            s += mid
-        else:
-            s += i
+    for l in lm:
+        s += l if l < mid else mid
 
     if s > m:
-        hi = mid - 1
-
+        return lo, mid - 1
     else:
-        lo = mid + 1
+        return mid + 1, hi
 
-print(hi)
+
+n = int(read())
+lm = list(map(int, read().split()))
+m = int(read())
+lm.sort(reverse=True)
+
+lo = 0
+hi = sum(lm)
+
+if hi <= m:
+    print(max(lm))
+    exit()
+
+while lo <= hi:
+    lo, hi = search(lo, hi)
+
+print(lo - 1)

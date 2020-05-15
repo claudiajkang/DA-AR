@@ -1,35 +1,41 @@
-from sys import stdin
 from collections import deque
-read = lambda : stdin.readline().rstrip()
+from sys import stdin
 
-def dfs(g, start):
-    visited = [0] * len(g)
-    visited[start] = 1
+read = lambda: stdin.readline().rstrip()
+
+
+def dfs(num):
+    global g
+
+    visited = [-1] * len(g)
+    visited[num] = 0
     q = deque()
-    q.append([start, 0])
-    max_val = 0
+    q.append(num)
+    mi, m = 0, 0
 
-    while len(q):
-        ci, cd = q.popleft()
+    while q:
+        cur = q.popleft()
 
-        for ti, td in g[ci]:
-            if not visited[ti]:
-                visited[ti] = cd + td
-                max_val = max(max_val, cd + td)
-                q.append([ti, cd + td])
+        for idx, val in g[cur]:
+            if visited[idx] == -1:
+                visited[idx] = visited[cur] + val
+                q.append(idx)
+                if visited[idx] > m:
+                    m = visited[idx]
+                    mi = idx
 
-    return visited.index(max_val), max_val
+    return mi, m
 
 
-N = int(read())
-G = [[] for _ in range(N+1)]
+n = int(read())
+g = [[] for i in range(n + 1)]
 
-for i in range(1, N):
-    V1, V2, D = map(int, read().split())
-    G[V1].append([V2, D])
-    G[V2].append([V1, D])
+for i in range(n - 1):
+    a, b, c = map(int, read().split())
+    g[a].append([b, c])
+    g[b].append([a, c])
 
-first_idx, first_val = dfs(G, 1)
-second_idx, second_val = dfs(G, first_idx)
+fi, f = dfs(1)
+si, s = dfs(fi)
 
-print(second_val)
+print(s)

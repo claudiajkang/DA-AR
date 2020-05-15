@@ -1,25 +1,22 @@
 from sys import stdin
-read = lambda: stdin.readline().rstrip()
+n = int(stdin.readline().rstrip())
+pn = []
+dp = [0] * (n + 1)
 
-n = int(read())
-un = []
-dp = [0] * (n+1)
+for i in range(1, n + 1):
+    if i * i > n: break
+    dp[i * i] = 1
+    pn.append(i * i)
 
-for i in range(1, n+1):
-    if i*i > n:
-        break
-    un.append(i*i)
-    dp[i*i] = 1
+for i in range(1, n + 1):
+    if dp[i] == 1: continue
 
-un.sort()
+    a = []
 
-for i in range(1, n+1):
-    if not dp[i]:
-        dp[i] = dp[i-1] + 1
-        for j in un:
-            if i < j:
-                break
-            if dp[j] + dp[i-j] < dp[i]:
-                dp[i] = dp[j] + dp[i-j]
+    for j in pn:
+        if j <= i and dp[i - j] != -1:
+            a.append(dp[i - j])
+
+    dp[i] = min(a) + 1 if a else -1
 
 print(dp[n])

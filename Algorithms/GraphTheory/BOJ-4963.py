@@ -1,42 +1,47 @@
+from collections import deque
 from sys import stdin
 
-for l in stdin:
-    w, h = map(int, l.split())
-    Point = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
+read = lambda: stdin.readline().rstrip()
 
-    if w == 0 and h == 0:
-        break
+while True:
+    w, h = map(int, read().split())
 
-    MAP = [[] for j in range(h + 2)]
-    visited = [[False] * (w + 2) for i in range(h + 2)]
-    MAP[0] = [0] * (w + 2)
-    MAP[-1] = [0] * (w + 2)
+    if [w, h] == [0, 0]: break
 
-    for m in range(h):
-        MAP[m + 1] = [0] + list(map(int, stdin.readline().strip().split())) + [0]
+    g = [[] for i in range(h)]
 
-    res = 0
+    for i in range(h):
+        g[i] = list(map(int, read().split()))
 
-    for i in range(1, h + 1):
-        for j in range(1, w + 1):
-            if not visited[i][j] and MAP[i][j]:
-                dstack = [[i, j]]
-                dfs = []
+    if w == h and h == 1:
+        print(g[0][0])
+        continue
 
-                while dstack:
-                    ii, jj = dstack.pop()
-                    visited[ii][jj] = True
+    visited = [[False] * w for i in range(h)]
 
-                    if [ii, jj] not in dfs:
-                        dfs.append([ii, jj])
+    island = 0
 
-                    for ci, cj in Point:
-                        ti, tj = ci + ii, cj + jj
-                        if not visited[ti][tj] and MAP[ti][tj]:
-                            dstack.append([ti, tj])
-                            visited[ti][tj] = True
+    p = [[0, -1], [0, 1], [-1, 0], [1, 0], [-1, -1], [-1, 1], [1, -1], [1, 1]]
 
-                if dfs:
-                    res += 1
+    for i in range(h):
+        for j in range(w):
+            if g[i][j] == 1 and not visited[i][j]:
+                island += 1
+                visited[i][j] = True
+                q = deque()
+                q.append([i, j])
 
-    print(res)
+                while q:
+                    ch, cw = q.popleft()
+
+                    for hh, ww in p:
+                        th = ch + hh
+                        tw = cw + ww
+
+                        if th < 0 or tw < 0 or th >= h or tw >= w: continue
+
+                        if g[th][tw] == 1 and not visited[th][tw]:
+                            visited[th][tw] = True
+                            q.append([th, tw])
+
+    print(island)

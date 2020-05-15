@@ -1,49 +1,46 @@
+from collections import deque
 from sys import stdin
-from queue import Queue
 
-N, M, V = map(int, stdin.readline().split())
-graph = [[] for _ in range(N + 1)]
-dvisit = [False for _ in range(N + 1)]
-bvisit = [False for _ in range(N + 1)]
+read = lambda: stdin.readline().rstrip()
 
-for _ in range(M):
-    A, B = map(int, stdin.readline().split())
-    graph[A].append(B)
-    graph[B].append(A)
+n, m, v = map(int, read().split())
+g = [[] for i in range(n + 1)]
 
-for _ in range(N + 1):
-    graph[_].sort()
+for i in range(m):
+    a, b = map(int, read().split())
+    g[a].append(b)
+    g[b].append(a)
 
-dfs_result = []
+for i in range(1, n + 1):
+    g[i] = sorted(g[i])
 
+dfs = []
+q = deque()
+q.append(v)
 
-def dfs(graph, c):
-    dfs_result.append(str(c))
-    dvisit[c] = True
-    for i in graph[c]:
-        if not dvisit[i]:
-            dvisit[i] = True
-            dfs(graph, i)
+while q:
+    cur = q.pop()
+    if cur not in dfs:
+        dfs.append(cur)
 
-
-bfs_result = []
+    for i in reversed(g[cur]):
+        if i not in dfs:
+            q.append(i)
 
 
-def bfs(graph, c):
-    bq = Queue()
-    bq.put(c)
-    bvisit[c] = True
-    while len(bq.queue):
-        cur = bq.get()
-        bfs_result.append(str(cur))
-        for i in graph[cur]:
-            if not bvisit[i]:
-                bvisit[i] = True
-                bq.put(i)
+print(' '.join(map(str, dfs)))
 
+bfs = []
+q = deque()
+q.append(v)
 
-dfs(graph, V)
-bfs(graph, V)
+while q:
+    cur = q.popleft()
+    if cur not in bfs:
+        bfs.append(cur)
 
-print(' '.join(dfs_result))
-print(' '.join(bfs_result))
+    for i in g[cur]:
+        if i not in bfs:
+            q.append(i)
+
+print(' '.join(map(str, bfs)))

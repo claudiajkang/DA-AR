@@ -1,23 +1,29 @@
 from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
-n = int(read())
-st = read()
-val = {chr(65+i): int(read()) for i in range(n)}
 stack = []
+n = int(read())
+exp = read()
+val = {chr(65+i): int(read()) for i in range(n)}
 
-for i in st:
+for i in exp:
     if i.isupper():
         stack.append(val[i])
-    else:
-        v = []
-        for j in range(2):
-            a = stack.pop()
-            v.append(a)
 
-        if i == '+': stack.append(v[1] + v[0])
-        elif i == '-': stack.append(v[1] - v[0])
-        elif i == '/': stack.append(v[1] / v[0])
-        elif i == '*': stack.append(v[1] * v[0])
+    elif i in '*+/-':
+        b = stack.pop()
+        a = stack.pop()
 
-print('%.2f' % stack.pop())
+        if i == '*':
+            stack.append(a*b)
+
+        elif i == '/':
+            stack.append(a/b)
+
+        elif i == '+':
+            stack.append(a+b)
+
+        elif i == '-':
+            stack.append(a-b)
+
+print("%.2f" % (stack.pop()))

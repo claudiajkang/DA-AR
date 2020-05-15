@@ -1,20 +1,22 @@
 from sys import stdin
 
-N = int(stdin.readline())
-DP = [0 for _ in range(10 ** 6 + 1)]
+x = int(stdin.readline().rstrip())
 
-DP[2] = 1
-DP[3] = 1
+dp = [0, 0, 1, 1] + [0] * x
+INF = 10 ** 6
 
-for i in range(4, N + 1):
-    F = [DP[i - 1] + 1, DP[i - 1] + 1, DP[i - 1] + 1]
-    F[0] = F[0] + 1
+if x > 3:
+    for i in range(4, x + 1):
+        t1 = dp[i - 1] + 1
+        t2 = INF
+        t3 = INF
 
-    if i % 2 == 0:
-        F[1] = DP[i // 2] + 1
-    if i % 3 == 0:
-        F[2] = DP[i // 3] + 1
+        if i % 2 == 0:
+            t2 = dp[i // 2] + 1
 
-    DP[i] = min(F)
+        if i % 3 == 0:
+            t3 = dp[i // 3] + 1
 
-print(DP[N])
+        dp[i] = min(t1, t2, t3)
+
+print(dp[x])

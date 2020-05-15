@@ -1,17 +1,26 @@
 from sys import stdin
-  
-L = list(stdin.readline().strip())
-N = int(stdin.readline())
-R = []
+read = lambda: stdin.readline().rstrip()
 
-for line in stdin: 
-    if line[0] == 'L':
-        if L: R.append(L.pop())
-    elif line[0] == 'D':
-        if R: L.append(R.pop())
-    elif line[0] == 'B':
-        if L: L.pop()
-    elif line[0] == 'P':
-        L.append(line[2])
+left = list(read())
+n = int(read())
+right = []
 
-print(''.join(L)+''.join(reversed(R)))
+for i in range(n):
+    cmd = read().split()
+
+    if cmd[0] == "L":
+        if left:
+            right.append(left.pop())
+
+    elif cmd[0] == "D":
+        if right:
+            left.append(right.pop())
+
+    elif cmd[0] == "B":
+        if left:
+            left.pop()
+
+    elif cmd[0] == "P":
+        left.append(cmd[1])
+
+print(''.join(left) + ''.join(reversed(right)))

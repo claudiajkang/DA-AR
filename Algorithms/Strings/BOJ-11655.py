@@ -1,19 +1,24 @@
 from sys import stdin
 
-s = stdin.readline().replace('\n','')
-lo = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn'
-up = lo.upper()
-res = ''
+s = stdin.readline()[:-1]
+res = []
 
 for i in s:
-        if i in lo:
-                idx = lo.find(i)
-                res += lo[idx+13]
-        elif i in up:
-                idx = up.find(i)
-                res += up[idx+13]
-        else:
-                res += i
+    if 65 <= ord(i) <= 90:
+        v = ord(i) + 13
+        if v > 90:
+            v -= 26
 
-print(res)
-    
+        res.append(chr(v))
+
+    elif 97 <= ord(i) <= 122:
+        v = ord(i) + 13
+        if v > 122:
+            v -= 26
+
+        res.append(chr(v))
+
+    else:
+        res.append(i)
+
+print(''.join(res))

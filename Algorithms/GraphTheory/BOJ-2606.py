@@ -1,27 +1,29 @@
 from sys import stdin
 from collections import deque
-read = lambda : stdin.readline()
+read = lambda: stdin.readline().rstrip()
 
-N = int(read())
-NETN = int(read())
-COM = [[] for _ in range(N+1)]
+cn = int(read())
+conn = int(read())
+g = [[] for i in range(cn+1)]
 
-for i in range(NETN):
-    A, B = map(int, read().split())
-    COM[A].append(B)
-    COM[B].append(A)
+for i in range(conn):
+    a, b = map(int, read().split())
+    g[a].append(b)
+    g[b].append(a)
 
 q = deque()
 q.append(1)
 dfs = []
-dfs.append(1)
+visited = [False] * (cn+1)
+visited[1] = True
 
-while len(q):
-    cur = q.pop()
+while q:
+    cur = q.popleft()
 
-    for i in COM[cur]:
-        if i not in dfs:
-            dfs.append(i)
+    for i in g[cur]:
+        if not visited[i]:
             q.append(i)
+            visited[i] = True
+            dfs.append(i)
 
-print(len(dfs)-1)
+print(len(dfs))

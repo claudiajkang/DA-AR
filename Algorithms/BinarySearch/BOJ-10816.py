@@ -2,23 +2,18 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n = int(read())
-nc = list(map(int, read().split()))
-c = {}
+a = list(map(int, read().split()))
 
 m = int(read())
-mc = list(map(int, read().split()))
+b = list(map(int, read().split()))
 
-for i in nc:
-    if i not in c.keys():
-        c[i] = 0
+res = {i: 0 for i in set(a + b)}
 
-    c[i] += 1
+for i in a:
+    res[i] += 1
 
+p = []
+for i in b:
+    p.append(res[i])
 
-for j in range(m):
-    if mc[j] in c.keys():
-        print(c[mc[j]], end = ' ')
-    else:
-        print(0, end = ' ')
-
-print()
+print(' '.join(map(str, p)))

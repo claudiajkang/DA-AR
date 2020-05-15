@@ -3,25 +3,25 @@ read = lambda: stdin.readline().rstrip()
 
 n = int(read())
 a = list(map(int, read().split()))
-up = [0] * n
-do = [0] * n
-dp = [0] * n
+
+dp1 = [0] * n
+dp2 = [0] * n
 
 for i in range(n):
-    for j in range(i-1, -1, -1):
+    for j in range(i - 1, -1, -1):
         if a[j] < a[i]:
-            up[i] = max(up[j], up[i])
+            dp1[i] = max(dp1[i], dp1[j])
 
-    up[i] += 1
+    dp1[i] += 1
 
-for i in range(n-1, -1, -1):
-    for j in range(n-1, i, -1):
+for i in range(n - 1, -1, -1):
+    for j in range(n - 1, i, -1):
         if a[j] < a[i]:
-            do[i] = max(do[i], do[j])
+            dp2[i] = max(dp2[i], dp2[j])
 
-    do[i] += 1
+    dp2[i] += 1
 
-    dp[i] = up[i] + do[i] - 1
+for i in range(n):
+    dp1[i] += dp2[i]
 
-
-print(max(dp))
+print(max(dp1) - 1)

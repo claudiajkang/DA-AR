@@ -1,18 +1,21 @@
 from sys import stdin
+read = lambda: stdin.readline().rstrip()
 
-next(stdin)
+n = int(read())
 
-for line in stdin:
-        line = line.replace('\n','')
-        s = list()
+for i in range(n):
+    stack = []
 
-        for i in line:
-                if s and i == ')' and s[-1] == '(':
-                        v = s.pop()
-                else:
-                        s.append(i)
+    arr = read()
 
-        if s:
-                print('NO')
+    for j in arr:
+        if stack and j == ')' and stack[-1] == '(':
+            stack.pop()
         else:
-                print('YES')
+            stack.append(j)
+
+    if stack:
+        print("NO")
+
+    else:
+        print("YES")

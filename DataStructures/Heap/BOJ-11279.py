@@ -1,18 +1,16 @@
 from sys import stdin
-import heapq
-read = lambda: int(stdin.readline())
+from heapq import heappush, heappop
+read = lambda: int(stdin.readline().rstrip())
 
-h = []
-N = read()
+n = read()
+hq = []
 
-for i in range(N):
-    x = read()
-    if x == 0:
-        v = 0
-        if len(h) > 0:
-            v = heapq.heappop(h) * (-1)
-        print(v)
+for i in range(n):
+    t = read()
+
+    if t == 0:
+        if hq: print(heappop(hq)[1])
+        else: print(t)
+
     else:
-        heapq.heappush(h, x*(-1))
-
-
+        heappush(hq, [abs(t), t])

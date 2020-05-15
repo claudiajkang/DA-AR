@@ -1,8 +1,4 @@
-import sys
+from sys import stdin
 
-A, B, C, D = sys.stdin.readline().split()
-
-V1 = A+B
-V2 = C+D
-
-print(int(V1)+int(V2))
+a, b, c, d = stdin.readline().rstrip().split()
+print(int(a+b) + int(c+d))

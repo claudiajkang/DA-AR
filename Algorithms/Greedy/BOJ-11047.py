@@ -2,17 +2,20 @@ from sys import stdin
 read = lambda: stdin.readline().rstrip()
 
 n, k = map(int, read().split())
-a = [int(read()) for _ in range(n)]
-a.sort(reverse=True)
-
-r = k
+coin = [[] for i in range(n)]
 c = 0
+sum = k
 
-for i in a:
-    if i <= r:
-        c += (r // i)
-        r = (r % i)
-        if r == 0:
-            break
+for i in range(n - 1, -1, -1):
+    coin[i] = int(read())
+
+for i in range(n):
+    if coin[i] <= sum:
+        q = sum // coin[i]
+        sum -= (coin[i] * q)
+        c += q
+
+    if sum == 0:
+        break
 
 print(c)

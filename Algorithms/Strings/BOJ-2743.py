@@ -1,5 +1,3 @@
-import sys
+from sys import stdin
 
-v = sys.stdin.readline().replace('\n','')
-
-print(len(v))
+print(len(stdin.readline().rstrip()))

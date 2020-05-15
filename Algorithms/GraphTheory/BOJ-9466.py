@@ -1,30 +1,41 @@
-from sys import stdin
+from sys import stdin, setrecursionlimit
+setrecursionlimit(10**6)
+read = lambda: stdin.readline().rstrip()
 
-T = int(stdin.readline())
+def dfs(num):
+    global student, visited, finished, cnt
 
-for l in stdin:
-    st = [0] + list(map(int, stdin.readline().split()))
-    visited = [False] * (int(l)+1)
-    team = []
+    visited[num] = True
+    nxt = student[num]
 
-    for i in range(1, int(l)+1):
+    if visited[nxt]:
+        if not finished[nxt]:
+            temp = nxt
+
+            while temp != num:
+                temp = student[temp]
+                cnt += 1
+
+            cnt += 1
+
+    else:
+        dfs(nxt)
+
+    finished[num] = True
+
+
+t = int(read())
+
+for tt in range(t):
+    n = int(read())
+    student = [0] + list(map(int, read().split()))
+
+    visited = [False] * (n+1)
+    finished = [False] * (n+1)
+    cnt = 0
+
+    for i in range(1, n+1):
         if not visited[i]:
-            dstack = [i]
-            cycle = []
-            visited[i] = True
+            dfs(i)
 
-            while dstack:
-                cur = dstack.pop()
-                cycle.append(cur)
-                nexts = st[cur]
-
-                if visited[nexts]:
-                    if nexts in cycle:
-                        cidx = cycle.index(nexts)
-                        team += cycle[cidx:]
-                else:
-                    dstack.append(nexts)
-                    visited[nexts] = True
-
-    print(int(l) - len(team))
-
+    print(n-cnt)
